@@ -27,6 +27,8 @@ namespace CryStal
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -42,7 +44,7 @@ namespace CryStal
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Yellow);
 
             // TODO: Add your drawing code here
 
