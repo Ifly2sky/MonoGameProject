@@ -52,14 +52,10 @@ namespace CryStal.Entities
             keyboardState = Keyboard.GetState();
 
             MovePlayer(deltaTime, keyboardState);
-
-            Position += Velocity * Speed * deltaTime;
-
-            Velocity = Vector2.Zero;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, Color.White);
+            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
         }
         void MovePlayer(float deltaTime, KeyboardState keyboardState)
         {
@@ -79,6 +75,10 @@ namespace CryStal.Entities
             {
                 _velocity.X += 1;
             }
+
+            Position += Velocity * Speed * deltaTime;
+
+            Velocity = Vector2.Zero;
         }
     }
 }

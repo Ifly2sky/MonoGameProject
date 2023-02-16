@@ -21,7 +21,7 @@ namespace CryStal
 
         protected override void Initialize()
         {
-            player = new Player(Vector2.Zero, 50);
+            player = new Player(Vector2.Zero, 100);
 
             base.Initialize();
         }
@@ -29,6 +29,8 @@ namespace CryStal
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            player.Texture = Content.Load<Texture2D>("Template");
         }
 
         protected override void Update(GameTime gameTime)
@@ -36,7 +38,7 @@ namespace CryStal
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            player.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -47,7 +49,7 @@ namespace CryStal
 
             _spriteBatch.Begin();
 
-            
+            player.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
