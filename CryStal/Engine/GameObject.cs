@@ -9,7 +9,7 @@ namespace CryStal.Engine
 {
     public class GameObject
     {
-        public Vector2 Position { get; set; }
-        public Hitbox Hitbox { get; set; }
+        public Vector2 Position { get; set; } = Vector2.Zero;
+        public Hitbox Hitbox { get; set; } = new Hitbox();
     }
 }

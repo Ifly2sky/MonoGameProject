@@ -39,6 +39,8 @@ namespace CryStal.Entities
         {
             Position = position;
             Speed = speed;
+            Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
+            Hitbox.Position = Vector2.Zero;
         }
 
         public void Update(GameTime gameTime)
@@ -53,6 +55,14 @@ namespace CryStal.Entities
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
         void MovePlayer(float deltaTime, KeyboardState keyboardState)
+        {
+            CheckKey();
+
+            Position += Velocity * Speed * deltaTime;
+
+            Velocity = Vector2.Zero;
+        }
+        void CheckKey()
         {
             if (keyboardState.IsKeyDown(Keys.W))
             {
@@ -70,10 +80,6 @@ namespace CryStal.Entities
             {
                 _velocity.X += 1;
             }
-
-            Position += Velocity * Speed * deltaTime;
-
-            Velocity = Vector2.Zero;
         }
     }
 }
