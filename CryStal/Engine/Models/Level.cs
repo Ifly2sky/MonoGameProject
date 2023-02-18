@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,20 +8,12 @@ using System.Threading.Tasks;
 
 namespace CryStal.Engine.Models
 {
-    public class Level
+    public class Level : IDisposable
     {
-        private int[,] _levelTiles;
-        string _levelPath;
 
-        public int[,] LevelTiles
+        public void Dispose()
         {
-            get { return _levelTiles; }
-            set { _levelTiles = value; }
-        }
-
-        public Level(string path)
-        {
-            _levelPath = path;
+            throw new NotImplementedException();
         }
     }
 }

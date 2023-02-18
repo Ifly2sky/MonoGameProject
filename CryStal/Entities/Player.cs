@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CryStal.Engine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,20 +11,14 @@ using System.Threading.Tasks;
 
 namespace CryStal.Entities
 {
-    public class Player
+    public class Player : GameObject
     {
         Texture2D _texture;
         KeyboardState keyboardState;
 
         float _speed;
         Vector2 _velocity;
-        Vector2 _position;
 
-        public Vector2 Position
-        {
-            get { return _position; }
-            set { _position = value; }
-        }
         public float Speed
         {
             get { return _speed; }
@@ -55,7 +50,7 @@ namespace CryStal.Entities
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
         void MovePlayer(float deltaTime, KeyboardState keyboardState)
         {

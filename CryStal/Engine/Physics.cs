@@ -14,10 +14,10 @@ namespace CryStal.Engine
 
         public static void CheckCollition(GameObject obj, GameObject target)
         {
-            Vector2 objCenter = obj.Size * half;
-            Vector2 targetCenter = target.Size * half;
+            Vector2 objCenter = obj.Hitbox.Size * half;
+            Vector2 targetCenter = target.Hitbox.Size * half;
 
-            Vector2 distance = obj.Position + targetCenter - target.Position + targetCenter;
+            Vector2 distance = obj.Position + obj.Hitbox.Position + objCenter - target.Position + target.Hitbox.Position + targetCenter;
             Vector2 bounds = targetCenter + objCenter;
 
             if(distance.X < bounds.X && distance.Y < bounds.Y)

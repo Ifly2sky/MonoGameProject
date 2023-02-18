@@ -12,6 +12,9 @@ namespace CryStal
 
         public Player player;
 
+        public const int Scale = 3;
+        public const int TileSize = 16 * Scale;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
