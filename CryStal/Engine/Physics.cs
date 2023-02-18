@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CryStal.Engine
 {
-    public class Physics
+    public static class Physics
     {
         const float half = 0.5f;
 
@@ -35,7 +35,7 @@ namespace CryStal.Engine
 
             if(absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                obj.Position -= (absDistance - bounds) * direction;
+                obj.Position -= obj.Velocity;
             }
         }
     }

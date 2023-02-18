@@ -17,17 +17,17 @@ namespace CryStal.Entities
         KeyboardState keyboardState;
 
         float _speed;
-        Vector2 _velocity;
+        Vector2 _direction;
 
         public float Speed
         {
             get { return _speed; }
             set { _speed = value; }
         }
-        public Vector2 Velocity
+        public Vector2 Direction
         {
-            get { return _velocity; }
-            set { _velocity = value; }
+            get { return _direction; }
+            set { _direction = value; }
         }
         public Texture2D Texture
         {
@@ -43,12 +43,14 @@ namespace CryStal.Entities
             Hitbox.Position = Vector2.Zero;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             keyboardState = Keyboard.GetState();
 
             MovePlayer(deltaTime, keyboardState);
+
+            base.Update(gameTime);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -58,27 +60,27 @@ namespace CryStal.Entities
         {
             CheckKey();
 
-            Position += Velocity * Speed * deltaTime;
+            Position += Direction * Speed * deltaTime;
 
-            Velocity = Vector2.Zero;
+            Direction = Vector2.Zero;
         }
         void CheckKey()
         {
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                _velocity.Y -= 1;
+                _direction.Y -= 1;
             }
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                _velocity.Y += 1;
+                _direction.Y += 1;
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                _velocity.X -= 1;
+                _direction.X -= 1;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                _velocity.X += 1;
+                _direction.X += 1;
             }
         }
     }
