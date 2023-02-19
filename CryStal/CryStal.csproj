@@ -23,9 +23,6 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\Factories\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="Content\Level00.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

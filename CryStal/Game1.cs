@@ -49,13 +49,7 @@ namespace CryStal
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            player.Update(gameTime);
-
-            foreach(Tile tile in level.tiles)
-            {
-                if(tile.CollisionType == CollitionType.Impassable)
-                    Physics.CheckCollition(player, tile);
-            }
+            Physics.Update(gameTime);
 
             base.Update(gameTime);
         }

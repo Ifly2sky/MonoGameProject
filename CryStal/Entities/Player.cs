@@ -1,9 +1,11 @@
 ﻿using CryStal.Engine;
+using CryStal.Engine.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -41,6 +43,7 @@ namespace CryStal.Entities
             Speed = speed;
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
+            GameObjectFactory.AddGameObject(this);
         }
 
         public override void Update(GameTime gameTime)
@@ -48,9 +51,10 @@ namespace CryStal.Entities
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             keyboardState = Keyboard.GetState();
 
-            MovePlayer(deltaTime, keyboardState);
-
+            //MovePlayer(deltaTime, keyboardState);
             base.Update(gameTime);
+
+            Debug.WriteLine(Position);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -60,7 +64,7 @@ namespace CryStal.Entities
         {
             CheckKey();
 
-            Position += Direction * Speed * deltaTime;
+            Accelerate(Direction * Speed * deltaTime);
 
             Direction = Vector2.Zero;
         }

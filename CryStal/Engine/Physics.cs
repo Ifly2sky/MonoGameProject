@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CryStal.Engine.Factories;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,8 +13,9 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
+        public static readonly Vector2 gravity = new(0f, 10f);
 
-        public static void CheckCollition(GameObject obj, GameObject target)
+        public static bool CheckCollition(GameObject obj, GameObject target, GameTime gameTime)
         {
             Vector2 objCenter = obj.Hitbox.Size * half;
             Vector2 targetCenter = target.Hitbox.Size * half;
@@ -35,7 +37,30 @@ namespace CryStal.Engine
 
             if(absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                obj.Position -= obj.Velocity;
+                return true;
+            }
+            return false;
+        }
+
+        public static void ApplyGravity()
+        {
+            foreach(GameObject obj in GameObjectFactory.objects)
+            {
+                obj.Accelerate(gravity);
+            }
+        }
+
+        public static void Update(GameTime gameTime)
+        {
+            ApplyGravity();
+            UpdatePositions(gameTime);
+        }
+
+        public static void UpdatePositions(GameTime gameTime)
+        {
+            foreach (GameObject obj in GameObjectFactory.objects)
+            {
+                obj.Update(gameTime);
             }
         }
     }
