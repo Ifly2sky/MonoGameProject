@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CryStal
@@ -16,6 +17,8 @@ namespace CryStal
 
         public Player player;
         public Level level;
+
+        List<GameObject> tempObj = new();
 
         public const int Scale = 3;
         public const int TileSize = 16 * Scale;
@@ -34,6 +37,11 @@ namespace CryStal
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);
 
+            for(int i = 0; i<10; i++)
+            {
+                tempObj.Add(new GameObject());
+            }
+
             base.Initialize();
         }
 
@@ -49,7 +57,7 @@ namespace CryStal
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Physics.Update(gameTime);
+            Physics.Update(gameTime, _graphics.GraphicsDevice);
 
             base.Update(gameTime);
         }

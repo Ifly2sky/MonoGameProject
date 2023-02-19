@@ -1,13 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using CryStal.Engine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using CryStal.Engine.Factories;
 
 namespace CryStal.Engine.Models
 {

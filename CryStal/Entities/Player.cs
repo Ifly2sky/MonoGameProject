@@ -1,4 +1,5 @@
 ﻿using CryStal.Engine;
+using CryStal.Engine.Models;
 using CryStal.Engine.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -37,54 +38,46 @@ namespace CryStal.Entities
             set { _texture = value; }
         }
 
-        public Player(Vector2 position, float speed)
+        public Player(Vector2 position, float speed):base()
         {
             Position = position;
             Speed = speed;
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
+            ResetVelocity();
             GameObjectFactory.AddGameObject(this);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             keyboardState = Keyboard.GetState();
 
-            //MovePlayer(deltaTime, keyboardState);
-            base.Update(gameTime);
+            MovePlayer(keyboardState);
 
-            Debug.WriteLine(Position);
+            base.Update(gameTime, graphics);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
-        void MovePlayer(float deltaTime, KeyboardState keyboardState)
-        {
-            CheckKey();
-
-            Accelerate(Direction * Speed * deltaTime);
-
-            Direction = Vector2.Zero;
-        }
-        void CheckKey()
+        void MovePlayer(KeyboardState keyboardState)
         {
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                _direction.Y -= 1;
+                Accelerate(new Vector2(0, -Speed));
             }
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                _direction.Y += 1;
+                Accelerate(new Vector2(0, Speed));
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                _direction.X -= 1;
+                Accelerate(new Vector2(-Speed, 0));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                _direction.X += 1;
+                Accelerate(new Vector2(Speed, 0));
             }
         }
     }

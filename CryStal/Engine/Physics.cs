@@ -1,5 +1,7 @@
 ﻿using CryStal.Engine.Factories;
+using CryStal.Engine.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,9 +15,9 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 10f);
+        public static readonly Vector2 gravity = new(0f, 1000f);
 
-        public static bool CheckCollition(GameObject obj, GameObject target, GameTime gameTime)
+        public static bool CheckCollition(GameObject obj, GameObject target)
         {
             Vector2 objCenter = obj.Hitbox.Size * half;
             Vector2 targetCenter = target.Hitbox.Size * half;
@@ -50,17 +52,17 @@ namespace CryStal.Engine
             }
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             ApplyGravity();
-            UpdatePositions(gameTime);
+            UpdatePositions(gameTime, graphics);
         }
 
-        public static void UpdatePositions(GameTime gameTime)
+        public static void UpdatePositions(GameTime gameTime, GraphicsDevice graphics)
         {
             foreach (GameObject obj in GameObjectFactory.objects)
             {
-                obj.Update(gameTime);
+                obj.Update(gameTime, graphics);
             }
         }
     }
