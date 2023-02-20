@@ -12,12 +12,13 @@ namespace CryStal.Engine.Models
 {
     public class GameObject
     {
-        private Vector2 _lastPos = Vector2.Zero;
+        protected Vector2 lastPos = Vector2.Zero;
+
+        public float Drag = 0.8f;
+
         private Vector2 _position = Vector2.Zero;
         private Vector2 _velocity = Vector2.Zero;
         private Vector2 _acceleration = Vector2.Zero;
-
-
         public Vector2 Position 
         {
             get { return _position; } 
@@ -36,15 +37,13 @@ namespace CryStal.Engine.Models
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
 
-        public virtual void Update(GameTime gameTime, GraphicsDevice graphics)
+        public virtual void Update(float deltaTime, GraphicsDevice graphics)
         {
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            Velocity = Position - _lastPos;
+            Velocity = (Position - lastPos) * Drag;
+            lastPos = Position;
 
-            _lastPos = Position;
-
-            Position = Position + Velocity + Acceleration * deltaTime * deltaTime;
+            Position = Position + Velocity + Acceleration * deltaTime;
 
             _position.X = MathHelper.Clamp(Position.X, 0, graphics.Viewport.Width - Game1.TileSize);
             _position.Y = MathHelper.Clamp(Position.Y, 0, graphics.Viewport.Height - Game1.TileSize);
@@ -55,11 +54,6 @@ namespace CryStal.Engine.Models
         public void Accelerate(Vector2 acceleration)
         {
             Acceleration += acceleration;
-        }
-
-        public void ResetVelocity()
-        {
-            _lastPos = Position;
         }
     }
 }
