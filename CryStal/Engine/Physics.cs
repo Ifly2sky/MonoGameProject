@@ -44,7 +44,7 @@ namespace CryStal.Engine
             return false;
         }
 
-        public static void ApplyGravity()
+        private static void ApplyGravity()
         {
             foreach(GameObject obj in GameObjectFactory.objects)
             {
@@ -54,15 +54,31 @@ namespace CryStal.Engine
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             ApplyGravity();
-            UpdatePositions(gameTime, graphics);
+            UpdatePositions(deltaTime, graphics);
         }
 
-        public static void UpdatePositions(GameTime gameTime, GraphicsDevice graphics)
+        private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
             foreach (GameObject obj in GameObjectFactory.objects)
             {
-                obj.Update(gameTime, graphics);
+                obj.Update(deltaTime, graphics);
+            }
+        }
+
+        private static void SolveCollitions(float deltaTime)
+        {
+
+        }foreach
+
+        private static void SolveCollitionsWithSubsteps(float deltaTime, int sub_steps)
+        {
+            float subDeltaTime = deltaTime / sub_steps;
+            for(int i = 0; i < sub_steps; i++)
+            {
+                SolveCollitions(subDeltaTime);
             }
         }
     }
