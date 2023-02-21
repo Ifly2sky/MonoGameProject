@@ -15,6 +15,7 @@ namespace CryStal.Engine.Models
         protected Vector2 lastPos = Vector2.Zero;
 
         public float Drag = 0.8f;
+        public Texture2D texture;
 
         private Vector2 _position = Vector2.Zero;
         private Vector2 _velocity = Vector2.Zero;
@@ -49,6 +50,11 @@ namespace CryStal.Engine.Models
             _position.Y = MathHelper.Clamp(Position.Y, 0, graphics.Viewport.Height - Game1.TileSize);
 
             Acceleration = Vector2.Zero;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, Position, Color.White);
         }
 
         public void Accelerate(Vector2 acceleration)

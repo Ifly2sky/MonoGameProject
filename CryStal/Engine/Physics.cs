@@ -17,7 +17,7 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 1000f);
 
-        public static bool CheckCollition(GameObject obj, GameObject target)
+        public static void DoCollition(GameObject obj, GameObject target, float deltaTime)
         {
             Vector2 objCenter = obj.Hitbox.Size * half;
             Vector2 targetCenter = target.Hitbox.Size * half;
@@ -39,9 +39,9 @@ namespace CryStal.Engine
 
             if(absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                return true;
+                Vector2 reactionForce = ((bounds - absDistance) * direction);
+                obj.Position -= reactionForce;
             }
-            return false;
         }
 
         private static void ApplyGravity()
@@ -58,6 +58,8 @@ namespace CryStal.Engine
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             ApplyGravity();
             UpdatePositions(deltaTime, graphics);
+            SolveCollitions(deltaTime);
+            //SolveCollitionsWithSubsteps(deltaTime, 8)
         }
 
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
@@ -70,7 +72,16 @@ namespace CryStal.Engine
 
         private static void SolveCollitions(float deltaTime)
         {
-            //TODO make collition solver
+            foreach(GameObject obj in GameObjectFactory.objects)
+            {
+                foreach (GameObject target in GameObjectFactory.objects)
+                {
+                    if (obj != target)
+                    {
+                        DoCollition(obj, target, deltaTime);
+                    }
+                }
+            }
         }
 
         private static void SolveCollitionsWithSubsteps(float deltaTime, int sub_steps)

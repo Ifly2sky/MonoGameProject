@@ -50,6 +50,10 @@ namespace CryStal
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player.Texture = Content.Load<Texture2D>("Template");
+            foreach(GameObject obj in tempObj)
+            {
+                obj.texture = Content.Load<Texture2D>("Template");
+            }
         }
 
         protected override void Update(GameTime gameTime)

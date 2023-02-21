@@ -48,16 +48,15 @@ namespace CryStal.Entities
             GameObjectFactory.AddGameObject(this);
         }
 
-        public override void Update(GameTime gameTime, GraphicsDevice graphics)
+        public override void Update(float deltaTime, GraphicsDevice graphics)
         {
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             keyboardState = Keyboard.GetState();
 
             MovePlayer(keyboardState);
 
-            base.Update(gameTime, graphics);
+            base.Update(deltaTime, graphics);
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
