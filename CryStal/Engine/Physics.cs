@@ -15,7 +15,7 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 1000f);
+        public static readonly Vector2 gravity = new(0f, 500f);
 
         public static void DoCollition(GameObject obj, GameObject target, float deltaTime)
         {
@@ -25,22 +25,16 @@ namespace CryStal.Engine
 
             Vector2 absDistance = new(Math.Abs(distance.X), Math.Abs(distance.Y));
 
-            Vector2 direction = new Vector2(1, 1);
-            if (absDistance.X - distance.X == 0)
-            {
-                direction.X = -1;
-            }
-            if (absDistance.Y - distance.Y == 0)
-            {
-                direction.Y = -1;
-            }
-
             Vector2 bounds = targetCenter + objCenter;
 
-            if(absDistance.X < bounds.X && absDistance.Y < bounds.Y)
+            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                Vector2 reactionForce = ((bounds - absDistance) * direction);
-                obj.Position -= reactionForce;
+                Vector2 overlap = (bounds - absDistance);
+                Vector2 difference = new Vector2((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+
+                obj.ResetVelocity();
+
+                obj.Position += difference * half;
             }
         }
 
@@ -58,8 +52,8 @@ namespace CryStal.Engine
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             ApplyGravity();
             UpdatePositions(deltaTime, graphics);
-            SolveCollitions(deltaTime);
-            //SolveCollitionsWithSubsteps(deltaTime, 8)
+            //SolveCollitions(deltaTime);
+            SolveCollitionsWithSubsteps(deltaTime, 8);
         }
 
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)

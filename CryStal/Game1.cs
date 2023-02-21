@@ -1,4 +1,5 @@
 ﻿using CryStal.Engine;
+using CryStal.Engine.Factories;
 using CryStal.Engine.Models;
 using CryStal.Entities;
 using Microsoft.Xna.Framework;
@@ -37,9 +38,9 @@ namespace CryStal
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);
 
-            for(int i = 0; i<10; i++)
+            for(int i = 0; i<1; i++)
             {
-                tempObj.Add(new GameObject());
+                tempObj.Add(GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize)));
             }
 
             base.Initialize();
@@ -74,6 +75,11 @@ namespace CryStal
 
             player.Draw(_spriteBatch);
             level.DrawLevel(_spriteBatch);
+
+            foreach(GameObject obj in tempObj)
+            {
+                obj.Draw(_spriteBatch);
+            }
 
             _spriteBatch.End();
 

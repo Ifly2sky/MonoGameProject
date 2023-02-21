@@ -41,10 +41,12 @@ namespace CryStal.Entities
         public Player(Vector2 position, float speed):base()
         {
             Position = position;
-            lastPos = Position;
             Speed = speed;
+            ResetVelocity();
+
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
+
             GameObjectFactory.AddGameObject(this);
         }
 

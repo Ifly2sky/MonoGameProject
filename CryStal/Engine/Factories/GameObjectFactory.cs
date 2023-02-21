@@ -17,6 +17,7 @@ namespace CryStal.Engine.Factories
 
             newObject.Position = Position;
             newObject.Hitbox = hitbox;
+            newObject.ResetVelocity();
 
             objects.Add(newObject);
             return newObject;

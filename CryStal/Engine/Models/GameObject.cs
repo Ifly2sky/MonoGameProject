@@ -12,7 +12,7 @@ namespace CryStal.Engine.Models
 {
     public class GameObject
     {
-        protected Vector2 lastPos = Vector2.Zero;
+        private Vector2 lastPos = Vector2.Zero;
 
         public float Drag = 0.8f;
         public Texture2D texture;
@@ -54,12 +54,16 @@ namespace CryStal.Engine.Models
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, Color.White);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
 
         public void Accelerate(Vector2 acceleration)
         {
             Acceleration += acceleration;
+        }
+        public void ResetVelocity()
+        {
+            lastPos = Position;
         }
     }
 }
