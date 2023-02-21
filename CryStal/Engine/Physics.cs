@@ -17,23 +17,30 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 500f);
 
-        public static void DoCollition(GameObject obj, GameObject target, float deltaTime)
+        public static void CalculateCollition(GameObject obj, GameObject target)
         {
+            //gets distance between objects
             Vector2 objCenter = obj.Hitbox.Size * half;
             Vector2 targetCenter = target.Hitbox.Size * half;
             Vector2 distance = (obj.Position + obj.Hitbox.Position + objCenter)-(target.Position + target.Hitbox.Position + targetCenter);
 
+            //gets the absolute value of distance
             Vector2 absDistance = new(Math.Abs(distance.X), Math.Abs(distance.Y));
 
+            //gets the distance minimum x and y distance of the objects
             Vector2 bounds = targetCenter + objCenter;
 
-            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
+            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y) // checks if both s and y is smaller than the minimum distance
             {
-                Vector2 overlap = (bounds - absDistance);
-                Vector2 difference = new Vector2((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 overlap = (bounds - absDistance); // size of the overlap
 
+                // side in which the overlap is the largest
+                Vector2 difference = new((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+
+                //resets velocity to stop objects movement
                 obj.ResetVelocity();
 
+                //subracts half of the overlap from position
                 obj.Position += difference * half;
             }
         }
@@ -49,11 +56,11 @@ namespace CryStal.Engine
         public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
 
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            ApplyGravity();
-            UpdatePositions(deltaTime, graphics);
-            //SolveCollitions(deltaTime);
-            SolveCollitionsWithSubsteps(deltaTime, 8);
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
+            ApplyGravity(); //applys gravity
+            UpdatePositions(deltaTime, graphics); //updates object positions
+            //SolveCollitions();
+            SolveCollitionsWithSubsteps(6);// solves collitions more than once to make physics more accurate
         }
 
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
@@ -64,7 +71,7 @@ namespace CryStal.Engine
             }
         }
 
-        private static void SolveCollitions(float deltaTime)
+        private static void SolveCollitions()
         {
             foreach(GameObject obj in GameObjectFactory.objects)
             {
@@ -72,18 +79,17 @@ namespace CryStal.Engine
                 {
                     if (obj != target)
                     {
-                        DoCollition(obj, target, deltaTime);
+                        CalculateCollition(obj, target);
                     }
                 }
             }
         }
 
-        private static void SolveCollitionsWithSubsteps(float deltaTime, int sub_steps)
+        private static void SolveCollitionsWithSubsteps(int sub_steps)
         {
-            float subDeltaTime = deltaTime / sub_steps;
             for(int i = 0; i < sub_steps; i++)
             {
-                SolveCollitions(subDeltaTime);
+                SolveCollitions();
             }
         }
     }
