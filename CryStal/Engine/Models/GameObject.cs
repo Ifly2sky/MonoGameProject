@@ -14,8 +14,8 @@ namespace CryStal.Engine.Models
     {
         private Vector2 lastPos = Vector2.Zero;
 
-        public float Drag = 0.8f;
-        public Texture2D texture;
+        public float Drag = 1.0f;
+        public bool HasGravity = true;
 
         private Vector2 _position = Vector2.Zero;
         private Vector2 _velocity = Vector2.Zero;
@@ -37,6 +37,7 @@ namespace CryStal.Engine.Models
         }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
+        public Texture2D texture;
 
         public virtual void Update(float deltaTime, GraphicsDevice graphics)
         {

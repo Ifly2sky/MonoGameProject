@@ -1,14 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CryStal.Engine.Factories;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryStal.Engine.Models
 {
@@ -80,10 +76,10 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => new Tile(textures[0], CollitionType.Passable),
-                '#' => new Tile(textures[1], CollitionType.Impassable),
+                ' ' => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable),
+                '#' => GameObjectFactory.CreateTile(textures[1], CollitionType.Impassable),
 
-                _ => new Tile(textures[0], CollitionType.Passable),
+                _ => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable),
             };
         }
 

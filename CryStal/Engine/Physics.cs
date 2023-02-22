@@ -17,6 +17,8 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 500f);
 
+        public static List<GameObject> PhysicsObjects = GameObjectFactory.objects.Where(x => x.HasGravity && x is not Tile).ToList();
+
         public static void CalculateCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects
@@ -47,7 +49,7 @@ namespace CryStal.Engine
 
         private static void ApplyGravity()
         {
-            foreach(GameObject obj in GameObjectFactory.objects)
+            foreach(GameObject obj in PhysicsObjects)
             {
                 obj.Accelerate(gravity);
             }
@@ -58,14 +60,15 @@ namespace CryStal.Engine
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
             ApplyGravity(); //applys gravity
+            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
             UpdatePositions(deltaTime, graphics); //updates object positions
             //SolveCollitions();
-            SolveCollitionsWithSubsteps(6);// solves collitions more than once to make physics more accurate
+
         }
 
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
-            foreach (GameObject obj in GameObjectFactory.objects)
+            foreach (GameObject obj in PhysicsObjects)
             {
                 obj.Update(deltaTime, graphics);
             }

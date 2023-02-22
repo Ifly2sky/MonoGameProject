@@ -1,5 +1,6 @@
 ﻿using CryStal.Engine.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace CryStal.Engine.Factories
 
             objects.Add(newObject);
             return newObject;
+        }
+        public static Tile CreateTile(Texture2D texture, CollitionType collitionType) 
+        {
+            Tile tile = new Tile(texture, collitionType);
+            objects.Add(tile);
+
+            return tile;
         }
         public static GameObject CreateGameObject()
         {
