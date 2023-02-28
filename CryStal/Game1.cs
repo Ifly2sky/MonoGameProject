@@ -57,6 +57,7 @@ namespace CryStal
                 GameObject newObj = GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize));
                 newObj.texture = Content.Load<Texture2D>("Template");
                 tempObj.Add(newObj);
+                Physics.PhysicsObjects.Add(newObj);
 
                 keyPressed = true;
             }

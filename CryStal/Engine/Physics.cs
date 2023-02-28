@@ -15,7 +15,7 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 500f);
+        public static readonly Vector2 gravity = new(0f, 100f);
 
         public static List<GameObject> PhysicsObjects = GameObjectFactory.objects.Where(x => x.HasGravity && x is not Tile).ToList();
 
