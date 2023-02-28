@@ -46,16 +46,13 @@ namespace CryStal.Engine.Models
         public Hitbox Hitbox { get; set; } = new Hitbox();
         public Texture2D texture;
 
-        public virtual void Update(float deltaTime, GraphicsDevice graphics)
+        public virtual void Update(float deltaTime)
         {
 
             Velocity = (Position - lastPos) * Drag;
             lastPos = Position;
 
             Position = Position + Velocity + Acceleration * deltaTime;
-
-            _position.X = MathHelper.Clamp(Position.X, 0, graphics.Viewport.Width - Game1.TileSize);
-            _position.Y = MathHelper.Clamp(Position.Y, 0, graphics.Viewport.Height - Game1.TileSize);
 
             Acceleration = Vector2.Zero;
         }

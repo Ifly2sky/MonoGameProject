@@ -50,13 +50,13 @@ namespace CryStal.Entities
             GameObjectFactory.AddGameObject(this);
         }
 
-        public override void Update(float deltaTime, GraphicsDevice graphics)
+        public override void Update(float deltaTime)
         {
             keyboardState = Keyboard.GetState();
 
             MovePlayer(keyboardState);
 
-            base.Update(deltaTime, graphics);
+            base.Update(deltaTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

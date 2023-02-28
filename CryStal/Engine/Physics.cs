@@ -32,7 +32,7 @@ namespace CryStal.Engine
             {
                 //gets overlap
                 Vector2 overlap = bounds - absDistance;
-                Vector2 difference = new((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 difference = (overlap.Y > overlap.X)? new Vector2(overlap.X, 0) : new Vector2(0, overlap.Y);
 
                 //resets velocity before changing positions
                 obj.ResetVelocity();
@@ -56,17 +56,25 @@ namespace CryStal.Engine
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             ApplyGravity();
-            //SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
-            SolveCollitions();
-            UpdatePositions(deltaTime, graphics);
+            UpdatePositions(deltaTime);
+            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
+            ApplyConstraint(graphics);
 
+            //SolveCollitions();
         }
 
-        private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
+        private static void UpdatePositions(float deltaTime)
         {
             foreach (GameObject obj in PhysicsObjects)
             {
-                obj.Update(deltaTime, graphics);
+                obj.Update(deltaTime);
+            }
+        }
+        private static void ApplyConstraint(GraphicsDevice graphics)
+        {
+            foreach(GameObject obj in PhysicsObjects)
+            {
+                obj.Position = new Vector2(MathHelper.Clamp(obj.Position.X, 0, graphics.Viewport.Width - Game1.TileSize), MathHelper.Clamp(obj.Position.Y, 0, graphics.Viewport.Height - Game1.TileSize));
             }
         }
 
