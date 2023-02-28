@@ -14,7 +14,7 @@ namespace CryStal.Engine.Models
     {
         private Vector2 lastPos = Vector2.Zero;
 
-        public float Drag = 1.0f;
+        public float Drag = 0.9f;
         public bool HasGravity = true;
 
         private Vector2 _position = Vector2.Zero;
@@ -34,6 +34,13 @@ namespace CryStal.Engine.Models
         {
             get { return _acceleration; }
             set { _acceleration = value; }
+        }
+        public Vector2 Center
+        {
+            get
+            {
+                return Position + Hitbox.Position + Hitbox.Size * 0.5f;
+            }
         }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();

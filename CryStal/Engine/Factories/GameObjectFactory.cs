@@ -14,10 +14,11 @@ namespace CryStal.Engine.Factories
         public static List<GameObject> objects = new();
         public static GameObject CreateGameObject(Hitbox hitbox, Vector2 Position)
         {
-            GameObject newObject = new GameObject();
-
-            newObject.Position = Position;
-            newObject.Hitbox = hitbox;
+            GameObject newObject = new()
+            {
+                Position = Position,
+                Hitbox = hitbox
+            };
             newObject.ResetVelocity();
 
             objects.Add(newObject);
@@ -25,14 +26,14 @@ namespace CryStal.Engine.Factories
         }
         public static Tile CreateTile(Texture2D texture, CollitionType collitionType) 
         {
-            Tile tile = new Tile(texture, collitionType);
-            objects.Add(tile);
+            Tile tile = new(texture, collitionType);
+            //objects.Add(tile);
 
             return tile;
         }
         public static GameObject CreateGameObject()
         {
-            GameObject newObject = new GameObject();
+            GameObject newObject = new();
             objects.Add(newObject);
             return newObject;
         }
