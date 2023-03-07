@@ -37,19 +37,8 @@ namespace CryStal.Engine
                 // side in which the overlap is the largest
                 Vector2 difference = new((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
 
-                //resets velocity to stop objects movement
-                obj.ResetVelocity();
-
                 //subracts half of the overlap from position
-                obj.Position += difference * half;
-            }
-        }
-
-        private static void ApplyGravity()
-        {
-            foreach(GameObject obj in PhysicsObjects)
-            {
-                obj.Accelerate(gravity);
+                obj.Position += overlap * half;
             }
         }
 
@@ -57,9 +46,8 @@ namespace CryStal.Engine
         {
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
-            ApplyGravity(); //applys gravity
-            //SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
             UpdatePositions(deltaTime, graphics); //updates object positions
+            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
 
         }
 
@@ -67,6 +55,7 @@ namespace CryStal.Engine
         {
             foreach (GameObject obj in PhysicsObjects)
             {
+                obj.Accelerate(gravity);
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
             }
