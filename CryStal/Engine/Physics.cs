@@ -58,7 +58,7 @@ namespace CryStal.Engine
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
             ApplyGravity(); //applys gravity
-            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
+            //SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
             UpdatePositions(deltaTime, graphics); //updates object positions
 
         }
