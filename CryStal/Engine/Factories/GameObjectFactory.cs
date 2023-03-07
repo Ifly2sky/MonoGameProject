@@ -26,7 +26,7 @@ namespace CryStal.Engine.Factories
         public static Tile CreateTile(Texture2D texture, CollitionType collitionType) 
         {
             Tile tile = new Tile(texture, collitionType);
-            objects.Add(tile);
+            //objects.Add(tile);
 
             return tile;
         }

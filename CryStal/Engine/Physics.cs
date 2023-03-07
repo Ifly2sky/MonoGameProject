@@ -17,22 +17,20 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 500f);
 
-        public static List<GameObject> PhysicsObjects = GameObjectFactory.objects.Where(x => x.HasGravity && x is not Tile).ToList();
+        public static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
 
         public static void CalculateCollition(GameObject obj, GameObject target)
         {
-            //gets distance between objects
+            //gets distance between objects and its absolute value
             Vector2 objCenter = obj.Hitbox.Size * half;
             Vector2 targetCenter = target.Hitbox.Size * half;
             Vector2 distance = (obj.Position + obj.Hitbox.Position + objCenter)-(target.Position + target.Hitbox.Position + targetCenter);
-
-            //gets the absolute value of distance
             Vector2 absDistance = new(Math.Abs(distance.X), Math.Abs(distance.Y));
 
-            //gets the distance minimum x and y distance of the objects
+            //gets the minimum x and y distance of the objects
             Vector2 bounds = targetCenter + objCenter;
 
-            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y) // checks if both s and y is smaller than the minimum distance
+            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
                 Vector2 overlap = (bounds - absDistance); // size of the overlap
 
@@ -62,7 +60,6 @@ namespace CryStal.Engine
             ApplyGravity(); //applys gravity
             SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
             UpdatePositions(deltaTime, graphics); //updates object positions
-            //SolveCollitions();
 
         }
 
@@ -70,15 +67,16 @@ namespace CryStal.Engine
         {
             foreach (GameObject obj in PhysicsObjects)
             {
-                obj.Update(deltaTime, graphics);
+                obj.Update(deltaTime);
+                obj.Clamp(graphics);
             }
         }
 
         private static void SolveCollitions()
         {
-            foreach(GameObject obj in GameObjectFactory.objects)
+            foreach(GameObject obj in PhysicsObjects)
             {
-                foreach (GameObject target in GameObjectFactory.objects)
+                foreach (GameObject target in PhysicsObjects)
                 {
                     if (obj != target)
                     {

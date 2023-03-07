@@ -52,7 +52,7 @@ namespace CryStal.Engine.Models
                 {
                     lines.Add(line);
                     if (line.Length != width)
-                        throw new Exception(String.Format("The length of line {0} is different from all preceeding lines.", lines.Count));
+                        throw new Exception($"The length of line {lines.Count} is different from all preceeding lines.");
                     line = reader.ReadLine();
                 }
             }
