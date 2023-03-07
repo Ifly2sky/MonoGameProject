@@ -4,41 +4,36 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryStal.Engine
 {
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 500f);
+        public static readonly Vector2 gravity = new(0f, 25f);
 
         public static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
 
         public static void CalculateCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects and its absolute value
-            Vector2 objCenter = obj.Hitbox.Size * half;
-            Vector2 targetCenter = target.Hitbox.Size * half;
-            Vector2 distance = (obj.Position + obj.Hitbox.Position + objCenter)-(target.Position + target.Hitbox.Position + targetCenter);
-            Vector2 absDistance = new(Math.Abs(distance.X), Math.Abs(distance.Y));
+            Vector2 distance = target.Center - obj.Center;
+            Vector2 absDistance = distance.Abs(); //Abs is custom
 
             //gets the minimum x and y distance of the objects
-            Vector2 bounds = targetCenter + objCenter;
+            Vector2 bounds = target.Hitbox.Size * half + obj.Hitbox.Size * half;
 
             if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                Vector2 overlap = (bounds - absDistance); // size of the overlap
+                Vector2 overlap = bounds - absDistance; // size of the overlap
 
-                // side in which the overlap is the largest
-                Vector2 difference = new((overlap.Y > overlap.X)? overlap.X : 0, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                // gets side in which the overlap is the largest
+                Vector2 difference = new((overlap.Y < overlap.X)? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
 
-                //subracts half of the overlap from position
-                obj.Position += overlap * half;
+                //moves both half of the overlap
+                obj.Position += difference * half;
+                target.Position -= difference * half;
             }
         }
 
@@ -55,7 +50,8 @@ namespace CryStal.Engine
         {
             foreach (GameObject obj in PhysicsObjects)
             {
-                obj.Accelerate(gravity);
+                if(obj.HasGravity)
+                    obj.Accelerate(gravity);
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
             }
@@ -81,6 +77,16 @@ namespace CryStal.Engine
             {
                 SolveCollitions();
             }
+        }
+
+        /// <summary>
+        /// Returns absolute value of vector2
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <returns></returns>
+        private static Vector2 Abs(this Vector2 vector)
+        {
+            return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
         }
     }
 }

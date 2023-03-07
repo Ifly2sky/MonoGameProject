@@ -56,7 +56,7 @@ namespace CryStal
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && !spawned)
             {
-                GameObject newObj = GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize));
+                GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize, TileSize));
                 newObj.texture = Content.Load<Texture2D>("Template");
                 tempObj.Add(newObj);
                 spawned = true;

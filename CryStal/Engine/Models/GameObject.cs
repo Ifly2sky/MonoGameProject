@@ -1,12 +1,5 @@
-﻿using CryStal.Engine.Models;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CryStal.Engine.Models
 {
@@ -35,13 +28,16 @@ namespace CryStal.Engine.Models
             get { return _acceleration; }
             set { _acceleration = value; }
         }
+        public Vector2 Center
+        {
+            get { return _position + Hitbox.Position + Hitbox.Size * 0.5f; }
+        }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
         public Texture2D texture;
 
         public virtual void Update(float deltaTime)
         {
-
             Velocity = (Position - lastPos) * Drag;
             lastPos = Position;
 
