@@ -21,8 +21,9 @@ namespace CryStal
 
         List<GameObject> tempObj = new();
 
-        public const int Scale = 3;
+        public const int Scale = 2;
         public const int TileSize = 16 * Scale;
+        public const float inverseTileSize = 1 / TileSize;
 
         public Game1()
         {

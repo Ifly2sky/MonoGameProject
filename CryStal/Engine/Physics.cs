@@ -13,13 +13,22 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 25f);
 
-        public static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
+        private static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
 
-        public static void CalculateCollition(GameObject obj, GameObject target)
+        public static void Update(GameTime gameTime, GraphicsDevice graphics)
+        {
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
+            UpdatePositions(deltaTime, graphics); //updates object positions
+            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
+
+        }
+
+        private static void CalculateCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects and its absolute value
-            Vector2 distance = target.Center - obj.Center;
-            Vector2 absDistance = distance.Abs(); //Abs is custom
+            Vector2 distance = obj.Center - target.Center;
+            Vector2 absDistance = distance.Abs();
 
             //gets the minimum x and y distance of the objects
             Vector2 bounds = target.Hitbox.Size * half + obj.Hitbox.Size * half;
@@ -29,21 +38,13 @@ namespace CryStal.Engine
                 Vector2 overlap = bounds - absDistance; // size of the overlap
 
                 // gets side in which the overlap is the largest
-                Vector2 difference = new((overlap.Y < overlap.X)? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 //moves both half of the overlap
-                obj.Position += difference * half;
-                target.Position -= difference * half;
+                obj.Position += difference * direction * half;
+                target.Position -= difference * direction * half;
             }
-        }
-
-        public static void Update(GameTime gameTime, GraphicsDevice graphics)
-        {
-
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
-            UpdatePositions(deltaTime, graphics); //updates object positions
-            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
-
         }
 
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
