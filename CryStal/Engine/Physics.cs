@@ -18,8 +18,8 @@ namespace CryStal.Engine
         public static void CalculateCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects and its absolute value
-            Vector2 distance = target.Center - obj.Center;
-            Vector2 absDistance = distance.Abs(); //Abs is custom
+            Vector2 distance = obj.Center - target.Center;
+            Vector2 absDistance = distance.Abs();
 
             //gets the minimum x and y distance of the objects
             Vector2 bounds = target.Hitbox.Size * half + obj.Hitbox.Size * half;
@@ -29,11 +29,12 @@ namespace CryStal.Engine
                 Vector2 overlap = bounds - absDistance; // size of the overlap
 
                 // gets side in which the overlap is the largest
-                Vector2 difference = new((overlap.Y < overlap.X)? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 //moves both half of the overlap
-                obj.Position += difference * half;
-                target.Position -= difference * half;
+                obj.Position += difference * direction * half;
+                target.Position -= difference * direction * half;
             }
         }
 
