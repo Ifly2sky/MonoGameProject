@@ -18,12 +18,13 @@ namespace CryStal
 
         public Player player;
         public Level level;
+        Grid gameGrid;
 
         List<GameObject> tempObj = new();
 
-        public const int Scale = 2;
-        public const int TileSize = 16 * Scale;
-        public const float inverseTileSize = 1 / TileSize;
+        public static readonly int Scale = 2;
+        public static readonly int TileSize = 16 * Scale;
+        public static readonly float InverseTileSize = 0.03125f;
 
         public Game1()
         {
@@ -47,6 +48,11 @@ namespace CryStal
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player.Texture = Content.Load<Texture2D>("Template");
+
+            int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
+            int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
+
+            gameGrid = new Grid(gridX, gridY);
         }
 
         bool spawned = false;
@@ -68,6 +74,7 @@ namespace CryStal
             }
 
             Physics.Update(gameTime, _graphics.GraphicsDevice);
+            gameGrid.UpdateGrid();
 
             base.Update(gameTime);
         }
