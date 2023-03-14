@@ -24,8 +24,8 @@ namespace CryStal
         List<GameObject> tempObj = new();
 
         //debug stuff
-        Stopwatch simulationTimer = new Stopwatch();
-        Stopwatch drawTimer = new Stopwatch();
+        Stopwatch simulationTimer = new();
+        Stopwatch drawTimer = new();
 
         private long simulationTime = 1;
 
@@ -35,7 +35,7 @@ namespace CryStal
         //important numbers
         public const int Scale = 1;
         public const int TileSize = 16 * Scale;
-        public const float InverseTileSize = 0.03125f;
+        public const float InverseTileSize = 0.0625f;
 
         public Game1()
         {

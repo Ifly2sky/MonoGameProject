@@ -11,9 +11,7 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 25f);
-
-        private static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
+        public static readonly Vector2 gravity = new(0f, 20f);
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
         {
@@ -53,21 +51,23 @@ namespace CryStal.Engine
             {
                 foreach (GameObject target in targetCell.Objects)
                 {
-                    CalculateCollition(obj, target);
+                    if(obj != target)
+                    {
+                        CalculateCollition(obj, target);
+                    }
                 }
             }
         }
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
-            foreach (GameObject obj in PhysicsObjects)
+            foreach (GameObject obj in GameObjectFactory.objects)
             {
-                if(obj.HasGravity)
+                if (obj.HasGravity)
                     obj.Accelerate(gravity);
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
             }
         }
-
         private static void UpdateCollitions(Grid grid)
         {
             for(int x = 0; x < grid.Width; x++)
@@ -91,14 +91,6 @@ namespace CryStal.Engine
                 }
             }
         }
-        /*
-         * if (obj != target)
-           {
-                CalculateCollition(obj, target);
-           }
-
-         */
-
         private static void UpdateCollitionsWithSubsteps(int sub_steps, Grid grid)
         {
             for(int i = 0; i < sub_steps; i++)
@@ -106,7 +98,6 @@ namespace CryStal.Engine
                 UpdateCollitions(grid);
             }
         }
-
         /// <summary>
         /// Returns absolute value of vector2
         /// </summary>
