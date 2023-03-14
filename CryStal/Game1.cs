@@ -66,15 +66,9 @@ namespace CryStal
                 GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize, TileSize));
                 newObj.texture = Content.Load<Texture2D>("Template");
                 tempObj.Add(newObj);
-                spawned = true;
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Space))
-            {
-                spawned = false;
             }
 
-            Physics.Update(gameTime, _graphics.GraphicsDevice);
-            gameGrid.UpdateGrid();
+            Physics.Update(gameTime, _graphics.GraphicsDevice, gameGrid);
 
             base.Update(gameTime);
         }

@@ -34,7 +34,7 @@ namespace CryStal.Engine.Models
             foreach (GameObject obj in GameObjectFactory.objects)
             {
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
-                int y = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
+                int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
 
                 if (cells[x, y] != null)
                 {
@@ -49,6 +49,10 @@ namespace CryStal.Engine.Models
         }
         public Cell GetCell(int x, int y)
         {
+            if (x < 0 || x >= Width || y < 0 || y >= Height)
+            {
+                return null;
+            }
             return cells[x, y];
         }
     }

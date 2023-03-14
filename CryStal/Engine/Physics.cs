@@ -15,12 +15,13 @@ namespace CryStal.Engine
 
         private static List<GameObject> PhysicsObjects => GameObjectFactory.objects; //.Where(x => x.HasGravity && x is not Tile).ToList();
 
-        public static void Update(GameTime gameTime, GraphicsDevice graphics)
+        public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
         {
 
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
             UpdatePositions(deltaTime, graphics); //updates object positions
-            SolveCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
+            gameGrid.UpdateGrid();
+            UpdateCollitionsWithSubsteps(8, gameGrid);// solves collitions more than once to make physics more accurate
 
         }
 
@@ -46,7 +47,16 @@ namespace CryStal.Engine
                 target.Position -= difference * direction * half;
             }
         }
-
+        private static void CalculateCollition(Cell objCell, Cell targetCell)
+        {
+            foreach(GameObject obj in objCell.Objects)
+            {
+                foreach (GameObject target in targetCell.Objects)
+                {
+                    CalculateCollition(obj, target);
+                }
+            }
+        }
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
             foreach (GameObject obj in PhysicsObjects)
@@ -58,25 +68,42 @@ namespace CryStal.Engine
             }
         }
 
-        private static void SolveCollitions()
+        private static void UpdateCollitions(Grid grid)
         {
-            foreach(GameObject obj in PhysicsObjects)
+            for(int x = 0; x < grid.Width; x++)
             {
-                foreach (GameObject target in PhysicsObjects)
+                for (int y = 0; y < grid.Height; y++)
                 {
-                    if (obj != target)
+                    Cell objCell = grid.GetCell(x, y);
+
+                    for (int dx = -1; dx <= 1; dx++)
                     {
-                        CalculateCollition(obj, target);
+                        for (int dy = -1; dy <= 1; dy++)
+                        {
+                            Cell targetCell = grid.GetCell(x+dx, y+dy);
+
+                            if (objCell != null && targetCell != null)
+                            {
+                                CalculateCollition(objCell, targetCell);
+                            }
+                        }
                     }
                 }
             }
         }
+        /*
+         * if (obj != target)
+           {
+                CalculateCollition(obj, target);
+           }
 
-        private static void SolveCollitionsWithSubsteps(int sub_steps)
+         */
+
+        private static void UpdateCollitionsWithSubsteps(int sub_steps, Grid grid)
         {
             for(int i = 0; i < sub_steps; i++)
             {
-                SolveCollitions();
+                UpdateCollitions(grid);
             }
         }
 
