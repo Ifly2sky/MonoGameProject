@@ -114,9 +114,9 @@ namespace CryStal
         }
         private void DrawDebugTimer()
         {
-            _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.White);
-            _spriteBatch.DrawString(Arial, $"Object Count: {GameObjectFactory.objects.Count}", new Vector2(4, 16), Color.White);
-            _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.White);
+            _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.Black);
+            _spriteBatch.DrawString(Arial, $"Object Count: {GameObjectFactory.objects.Count}", new Vector2(4, 16), Color.Black);
+            _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.Black);
         }
     }
 }

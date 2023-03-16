@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace CryStal.Engine
 {
@@ -68,11 +69,11 @@ namespace CryStal.Engine
                 obj.Clamp(graphics);
             }
         }
-        private static void UpdateCollitions(Grid grid)
+        private static void UpdateCollitions(Grid grid, int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)
         {
-            for(int x = 0; x < grid.Width; x++)
+            for(int x = minWidth; x <= maxWidth; x++)
             {
-                for (int y = 0; y < grid.Height; y++)
+                for (int y = minHeight; y <= maxHeight; y++)
                 {
                     Cell objCell = grid.GetCell(x, y);
 
@@ -80,11 +81,14 @@ namespace CryStal.Engine
                     {
                         for (int dy = -1; dy <= 1; dy++)
                         {
-                            Cell targetCell = grid.GetCell(x+dx, y+dy);
-
-                            if (objCell != null && targetCell != null)
+                            if (x + dx >= minWidth && x + dx <= maxWidth && y + dy >= minHeight && y + dy <= maxHeight)
                             {
-                                CalculateCollition(objCell, targetCell);
+                                Cell targetCell = grid.GetCell(x + dx, y + dy);
+
+                                if (objCell != null && targetCell != null)
+                                {
+                                    CalculateCollition(objCell, targetCell);
+                                }
                             }
                         }
                     }
@@ -93,10 +97,18 @@ namespace CryStal.Engine
         }
         private static void UpdateCollitionsWithSubsteps(int sub_steps, Grid grid)
         {
+            List<Task> tasks = new();
+
+            int dividedGridHeight = (int)Math.Floor(grid.Height * 0.25);
+
             for(int i = 0; i < sub_steps; i++)
             {
-                UpdateCollitions(grid);
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, grid.Width, 0, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, grid.Width, dividedGridHeight + 1, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 3, grid.Width, dividedGridHeight * 2 + 1, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 4 + 1, grid.Width, dividedGridHeight * 3 + 1, 0)));
             }
+            Task.WaitAll(tasks.ToArray());
         }
         /// <summary>
         /// Returns absolute value of vector2
