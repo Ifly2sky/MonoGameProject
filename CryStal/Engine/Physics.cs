@@ -11,8 +11,9 @@ namespace CryStal.Engine
 {
     public static class Physics
     {
-        const float half = 0.5f;
+        const float half = 0.25f;
         public static readonly Vector2 gravity = new(0f, 20f);
+        private static GraphicsDevice _device;
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
         {
@@ -67,6 +68,7 @@ namespace CryStal.Engine
                     obj.Accelerate(gravity);
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
+                _device = graphics;
             }
         }
         private static void UpdateCollitions(Grid grid, int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)
@@ -107,8 +109,8 @@ namespace CryStal.Engine
                 tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, grid.Width, dividedGridHeight + 1, 0)));
                 tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 3, grid.Width, dividedGridHeight * 2 + 1, 0)));
                 tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 4 + 1, grid.Width, dividedGridHeight * 3 + 1, 0)));
+                Task.WaitAll(tasks.ToArray());
             }
-            Task.WaitAll(tasks.ToArray());
         }
         /// <summary>
         /// Returns absolute value of vector2

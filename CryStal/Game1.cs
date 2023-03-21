@@ -33,19 +33,23 @@ namespace CryStal
         SpriteFont Arial;
 
         //important numbers
-        public const int Scale = 1;
+        public const int Scale = 2;
         public const int TileSize = 16 * Scale;
-        public const float InverseTileSize = 0.0625f;
+        public const float InverseTileSize = 0.03125f;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferHeight = 900;
+            _graphics.PreferredBackBufferWidth = 1600;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
+            _graphics.ApplyChanges();
+
             player = new Player(new Vector2(TileSize, TileSize), 100);
 
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
@@ -80,7 +84,7 @@ namespace CryStal
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && !spawned)
             {
                 GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize, TileSize));
-                newObj.texture = Content.Load<Texture2D>("Template");
+                newObj.texture = Content.Load<Texture2D>("Stone");
                 tempObj.Add(newObj);
             }
 
