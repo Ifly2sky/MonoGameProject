@@ -41,7 +41,7 @@ namespace CryStal.Engine.Models
             Velocity = (Position - lastPos) * Drag;
             lastPos = Position;
 
-            Position = Position + Velocity + Acceleration * deltaTime;
+            Position = Position + Velocity + Acceleration * deltaTime; //TODO Runge-Kutta 2
 
             Acceleration = Vector2.Zero;
         }
