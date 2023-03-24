@@ -9,6 +9,7 @@ namespace CryStal.Engine.Models
 
         public float Drag = 1.0f;
         public bool HasGravity = true;
+        private float responceStrength = 1.0f;
 
         private Vector2 _position = Vector2.Zero;
         private Vector2 _velocity = Vector2.Zero;
@@ -38,12 +39,13 @@ namespace CryStal.Engine.Models
 
         public virtual void Update(float deltaTime)
         {
-            Velocity = (Position - lastPos) * Drag;
+            Velocity = (Position - lastPos) * Drag * responceStrength;
             lastPos = Position;
 
             Position = Position + Velocity + Acceleration * deltaTime; //TODO Runge-Kutta 2
 
             Acceleration = Vector2.Zero;
+            responceStrength = 1.0f;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -58,6 +60,10 @@ namespace CryStal.Engine.Models
         public void ResetVelocity()
         {
             lastPos = Position;
+        }
+        public void halfVelocity()
+        {
+            responceStrength = 0.5f;
         }
         public void Clamp(GraphicsDevice graphics)
         {

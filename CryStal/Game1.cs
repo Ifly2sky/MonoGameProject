@@ -86,6 +86,11 @@ namespace CryStal
                 GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize, TileSize));
                 newObj.texture = Content.Load<Texture2D>("Stone");
                 tempObj.Add(newObj);
+                spawned = true;
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.Space) && spawned)
+            {
+                spawned = false;
             }
 
             simulationTimer.Restart();

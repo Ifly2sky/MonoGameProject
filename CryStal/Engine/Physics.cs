@@ -11,7 +11,7 @@ namespace CryStal.Engine
 {
     public static class Physics
     {
-        const float half = 0.25f;
+        const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 20f);
         private static GraphicsDevice _device;
 
