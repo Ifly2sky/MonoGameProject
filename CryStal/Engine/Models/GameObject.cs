@@ -8,7 +8,7 @@ namespace CryStal.Engine.Models
     {
         private Vector2 lastPos = Vector2.Zero;
 
-        public float Drag = 0.99f;
+        public float Drag = 1.0f;
         public bool HasGravity = true;
         private float responceStrength = 1.0f;
 
@@ -71,8 +71,8 @@ namespace CryStal.Engine.Models
             float maxX = graphics.Viewport.Width - Game1.TileSize;
             float maxY = graphics.Viewport.Height - Game1.TileSize;
 
-            _position.X = MathHelper.Clamp(Position.X, 0, maxX);
-            _position.Y = MathHelper.Clamp(Position.Y, 0, maxY);
+            _position.X = Math.Clamp(Position.X, 0, maxX);
+            _position.Y = Math.Clamp(Position.Y, 0, maxY);
 
             //lastPos.X = (_position.X == maxX) ? _position.X : lastPos.X;
             //lastPos.Y = (_position.Y == maxY) ? _position.Y : lastPos.Y;
