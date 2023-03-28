@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace CryStal.Engine.Models
 {
@@ -7,7 +8,7 @@ namespace CryStal.Engine.Models
     {
         private Vector2 lastPos = Vector2.Zero;
 
-        public float Drag = 1.0f;
+        public float Drag = 0.99f;
         public bool HasGravity = true;
         private float responceStrength = 1.0f;
 
@@ -67,8 +68,14 @@ namespace CryStal.Engine.Models
         }
         public void Clamp(GraphicsDevice graphics)
         {
-            _position.X = MathHelper.Clamp(Position.X, 0, graphics.Viewport.Width - Game1.TileSize);
-            _position.Y = MathHelper.Clamp(Position.Y, 0, graphics.Viewport.Height - Game1.TileSize);
+            float maxX = graphics.Viewport.Width - Game1.TileSize;
+            float maxY = graphics.Viewport.Height - Game1.TileSize;
+
+            _position.X = MathHelper.Clamp(Position.X, 0, maxX);
+            _position.Y = MathHelper.Clamp(Position.Y, 0, maxY);
+
+            //lastPos.X = (_position.X == maxX) ? _position.X : lastPos.X;
+            //lastPos.Y = (_position.Y == maxY) ? _position.Y : lastPos.Y;
         }
     }
 }

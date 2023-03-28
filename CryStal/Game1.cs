@@ -33,9 +33,9 @@ namespace CryStal
         SpriteFont Arial;
 
         //important numbers
-        public const int Scale = 2;
+        public const int Scale = 1;
         public const int TileSize = 16 * Scale;
-        public const float InverseTileSize = 0.03125f;
+        public const float InverseTileSize = 0.0625f;//0.03125f;
 
         public Game1()
         {
@@ -83,9 +83,12 @@ namespace CryStal
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && !spawned)
             {
-                GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize, TileSize));
-                newObj.texture = Content.Load<Texture2D>("Stone");
-                tempObj.Add(newObj);
+                for(int i = 0; i < 20; i++)
+                {
+                    GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize * i, TileSize));
+                    newObj.texture = Content.Load<Texture2D>("Stone");
+                    tempObj.Add(newObj);
+                }
                 spawned = true;
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.Space) && spawned)

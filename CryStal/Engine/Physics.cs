@@ -12,7 +12,7 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 20f);
+        public static readonly Vector2 gravity = new(0f, 25f);
         private static GraphicsDevice _device;
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
@@ -106,11 +106,11 @@ namespace CryStal.Engine
             for(int i = 0; i < sub_steps; i++)
             {
                 tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, grid.Width, 0, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, grid.Width, dividedGridHeight + 1, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 3, grid.Width, dividedGridHeight * 2 + 1, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 4 + 1, grid.Width, dividedGridHeight * 3 + 1, 0)));
-                Task.WaitAll(tasks.ToArray());
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, grid.Width, dividedGridHeight, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 3, grid.Width, dividedGridHeight * 2, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 4 + 1, grid.Width, dividedGridHeight * 3, 0)));
             }
+            Task.WaitAll(tasks.ToArray());
         }
         /// <summary>
         /// Returns absolute value of vector2
