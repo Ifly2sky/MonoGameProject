@@ -53,7 +53,11 @@ namespace CryStal.Engine
             {
                 foreach (GameObject target in targetCell.Objects)
                 {
-                    if(obj != target && target.CollisionType == CollitionType.Impassable && obj.CollisionType == CollitionType.Impassable)
+                    if(
+                        obj != target && 
+                        target.CollisionType == CollitionType.Impassable && 
+                        obj.CollisionType == CollitionType.Impassable
+                      )
                     {
                         CalculateCollition(obj, target);
                     }

@@ -12,9 +12,8 @@ namespace CryStal.Engine.Models
     {
         private Vector2 lastPos = Vector2.Zero;
 
-        public float Drag = 1.0f;
+        public Vector2 Drag = new Vector2(1f, 1f);
         public bool HasGravity = true;
-        private float responceStrength = 0.9f;
 
         private Vector2 _velocity = Vector2.Zero;
         private Vector2 _acceleration = Vector2.Zero;
@@ -32,13 +31,12 @@ namespace CryStal.Engine.Models
 
         public virtual void Update(float deltaTime)
         {
-            Velocity = (Position - lastPos) * Drag * responceStrength;
+            Velocity = (Position - lastPos) * Drag;
             lastPos = Position;
 
             Position = Position + Velocity + Acceleration * deltaTime;
 
             Acceleration = Vector2.Zero;
-            responceStrength = 1.0f;
         }
 
         public void Accelerate(Vector2 acceleration)
@@ -48,10 +46,6 @@ namespace CryStal.Engine.Models
         public void ResetVelocity()
         {
             lastPos = Position;
-        }
-        public void HalfVelocity()
-        {
-            responceStrength = 0.5f;
         }
         public void Clamp(GraphicsDevice graphics)
         {

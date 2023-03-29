@@ -46,8 +46,8 @@ namespace CryStal.Entities
 
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
-            Drag = 0.5f;
-            HasGravity = false;
+            Drag = new Vector2(0.8f, 1);
+            HasGravity = true;
 
             GameObjectFactory.AddGameObject(this);
         }
@@ -63,15 +63,21 @@ namespace CryStal.Entities
         {
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
+        bool jumped = false;
         void MovePlayer(KeyboardState keyboardState)
         {
-            if (keyboardState.IsKeyDown(Keys.W))
+            if (keyboardState.IsKeyDown(Keys.Space) && jumped == false)
             {
-                Accelerate(new Vector2(0, -Speed));
+                Accelerate(new Vector2(0, -Speed * 10));
+                jumped = true;
+            }
+            else if (keyboardState.IsKeyUp(Keys.Space) && jumped == true)
+            {
+                jumped = false;
             }
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                Accelerate(new Vector2(0, Speed));
+                
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {

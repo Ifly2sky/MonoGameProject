@@ -1,11 +1,19 @@
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-#SCL/^\##########
+                                  
+                                  
+                                  
+                                  
+               SSSSSSSSSSSSSSSSSSS
+                   SSSSSSSSSSSSSSS
+                         SSSSSSSSS
+                                  
+                                  
+        /^\                       
+CCCCCCCCCCCCCCCCCCC               
+                                  
+                              CCCC
+                              CSSS
+                             CSLLL
+                            CSLLLL
+                           CSLLLLL
+            /^^^^\         CSLLLLL
+SSSSSSSSSSSLLLLLLLLSSSSSSSSCSLLLLL
