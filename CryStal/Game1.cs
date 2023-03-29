@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace CryStal
@@ -18,25 +19,42 @@ namespace CryStal
 
         public Player player;
         public Level level;
+        Grid gameGrid;
 
         List<GameObject> tempObj = new();
 
+        //debug stuff
+        Stopwatch simulationTimer = new();
+        Stopwatch drawTimer = new();
+
+        private long simulationTime = 1;
+
+        //Default Font
+        SpriteFont Arial;
+
+        //tile information
         public const int Scale = 3;
         public const int TileSize = 16 * Scale;
+        public const float InverseTileSize = 0.02083333333333333333f; // 1/tileSIze
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferHeight = 900;
+            _graphics.PreferredBackBufferWidth = 1600;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
+            _graphics.ApplyChanges();
+
             player = new Player(new Vector2(TileSize, TileSize), 100);
 
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);
+
             base.Initialize();
         }
 
@@ -44,29 +62,45 @@ namespace CryStal
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            Arial = Content.Load<SpriteFont>("Arial");
+
             player.Texture = Content.Load<Texture2D>("Template");
+
+            //int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
+            //int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
+
+            //check physics collition check when changing
+            gameGrid = new Grid(40, 20);
+
+            simulationTimer.Start();
+            drawTimer.Start();
         }
 
-        bool keyPressed = false;
+        bool spawned = false;
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !keyPressed)
-            {
-                GameObject newObj = GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize));
-                newObj.texture = Content.Load<Texture2D>("Template");
-                tempObj.Add(newObj);
-                Physics.PhysicsObjects.Add(newObj);
 
-                keyPressed = true;
-            }
-            else if(Keyboard.GetState().IsKeyUp(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !spawned)
             {
-                keyPressed = false;
+                for(int i = 0; i < 20; i++)
+                {
+                    GameObject newObj = GameObjectFactory.CreatePhysicsObject(player.Hitbox, player.Position + new Vector2(TileSize * i, TileSize));
+                    newObj.texture = Content.Load<Texture2D>("Stone");
+                    tempObj.Add(newObj);
+                }
+                spawned = true;
+            }
+            else if (Keyboard.GetState().IsKeyUp(Keys.Space) && spawned)
+            {
+                spawned = false;
             }
 
-            Physics.Update(gameTime, _graphics.GraphicsDevice);
+            simulationTimer.Restart();
+            Physics.Update(gameTime, _graphics.GraphicsDevice, gameGrid);
+            simulationTime = simulationTimer.ElapsedMilliseconds;
+            simulationTimer.Stop();
 
             base.Update(gameTime);
         }
@@ -85,9 +119,18 @@ namespace CryStal
                 obj.Draw(_spriteBatch);
             }
 
+            DrawDebugTimer();
+            drawTimer.Restart();
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        private void DrawDebugTimer()
+        {
+            _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.Black);
+            _spriteBatch.DrawString(Arial, $"Object Count: {GameObjectFactory.objects.Count}", new Vector2(4, 16), Color.Black);
+            _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.Black);
         }
     }
 }
