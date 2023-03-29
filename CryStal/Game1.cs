@@ -37,12 +37,6 @@ namespace CryStal
 
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);
-
-            for(int i = 0; i<1; i++)
-            {
-                tempObj.Add(GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize)));
-            }
-
             base.Initialize();
         }
 
@@ -51,16 +45,26 @@ namespace CryStal
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             player.Texture = Content.Load<Texture2D>("Template");
-            foreach(GameObject obj in tempObj)
-            {
-                obj.texture = Content.Load<Texture2D>("Template");
-            }
         }
 
+        bool keyPressed = false;
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && !keyPressed)
+            {
+                GameObject newObj = GameObjectFactory.CreateGameObject(new Hitbox(new Vector2(TileSize, TileSize), new Vector2(0, 0)), new Vector2(3 * TileSize, 2 * TileSize));
+                newObj.texture = Content.Load<Texture2D>("Template");
+                tempObj.Add(newObj);
+                Physics.PhysicsObjects.Add(newObj);
+
+                keyPressed = true;
+            }
+            else if(Keyboard.GetState().IsKeyUp(Keys.Space))
+            {
+                keyPressed = false;
+            }
 
             Physics.Update(gameTime, _graphics.GraphicsDevice);
 
