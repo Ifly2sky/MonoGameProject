@@ -78,8 +78,14 @@ namespace CryStal.Engine.Models
             {
                 ' ' => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable),
                 '#' => GameObjectFactory.CreateTile(textures[1], CollitionType.Impassable),
+                'S' => GameObjectFactory.CreateTile(textures[2], CollitionType.Impassable),
+                'C' => GameObjectFactory.CreateTile(textures[3], CollitionType.Impassable),
+                'L' => GameObjectFactory.CreateTile(textures[4], CollitionType.Impassable),
+                '/' => GameObjectFactory.CreateTile(textures[5], CollitionType.Impassable),
+                '^' => GameObjectFactory.CreateTile(textures[6], CollitionType.Impassable),
+                '\\' => GameObjectFactory.CreateTile(textures[7], CollitionType.Impassable),
 
-                _ => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable),
+                _ => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable)
             };
         }
 
@@ -87,6 +93,12 @@ namespace CryStal.Engine.Models
         {
             textures.Add(null);
             textures.Add(Content.Load<Texture2D>("Template"));
+            textures.Add(Content.Load<Texture2D>("Stone"));
+            textures.Add(Content.Load<Texture2D>("CobbleStone"));
+            textures.Add(Content.Load<Texture2D>("LightStone"));
+            textures.Add(Content.Load<Texture2D>("CrystalSpikes0"));
+            textures.Add(Content.Load<Texture2D>("CrystalSpikes1"));
+            textures.Add(Content.Load<Texture2D>("CrystalSpikes2"));
         }
 
         public void DrawLevel(SpriteBatch spriteBatch)
