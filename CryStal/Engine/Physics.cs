@@ -101,14 +101,15 @@ namespace CryStal.Engine
         {
             List<Task> tasks = new();
 
-            int dividedGridWidth = (int)Math.Floor(grid.Width * 0.25);
+            int dividedGridWidth = (int)(grid.Width * 0.5);
+            int dividedGridHeight = (int)(grid.Height * 0.5);
 
-            for(int i = 0; i < sub_steps; i++)
+            for (int i = 0; i < sub_steps; i++)
             {
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, grid.Height, dividedGridWidth, 0, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, grid.Height, dividedGridWidth * 2, 0, dividedGridWidth)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, grid.Height, dividedGridWidth * 3, 0, dividedGridWidth * 2)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, grid.Height, dividedGridWidth * 4, 0, dividedGridWidth * 3)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, dividedGridWidth)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, dividedGridWidth * 2, 0, dividedGridWidth)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, dividedGridWidth, dividedGridHeight, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, dividedGridWidth * 2, dividedGridHeight, dividedGridWidth)));
             }
             Task.WaitAll(tasks.ToArray());
         }

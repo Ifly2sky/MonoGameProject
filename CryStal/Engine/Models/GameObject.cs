@@ -10,7 +10,7 @@ namespace CryStal.Engine.Models
 
         public float Drag = 1.0f;
         public bool HasGravity = true;
-        private float responceStrength = 1.0f;
+        private float responceStrength = 0.9f;
 
         private Vector2 _position = Vector2.Zero;
         private Vector2 _velocity = Vector2.Zero;
@@ -43,7 +43,7 @@ namespace CryStal.Engine.Models
             Velocity = (Position - lastPos) * Drag * responceStrength;
             lastPos = Position;
 
-            Position = Position + Velocity + Acceleration * deltaTime; //TODO Runge-Kutta 2
+            Position = Position + Velocity + Acceleration * deltaTime;
 
             Acceleration = Vector2.Zero;
             responceStrength = 1.0f;
@@ -74,6 +74,7 @@ namespace CryStal.Engine.Models
             _position.X = Math.Clamp(Position.X, 0, maxX);
             _position.Y = Math.Clamp(Position.Y, 0, maxY);
 
+            //this code stops bouncing off the edges of the screen. also makes blocks stack there more often.
             //lastPos.X = (_position.X == maxX) ? _position.X : lastPos.X;
             //lastPos.Y = (_position.Y == maxY) ? _position.Y : lastPos.Y;
         }

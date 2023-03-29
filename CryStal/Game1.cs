@@ -32,10 +32,10 @@ namespace CryStal
         //Default Font
         SpriteFont Arial;
 
-        //important numbers
-        public const int Scale = 1;
+        //tile information
+        public const int Scale = 3;
         public const int TileSize = 16 * Scale;
-        public const float InverseTileSize = 0.0625f;//0.03125f;
+        public const float InverseTileSize = 0.02083333333333333333f; // 1/tileSIze
 
         public Game1()
         {
@@ -66,10 +66,11 @@ namespace CryStal
 
             player.Texture = Content.Load<Texture2D>("Template");
 
-            int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
-            int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
+            //int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
+            //int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
 
-            gameGrid = new Grid(gridX, gridY);
+            //check physics collition check when changing
+            gameGrid = new Grid(40, 20);
 
             simulationTimer.Start();
             drawTimer.Start();
@@ -99,6 +100,7 @@ namespace CryStal
             simulationTimer.Restart();
             Physics.Update(gameTime, _graphics.GraphicsDevice, gameGrid);
             simulationTime = simulationTimer.ElapsedMilliseconds;
+            simulationTimer.Stop();
 
             base.Update(gameTime);
         }
