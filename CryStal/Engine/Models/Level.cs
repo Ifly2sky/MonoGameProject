@@ -93,9 +93,9 @@ namespace CryStal.Engine.Models
         {
             foreach(Tile tile in tiles)
             {
-                if (tile.Texture != null) 
+                if (tile.texture != null) 
                 {
-                    spriteBatch.Draw(tile.Texture, tile.Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(tile.texture, tile.Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
                 }
             }
         }

@@ -13,16 +13,14 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 25f); 
+        public static readonly Vector2 gravity = new(0f, 50f); 
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
         {
-
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
             UpdatePositions(deltaTime, graphics); //updates object positions
             gameGrid.UpdateGrid();
             UpdateCollitionsWithSubsteps(8, gameGrid);// solves collitions more than once to make physics more accurate
-
         }
 
         private static void CalculateCollition(GameObject obj, GameObject target)
@@ -55,7 +53,7 @@ namespace CryStal.Engine
             {
                 foreach (GameObject target in targetCell.Objects)
                 {
-                    if(obj != target)
+                    if(obj != target && target.CollisionType == CollitionType.Impassable && obj.CollisionType == CollitionType.Impassable)
                     {
                         CalculateCollition(obj, target);
                     }

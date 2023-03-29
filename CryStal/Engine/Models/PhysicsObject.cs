@@ -49,7 +49,7 @@ namespace CryStal.Engine.Models
         {
             lastPos = Position;
         }
-        public void halfVelocity()
+        public void HalfVelocity()
         {
             responceStrength = 0.5f;
         }
