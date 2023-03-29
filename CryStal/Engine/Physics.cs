@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CryStal.Engine
@@ -12,8 +13,7 @@ namespace CryStal.Engine
     public static class Physics
     {
         const float half = 0.5f;
-        public static readonly Vector2 gravity = new(0f, 25f);
-        private static GraphicsDevice _device;
+        public static readonly Vector2 gravity = new(0f, 25f); 
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
         {
@@ -43,8 +43,10 @@ namespace CryStal.Engine
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 //moves both half of the overlap
-                obj.Position += difference * direction * half;
-                target.Position -= difference * direction * half;
+                if(obj is PhysicsObject)
+                    obj.Position += difference * direction * half;
+                if(target is PhysicsObject)
+                    target.Position -= difference * direction * half;
             }
         }
         private static void CalculateCollition(Cell objCell, Cell targetCell)
@@ -62,13 +64,12 @@ namespace CryStal.Engine
         }
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
-            foreach (GameObject obj in GameObjectFactory.objects)
+            foreach (PhysicsObject obj in GameObjectFactory.objects.OfType<PhysicsObject>())
             {
                 if (obj.HasGravity)
                     obj.Accelerate(gravity);
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
-                _device = graphics;
             }
         }
         private static void UpdateCollitions(Grid grid, int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)

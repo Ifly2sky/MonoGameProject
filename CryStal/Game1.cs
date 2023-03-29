@@ -86,7 +86,7 @@ namespace CryStal
             {
                 for(int i = 0; i < 20; i++)
                 {
-                    GameObject newObj = GameObjectFactory.CreateGameObject(player.Hitbox, player.Position + new Vector2(TileSize * i, TileSize));
+                    GameObject newObj = GameObjectFactory.CreatePhysicsObject(player.Hitbox, player.Position + new Vector2(TileSize * i, TileSize));
                     newObj.texture = Content.Load<Texture2D>("Stone");
                     tempObj.Add(newObj);
                 }

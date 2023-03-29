@@ -12,9 +12,9 @@ namespace CryStal.Engine.Factories
     public static class GameObjectFactory
     {
         public static List<GameObject> objects = new();
-        public static GameObject CreateGameObject(Hitbox hitbox, Vector2 Position)
+        public static GameObject CreatePhysicsObject(Hitbox hitbox, Vector2 Position)
         {
-            GameObject newObject = new GameObject();
+            PhysicsObject newObject = new PhysicsObject();
 
             newObject.Position = Position;
             newObject.Hitbox = hitbox;
@@ -30,7 +30,7 @@ namespace CryStal.Engine.Factories
 
             return tile;
         }
-        public static GameObject CreateGameObject()
+        public static GameObject CreatePhysicsObject()
         {
             GameObject newObject = new GameObject();
             objects.Add(newObject);

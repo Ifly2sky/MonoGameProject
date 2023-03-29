@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CryStal.Entities
 {
-    public class Player : GameObject
+    public class Player : PhysicsObject
     {
         Texture2D _texture;
         KeyboardState keyboardState;
