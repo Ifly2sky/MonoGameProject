@@ -1,16 +1,15 @@
                                   
                                   
                                   
-                                  
                SSSSSSSSSSSSSSSSSSS
                    SSSSSSSSSSSSSSS
                          SSSSSSSSS
                                   
                                   
         /^\                       
-CCCCCCCCCCCCCCCCCCC               
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
                                   
-                              CCCC
+                               CCC
                               CSSS
                              CSLLL
                             CSLLLL

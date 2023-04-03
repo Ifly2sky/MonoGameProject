@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,6 +54,11 @@ namespace CryStal.Engine.Models
                 return null;
             }
             return cells[x, y];
+        }
+        //world coordinate can be x or y
+        public static Vector2 GetGridCoordinates(Vector2 worldCoordinate)
+        {
+            return new Vector2((int)Math.Floor(worldCoordinate.X * Game1.InverseTileSize), (int)Math.Floor(worldCoordinate.Y * Game1.InverseTileSize));
         }
     }
 }
