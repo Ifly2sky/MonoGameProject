@@ -19,7 +19,6 @@ namespace CryStal
 
         public Player player;
         public Level level;
-        Grid gameGrid;
 
         List<GameObject> tempObj = new();
 
@@ -69,9 +68,6 @@ namespace CryStal
             //int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
             //int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
 
-            //check physics collition check when changing
-            gameGrid = new Grid(40, 20);
-
             simulationTimer.Start();
             drawTimer.Start();
         }
@@ -98,7 +94,7 @@ namespace CryStal
             }
 
             simulationTimer.Restart();
-            Physics.Update(gameTime, _graphics.GraphicsDevice, gameGrid);
+            Physics.Update(gameTime, _graphics.GraphicsDevice);
             simulationTime = simulationTimer.ElapsedMilliseconds;
             simulationTimer.Stop();
 

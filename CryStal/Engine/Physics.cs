@@ -15,12 +15,12 @@ namespace CryStal.Engine
         const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 50f); 
 
-        public static void Update(GameTime gameTime, GraphicsDevice graphics, Grid gameGrid)
+        public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
             UpdatePositions(deltaTime, graphics); //updates object positions
-            gameGrid.UpdateGrid();
-            UpdateCollitionsWithSubsteps(8, gameGrid);// solves collitions more than once to make physics more accurate
+            Grid.UpdateGrid();
+            UpdateCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
         }
 
         private static void CalculateCollition(GameObject obj, GameObject target)
@@ -74,13 +74,13 @@ namespace CryStal.Engine
                 obj.Clamp(graphics);
             }
         }
-        private static void UpdateCollitions(Grid grid, int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)
+        private static void UpdateCollitions(int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)
         {
             for(int x = minWidth; x <= maxWidth; x++)
             {
                 for (int y = minHeight; y <= maxHeight; y++)
-                {
-                    Cell objCell = grid.GetCell(x, y);
+                {   
+                    Cell objCell = Grid.GetCell(x, y);
 
                     for (int dx = -1; dx <= 1; dx++)
                     {
@@ -88,7 +88,7 @@ namespace CryStal.Engine
                         {
                             if (x + dx >= minWidth && x + dx <= maxWidth && y + dy >= minHeight && y + dy <= maxHeight)
                             {
-                                Cell targetCell = grid.GetCell(x + dx, y + dy);
+                                Cell targetCell = Grid.GetCell(x + dx, y + dy);
 
                                 if (objCell != null && targetCell != null)
                                 {
@@ -100,19 +100,19 @@ namespace CryStal.Engine
                 }
             }
         }
-        private static void UpdateCollitionsWithSubsteps(int sub_steps, Grid grid)
+        private static void UpdateCollitionsWithSubsteps(int sub_steps)
         {
             List<Task> tasks = new();
 
-            int dividedGridWidth = (int)(grid.Width * 0.5);
-            int dividedGridHeight = (int)(grid.Height * 0.5);
+            int dividedGridWidth = (int)(Grid.Width * 0.5);
+            int dividedGridHeight = (int)(Grid.Height * 0.5);
 
             for (int i = 0; i < sub_steps; i++)
             {
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, dividedGridWidth)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight, dividedGridWidth * 2, 0, dividedGridWidth)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, dividedGridWidth, dividedGridHeight, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(grid, dividedGridHeight * 2, dividedGridWidth * 2, dividedGridHeight, dividedGridWidth)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth * 2, 0, dividedGridWidth)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth, dividedGridHeight, 0)));
+                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth * 2, dividedGridHeight, dividedGridWidth)));
             }
             Task.WaitAll(tasks.ToArray());
         }

@@ -12,22 +12,22 @@ namespace CryStal.Engine.Models
     {
         public List<GameObject> Objects = new();
     }
-    public class Grid
+    public static class Grid
     {
-        private Cell[,] cells;
+        private static Cell[,] cells;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public static int Width;
+        public static int Height;
 
-        public Grid(int x, int y)
+        static Grid()
         {
-            Width = x;
-            Height = y;
+            Width = 40;
+            Height = 20;
 
             cells = new Cell[Width, Height];
         }
 
-        public void UpdateGrid()
+        public static void UpdateGrid()
         {
             cells = new Cell[Width, Height];
 
@@ -47,7 +47,7 @@ namespace CryStal.Engine.Models
                 }
             }
         }
-        public Cell GetCell(int x, int y)
+        public static Cell GetCell(int x, int y)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height)
             {
