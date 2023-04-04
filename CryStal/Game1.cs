@@ -80,7 +80,7 @@ namespace CryStal
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !spawned)
             {
-                for(int i = 0; i < 5; i++)
+                for(int i = 0; i < 1; i++)
                 {
                     GameObject newObj = GameObjectFactory.CreatePhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
                     newObj.texture = Content.Load<Texture2D>("Stone");
@@ -88,7 +88,7 @@ namespace CryStal
                 }
                 spawned = true;
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Space) && spawned)
+            else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)   
             {
                 spawned = false;
             }

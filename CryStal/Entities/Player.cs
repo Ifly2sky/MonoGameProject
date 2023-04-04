@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace CryStal.Entities
 {
@@ -57,7 +58,7 @@ namespace CryStal.Entities
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.BlanchedAlmond, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
             spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
@@ -91,11 +92,12 @@ namespace CryStal.Entities
         }
         private bool IsGrounded()
         {
-            Size cellOnGrid = Grid.GetGridCoordinates(Center);
-            Cell cellBelow = Grid.GetCell(cellOnGrid.Width, cellOnGrid.Height + 1);
-            if(cellBelow != null)
+            Size cellOnGrid = Grid.GetGridCoordinates(Position);
+            Cell cell1 = Grid.GetCell(cellOnGrid.Width, cellOnGrid.Height + 1);
+            Cell cell2 = Grid.GetCell(cellOnGrid.Width + 1, cellOnGrid.Height + 1);
+            if (cell1 != null & cell2 != null)
             {
-                return cellBelow.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable);
+                return cell1.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable) || cell2.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable);
             }
             return false;
         }

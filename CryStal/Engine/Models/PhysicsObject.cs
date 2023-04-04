@@ -10,8 +10,6 @@ namespace CryStal.Engine.Models
 {
     public class PhysicsObject : GameObject
     {
-        private Vector2 lastPos = Vector2.Zero;
-
         public Vector2 Drag = new Vector2(1f, 1f);
         public bool HasGravity = true;
 

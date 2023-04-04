@@ -12,7 +12,6 @@ namespace CryStal.Engine
 {
     public static class Physics
     {
-        const float half = 0.5f;
         public static readonly Vector2 gravity = new(0f, 50f); 
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics)
@@ -30,22 +29,21 @@ namespace CryStal.Engine
             Vector2 absDistance = distance.Abs();
 
             //gets the minimum x and y distance of the objects
-            Vector2 bounds = target.Hitbox.Size * half + obj.Hitbox.Size * half;
+            Vector2 bounds = target.Hitbox.Size * 0.5f + obj.Hitbox.Size * 0.5f;
 
             if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
                 Vector2 overlap = bounds - absDistance; // size of the overlap
 
                 // gets side in which the overlap is the largest
-
                 Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 //moves both half of the overlap
                 if(obj is PhysicsObject)
-                    obj.Position += difference * direction * half;
+                    obj.Position += difference * direction * 0.5f;
                 if(target is PhysicsObject)
-                    target.Position -= difference * direction * half;
+                    target.Position -= difference * direction * 0.5f;
             }
         }
         private static void CalculateCollition(Cell objCell, Cell targetCell)

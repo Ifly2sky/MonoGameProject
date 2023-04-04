@@ -28,9 +28,10 @@ namespace CryStal.Engine.Models
     {
         protected Vector2 _position = Vector2.Zero;
 
+        protected Vector2 lastPos = Vector2.Zero;
         public Texture2D texture;
         public CollitionType CollisionType = CollitionType.Impassable;
-        public Vector2 Position 
+        public virtual Vector2 Position 
         {
             get { return _position; } 
             set { _position = value; }
@@ -38,6 +39,10 @@ namespace CryStal.Engine.Models
         public Vector2 Center
         {
             get { return _position + Hitbox.Position + Hitbox.Size * 0.5f; }
+        }
+        public Vector2 LastCenter
+        {
+            get { return lastPos + Hitbox.Position + Hitbox.Size * 0.5f; }
         }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
