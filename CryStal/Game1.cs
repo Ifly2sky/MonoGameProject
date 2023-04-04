@@ -29,7 +29,7 @@ namespace CryStal
         private long simulationTime = 1;
 
         //Default Font
-        SpriteFont Arial;
+        public static SpriteFont Arial;
 
         //tile information
         public const int Scale = 3;

@@ -5,12 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace CryStal.Entities
 {
@@ -61,17 +57,22 @@ namespace CryStal.Entities
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
+            spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
         bool jumped = false;
+        bool grounded;
         void MovePlayer(KeyboardState keyboardState)
         {
-            if (keyboardState.IsKeyDown(Keys.Space) && jumped == false)
+            grounded = IsGrounded();
+            if (keyboardState.IsKeyDown(Keys.Space) && !jumped && grounded)
             {
+                ResetVelocityY();
                 Accelerate(new Vector2(0, -Speed * 10));
                 jumped = true;
             }
-            else if (keyboardState.IsKeyUp(Keys.Space) && jumped == true)
+            else if (keyboardState.IsKeyUp(Keys.Space) && jumped)
             {
                 jumped = false;
             }
@@ -87,6 +88,16 @@ namespace CryStal.Entities
             {
                 Accelerate(new Vector2(Speed, 0));
             }
+        }
+        private bool IsGrounded()
+        {
+            Size cellOnGrid = Grid.GetGridCoordinates(Center);
+            Cell cellBelow = Grid.GetCell(cellOnGrid.Width, cellOnGrid.Height + 1);
+            if(cellBelow != null)
+            {
+                return cellBelow.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable);
+            }
+            return false;
         }
     }
 }

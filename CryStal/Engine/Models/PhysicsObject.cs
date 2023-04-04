@@ -47,6 +47,10 @@ namespace CryStal.Engine.Models
         {
             lastPos = Position;
         }
+        public void ResetVelocityY()
+        {
+            lastPos.Y = Position.Y;
+        }
         public void Clamp(GraphicsDevice graphics)
         {
             float maxX = graphics.Viewport.Width - Game1.TileSize;

@@ -37,6 +37,7 @@ namespace CryStal.Engine
                 Vector2 overlap = bounds - absDistance; // size of the overlap
 
                 // gets side in which the overlap is the largest
+
                 Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 

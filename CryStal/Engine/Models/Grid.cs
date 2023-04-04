@@ -1,8 +1,9 @@
 ﻿using CryStal.Engine.Factories;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,9 +57,9 @@ namespace CryStal.Engine.Models
             return cells[x, y];
         }
         //world coordinate can be x or y
-        public static Vector2 GetGridCoordinates(Vector2 worldCoordinate)
+        public static Size GetGridCoordinates(Vector2 worldCoordinates)
         {
-            return new Vector2((int)Math.Floor(worldCoordinate.X * Game1.InverseTileSize), (int)Math.Floor(worldCoordinate.Y * Game1.InverseTileSize));
+            return new Size((int)Math.Floor(worldCoordinates.X * Game1.InverseTileSize), (int)Math.Floor(worldCoordinates.Y * Game1.InverseTileSize));
         }
     }
 }
