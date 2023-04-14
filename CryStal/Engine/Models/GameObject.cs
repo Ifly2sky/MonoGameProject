@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace CryStal.Engine.Models
 {
@@ -27,10 +29,13 @@ namespace CryStal.Engine.Models
     public class GameObject
     {
         protected Vector2 _position = Vector2.Zero;
-
         protected Vector2 lastPos = Vector2.Zero;
+
         public Texture2D texture;
         public CollitionType CollisionType = CollitionType.Impassable;
+
+        public static List<GameObject> allObjects = new();
+
         public virtual Vector2 Position 
         {
             get { return _position; } 
@@ -46,7 +51,6 @@ namespace CryStal.Engine.Models
         }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
-
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);

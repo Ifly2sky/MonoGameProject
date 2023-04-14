@@ -1,5 +1,4 @@
 ﻿using CryStal.Engine;
-using CryStal.Engine.Factories;
 using CryStal.Engine.Models;
 using CryStal.Entities;
 using Microsoft.Xna.Framework;
@@ -82,7 +81,7 @@ namespace CryStal
             {
                 for(int i = 0; i < 1; i++)
                 {
-                    GameObject newObj = GameObjectFactory.CreatePhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
+                    PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
                     newObj.texture = Content.Load<Texture2D>("Stone");
                     tempObj.Add(newObj);
                 }
@@ -125,7 +124,7 @@ namespace CryStal
         private void DrawDebugTimer()
         {
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
-            _spriteBatch.DrawString(Arial, $"Object Count: {GameObjectFactory.objects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
+            _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
         }
     }

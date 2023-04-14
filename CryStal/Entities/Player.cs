@@ -1,6 +1,5 @@
 ﻿using CryStal.Engine;
 using CryStal.Engine.Models;
-using CryStal.Engine.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -46,7 +45,7 @@ namespace CryStal.Entities
             Drag = new Vector2(0.8f, 1);
             HasGravity = true;
 
-            GameObjectFactory.AddGameObject(this);
+            allObjects.Add(this);
         }
 
         public override void Update(float deltaTime)

@@ -12,6 +12,7 @@ namespace CryStal.Engine.Models
     {
         public Vector2 Drag = new Vector2(1f, 1f);
         public bool HasGravity = true;
+        public static List<PhysicsObject> allPhysicsObjects = new();
 
         private Vector2 _velocity = Vector2.Zero;
         private Vector2 _acceleration = Vector2.Zero;
@@ -25,6 +26,21 @@ namespace CryStal.Engine.Models
         {
             get { return _acceleration; }
             set { _acceleration = value; }
+        }
+
+        public PhysicsObject(Hitbox hitbox, Vector2 Position)
+        {
+            this.Position = Position;
+            this.Hitbox = hitbox;
+            ResetVelocity();
+
+            allObjects.Add(this);
+            allPhysicsObjects.Add(this);
+        }
+        public PhysicsObject()
+        {
+            allObjects.Add(this);
+            allPhysicsObjects.Add(this);
         }
 
         public virtual void Update(float deltaTime)

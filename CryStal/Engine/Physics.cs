@@ -1,5 +1,4 @@
-﻿using CryStal.Engine.Factories;
-using CryStal.Engine.Models;
+﻿using CryStal.Engine.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -76,7 +75,7 @@ namespace CryStal.Engine
         }
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
-            foreach (PhysicsObject obj in GameObjectFactory.objects.OfType<PhysicsObject>())
+            foreach (PhysicsObject obj in PhysicsObject.allPhysicsObjects)
             {
                 if (obj.HasGravity)
                     obj.Accelerate(gravity);

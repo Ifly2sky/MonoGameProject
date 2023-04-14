@@ -1,5 +1,4 @@
-﻿using CryStal.Engine.Factories;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,7 +30,7 @@ namespace CryStal.Engine.Models
         {
             cells = new Cell[Width, Height];
 
-           foreach(GameObject obj in GameObjectFactory.objects)
+           foreach(GameObject obj in GameObject.allObjects)
            {
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
                 int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);

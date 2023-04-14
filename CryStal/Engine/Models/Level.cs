@@ -1,5 +1,4 @@
-﻿using CryStal.Engine.Factories;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -76,16 +75,16 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable),
-                '#' => GameObjectFactory.CreateTile(textures[1], CollitionType.Impassable),
-                'S' => GameObjectFactory.CreateTile(textures[2], CollitionType.Impassable),
-                'C' => GameObjectFactory.CreateTile(textures[3], CollitionType.Impassable),
-                'L' => GameObjectFactory.CreateTile(textures[4], CollitionType.Impassable),
-                '/' => GameObjectFactory.CreateTile(textures[5], CollitionType.Impassable),
-                '^' => GameObjectFactory.CreateTile(textures[6], CollitionType.Impassable),
-                '\\' => GameObjectFactory.CreateTile(textures[7], CollitionType.Impassable),
+                ' ' => new Tile(textures[0], CollitionType.Passable),
+                '#' => new Tile(textures[1], CollitionType.Impassable),
+                'S' => new Tile(textures[2], CollitionType.Impassable),
+                'C' => new Tile(textures[3], CollitionType.Impassable),
+                'L' => new Tile(textures[4], CollitionType.Impassable),
+                '/' => new Tile(textures[5], CollitionType.Impassable),
+                '^' => new Tile(textures[6], CollitionType.Impassable),
+                '\\' => new Tile(textures[7], CollitionType.Impassable),
 
-                _ => GameObjectFactory.CreateTile(textures[0], CollitionType.Passable)
+                _ => new Tile(textures[0], CollitionType.Passable)
             };
         }
 

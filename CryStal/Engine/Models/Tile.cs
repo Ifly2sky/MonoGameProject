@@ -21,6 +21,8 @@ namespace CryStal.Engine.Models
         {
             this.texture = texture;
             CollisionType = collisionType;
+
+            allObjects.Add(this);
         }
     }
 }
