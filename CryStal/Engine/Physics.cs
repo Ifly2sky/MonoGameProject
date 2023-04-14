@@ -40,10 +40,21 @@ namespace CryStal.Engine
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 //moves both half of the overlap
-                if(obj is PhysicsObject)
+                bool objectIsPhysicsObject = obj is PhysicsObject, targetIsPhyicsObject = target is PhysicsObject;
+
+                if (objectIsPhysicsObject && targetIsPhyicsObject)
+                {
                     obj.Position += difference * direction * 0.5f;
-                if(target is PhysicsObject)
                     target.Position -= difference * direction * 0.5f;
+                    return;
+                }
+
+                if(objectIsPhysicsObject)
+                {
+                    obj.Position += difference * direction;
+                    return;
+                }
+                target.Position -= difference * direction;
             }
         }
         private static void CalculateCollition(Cell objCell, Cell targetCell)
@@ -81,6 +92,11 @@ namespace CryStal.Engine
                 {   
                     Cell objCell = Grid.GetCell(x, y);
 
+                    if(objCell == null)
+                    {
+                        continue;
+                    }
+
                     for (int dx = -1; dx <= 1; dx++)
                     {
                         for (int dy = -1; dy <= 1; dy++)
@@ -89,7 +105,7 @@ namespace CryStal.Engine
                             {
                                 Cell targetCell = Grid.GetCell(x + dx, y + dy);
 
-                                if (objCell != null && targetCell != null)
+                                if (targetCell != null)
                                 {
                                     CalculateCollition(objCell, targetCell);
                                 }
@@ -101,19 +117,19 @@ namespace CryStal.Engine
         }
         private static void UpdateCollitionsWithSubsteps(int sub_steps)
         {
-            List<Task> tasks = new();
+            Task[] tasks = new Task[4];
 
             int dividedGridWidth = (int)(Grid.Width * 0.5);
             int dividedGridHeight = (int)(Grid.Height * 0.5);
 
             for (int i = 0; i < sub_steps; i++)
             {
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth * 2, 0, dividedGridWidth)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth, dividedGridHeight, 0)));
-                tasks.Add(Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth * 2, dividedGridHeight, dividedGridWidth)));
+                tasks[0] = Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth));
+                tasks[1] = Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight, dividedGridWidth * 2, 0, dividedGridWidth));
+                tasks[2] = Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth, dividedGridHeight, 0));
+                tasks[3] = Task.Factory.StartNew(() => UpdateCollitions(dividedGridHeight * 2, dividedGridWidth * 2, dividedGridHeight, dividedGridWidth));
             }
-            Task.WaitAll(tasks.ToArray());
+            Task.WaitAll(tasks);
         }
         /// <summary>
         /// Returns absolute value of vector2

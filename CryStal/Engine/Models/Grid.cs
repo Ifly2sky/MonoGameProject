@@ -27,13 +27,12 @@ namespace CryStal.Engine.Models
 
             cells = new Cell[Width, Height];
         }
-
         public static void UpdateGrid()
         {
             cells = new Cell[Width, Height];
 
-            foreach (GameObject obj in GameObjectFactory.objects)
-            {
+           foreach(GameObject obj in GameObjectFactory.objects)
+           {
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
                 int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
 
@@ -46,7 +45,7 @@ namespace CryStal.Engine.Models
                     cells[x, y] = new Cell();
                     cells[x, y].Objects.Add(obj);
                 }
-            }
+           }
         }
         public static Cell GetCell(int x, int y)
         {
