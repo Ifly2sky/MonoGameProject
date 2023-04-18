@@ -60,14 +60,10 @@ namespace CryStal.Engine
         {
             foreach(GameObject obj in objCell.Objects)
             {
-                List<GameObject> sorted = targets.OrderBy(x => x.DistanceTo(obj.Center)).ToList();
-                foreach (GameObject target in sorted)
+                List<GameObject> sortedTargets = targets.OrderBy(x => x.DistanceTo(obj.Center)).ToList();
+                foreach (GameObject target in targets)
                 {
-                    if(
-                        obj != target && 
-                        target.CollisionType == CollitionType.Impassable && 
-                        obj.CollisionType == CollitionType.Impassable
-                      )
+                    if(obj != target)
                     {
                         CalculateCollition(obj, target);
                     }
@@ -137,7 +133,7 @@ namespace CryStal.Engine
         /// Returns absolute value of vector2
         /// </summary>
         /// <param name="vector"></param>
-        /// <returns></returns>
+        /// <returns>Vector2 of absolute values</returns>
         public static Vector2 Abs(this Vector2 vector)
         {
             return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));

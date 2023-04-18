@@ -32,6 +32,11 @@ namespace CryStal.Engine.Models
 
            foreach(GameObject obj in GameObject.allObjects)
            {
+                if(obj.CollisionType == CollitionType.Passable)
+                {
+                    continue;
+                }
+
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
                 int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
 

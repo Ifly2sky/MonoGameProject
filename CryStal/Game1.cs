@@ -79,7 +79,7 @@ namespace CryStal
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !spawned)
             {
-                for(int i = 0; i < 1; i++)
+                for(int i = 0; i < 10; i++)
                 {
                     PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
                     newObj.texture = Content.Load<Texture2D>("Stone");
