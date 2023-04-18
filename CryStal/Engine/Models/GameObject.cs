@@ -55,5 +55,9 @@ namespace CryStal.Engine.Models
         {
             spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
         }
+        public float DistanceTo(Vector2 position)
+        {
+            return (Center - position).Abs().Length();
+        }
     }
 }

@@ -56,11 +56,12 @@ namespace CryStal.Engine
                 target.Position -= difference * direction;
             }
         }
-        private static void CalculateCollition(Cell objCell, Cell targetCell)
+        private static void CalculateCollition(Cell objCell, List<GameObject> targets)
         {
             foreach(GameObject obj in objCell.Objects)
             {
-                foreach (GameObject target in targetCell.Objects)
+                List<GameObject> sorted = targets.OrderBy(x => x.DistanceTo(obj.Center)).ToList();
+                foreach (GameObject target in sorted)
                 {
                     if(
                         obj != target && 
@@ -88,10 +89,11 @@ namespace CryStal.Engine
             for(int x = minWidth; x <= maxWidth; x++)
             {
                 for (int y = minHeight; y <= maxHeight; y++)
-                {   
+                {
                     Cell objCell = Grid.GetCell(x, y);
+                    List<GameObject> objects = new();
 
-                    if(objCell == null)
+                    if (objCell == null)
                     {
                         continue;
                     }
@@ -106,11 +108,12 @@ namespace CryStal.Engine
 
                                 if (targetCell != null)
                                 {
-                                    CalculateCollition(objCell, targetCell);
+                                    objects.AddRange(targetCell.Objects);
                                 }
                             }
                         }
                     }
+                    CalculateCollition(objCell, objects);
                 }
             }
         }
@@ -135,7 +138,7 @@ namespace CryStal.Engine
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        private static Vector2 Abs(this Vector2 vector)
+        public static Vector2 Abs(this Vector2 vector)
         {
             return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
         }
