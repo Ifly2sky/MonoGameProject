@@ -29,6 +29,7 @@ namespace CryStal.Engine.Models
     public class GameObject
     {
         protected Vector2 _position = Vector2.Zero;
+        protected Vector2 _center = Vector2.Zero;
         protected Vector2 lastPos = Vector2.Zero;
 
         public Texture2D texture;
@@ -39,11 +40,15 @@ namespace CryStal.Engine.Models
         public virtual Vector2 Position 
         {
             get { return _position; } 
-            set { _position = value; }
+            set 
+            { 
+                _position = value;
+                _center = _position + Hitbox.Position + Hitbox.Size * 0.5f;
+            }
         }
         public Vector2 Center
         {
-            get { return _position + Hitbox.Position + Hitbox.Size * 0.5f; }
+            get { return _center; }
         }
         public Vector2 LastCenter
         {

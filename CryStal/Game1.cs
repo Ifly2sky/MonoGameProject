@@ -48,7 +48,7 @@ namespace CryStal
         {
             _graphics.ApplyChanges();
 
-            player = new Player(new Vector2(TileSize, TileSize), 100);
+            player = new Player(new Vector2(TileSize, TileSize), 120);
 
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);

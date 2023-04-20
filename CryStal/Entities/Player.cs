@@ -42,7 +42,7 @@ namespace CryStal.Entities
 
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
-            Drag = new Vector2(0.8f, 1);
+            Drag = new Vector2(0.7f, 1.01f);
             HasGravity = true;
 
             allObjects.Add(this);
@@ -57,7 +57,7 @@ namespace CryStal.Entities
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.BlanchedAlmond, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.IndianRed, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
             spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
@@ -69,7 +69,7 @@ namespace CryStal.Entities
             if (keyboardState.IsKeyDown(Keys.Space) && !jumped && grounded)
             {
                 ResetVelocityY();
-                Accelerate(new Vector2(0, -Speed * 10));
+                Accelerate(new Vector2(0, -100 * 10));
                 jumped = true;
             }
             else if (keyboardState.IsKeyUp(Keys.Space) && jumped)
@@ -94,9 +94,13 @@ namespace CryStal.Entities
             Size cellOnGrid = Grid.GetGridCoordinates(Position);
             Cell cell1 = Grid.GetCell(cellOnGrid.Width, cellOnGrid.Height + 1);
             Cell cell2 = Grid.GetCell(cellOnGrid.Width + 1, cellOnGrid.Height + 1);
-            if (cell1 != null & cell2 != null)
+            if (cell1 != null )
             {
-                return cell1.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable) || cell2.Objects.Any(x => x is Tile && x.CollisionType == CollitionType.Impassable);
+                return cell1.Objects.Any(x => x is Tile);
+            }
+            else if(cell2 != null)
+            {
+                return cell2.Objects.Any(x => x is Tile);
             }
             return false;
         }

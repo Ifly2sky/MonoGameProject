@@ -38,22 +38,19 @@ namespace CryStal.Engine
                 Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
-                //moves both half of the overlap
-                bool objectIsPhysicsObject = obj is PhysicsObject, targetIsPhyicsObject = target is PhysicsObject;
-
-                if (objectIsPhysicsObject && targetIsPhyicsObject)
-                {
-                    obj.Position += difference * direction * 0.5f;
-                    target.Position -= difference * direction * 0.5f;
-                    return;
-                }
-
-                if(objectIsPhysicsObject)
+                if (target is Tile)
                 {
                     obj.Position += difference * direction;
                     return;
                 }
-                target.Position -= difference * direction;
+
+                if (obj is Tile)
+                {
+                    target.Position -= difference * direction;
+                    return;
+                }
+                obj.Position += difference * direction * 0.5f;
+                target.Position -= difference * direction * 0.5f;
             }
         }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)
@@ -61,7 +58,7 @@ namespace CryStal.Engine
             foreach(GameObject obj in objCell.Objects)
             {
                 List<GameObject> sortedTargets = targets.OrderBy(x => x.DistanceTo(obj.Center)).ToList();
-                foreach (GameObject target in targets)
+                foreach (GameObject target in sortedTargets)
                 {
                     if(obj != target)
                     {
