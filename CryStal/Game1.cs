@@ -48,7 +48,7 @@ namespace CryStal
         {
             _graphics.ApplyChanges();
 
-            player = new Player(new Vector2(TileSize, TileSize), 120);
+            player = new Player(new Vector2(TileSize, TileSize), 140);
 
             using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
                 level = new Level(Services, fileStream);
@@ -102,7 +102,7 @@ namespace CryStal
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
 

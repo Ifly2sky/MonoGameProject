@@ -40,6 +40,7 @@ namespace CryStal.Engine
 
                 if (target is Tile)
                 {
+                    
                     obj.Position += difference * direction;
                     return;
                 }

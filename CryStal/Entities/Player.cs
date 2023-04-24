@@ -15,14 +15,9 @@ namespace CryStal.Entities
         Texture2D _texture;
         KeyboardState keyboardState;
 
-        float _speed;
+        float speed;
+        float jumpForce;
         Vector2 _direction;
-
-        public float Speed
-        {
-            get { return _speed; }
-            set { _speed = value; }
-        }
         public Vector2 Direction
         {
             get { return _direction; }
@@ -34,10 +29,11 @@ namespace CryStal.Entities
             set { _texture = value; }
         }
 
-        public Player(Vector2 position, float speed):base()
+        public Player(Vector2 position, float speed, float jumpForce = 100):base()
         {
             Position = position;
-            Speed = speed;
+            this.speed = speed;
+            this.jumpForce = jumpForce;
             ResetVelocity();
 
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
@@ -69,7 +65,7 @@ namespace CryStal.Entities
             if (keyboardState.IsKeyDown(Keys.Space) && !jumped && grounded)
             {
                 ResetVelocityY();
-                Accelerate(new Vector2(0, -100 * 10));
+                Accelerate(new Vector2(0, -jumpForce * 10));
                 jumped = true;
             }
             else if (keyboardState.IsKeyUp(Keys.Space) && jumped)
@@ -82,18 +78,20 @@ namespace CryStal.Entities
             }
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                Accelerate(new Vector2(-Speed, 0));
+                Accelerate(new Vector2(-speed, 0));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                Accelerate(new Vector2(Speed, 0));
+                Accelerate(new Vector2(speed, 0));
             }
         }
-        private bool IsGrounded()
+        private bool <Grounded()
         {
-            Size cellOnGrid = Grid.GetGridCoordinates(Position);
-            Cell cell1 = Grid.GetCell(cellOnGrid.Width, cellOnGrid.Height + 1);
-            Cell cell2 = Grid.GetCell(cellOnGrid.Width + 1, cellOnGrid.Height + 1);
+            Vector2 hitboxPos = Position + Hitbox.Position;
+            Size leftCellOnGrid = Grid.GetGridCoordinates(new Vector2(hitboxPos.X, hitboxPos.Y + Hitbox.Size.Y));
+            Size rightCellOnGrid = Grid.GetGridCoordinates(new Vector2(hitboxPos.X + Hitbox.Size.X-0.01f, hitboxPos.Y + Hitbox.Size.Y));
+            Cell cell1 = Grid.GetCell(leftCellOnGrid.Width, leftCellOnGrid.Height);
+            Cell cell2 = Grid.GetCell(rightCellOnGrid.Width, rightCellOnGrid.Height);
             if (cell1 != null )
             {
                 return cell1.Objects.Any(x => x is Tile);
