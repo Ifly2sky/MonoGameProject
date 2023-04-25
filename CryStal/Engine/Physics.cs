@@ -32,24 +32,28 @@ namespace CryStal.Engine
 
             if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
             {
-                Vector2 overlap = bounds - absDistance; // size of the overlap
+                Vector2 overlap = bounds - absDistance;  //overlap
 
                 // gets side in which the overlap is the largest
-                Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 difference;
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 if (target is Tile)
                 {
-                    
+                    Vector2 tileDistance = target.VectorDistanceTo(obj.LastCenter);
+                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
                     obj.Position += difference * direction;
                     return;
                 }
 
                 if (obj is Tile)
                 {
+                    Vector2 tileDistance = obj.VectorDistanceTo(target.LastCenter);
+                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
                     target.Position -= difference * direction;
                     return;
                 }
+                difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 obj.Position += difference * direction * 0.5f;
                 target.Position -= difference * direction * 0.5f;
             }

@@ -85,7 +85,7 @@ namespace CryStal.Entities
                 Accelerate(new Vector2(speed, 0));
             }
         }
-        private bool <Grounded()
+        private bool IsGrounded()
         {
             Vector2 hitboxPos = Position + Hitbox.Position;
             Size leftCellOnGrid = Grid.GetGridCoordinates(new Vector2(hitboxPos.X, hitboxPos.Y + Hitbox.Size.Y));

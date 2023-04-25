@@ -64,5 +64,9 @@ namespace CryStal.Engine.Models
         {
             return (Center - position).Abs().Length();
         }
+        public Vector2 VectorDistanceTo(Vector2 position)
+        {
+            return (Center - position).Abs();
+        }
     }
 }
