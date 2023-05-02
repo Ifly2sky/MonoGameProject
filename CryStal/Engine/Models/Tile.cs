@@ -24,5 +24,13 @@ namespace CryStal.Engine.Models
 
             allObjects.Add(this);
         }
+        public Tile(Texture2D texture, CollitionType collisionType, Hitbox hitbox)
+        {
+            this.texture = texture;
+            CollisionType = collisionType;
+            Hitbox = hitbox;
+
+            allObjects.Add(this);
+        }
     }
 }

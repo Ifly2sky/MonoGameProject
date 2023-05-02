@@ -80,10 +80,9 @@ namespace CryStal.Engine.Models
                 'S' => new Tile(textures[2], CollitionType.Impassable),
                 'C' => new Tile(textures[3], CollitionType.Impassable),
                 'L' => new Tile(textures[4], CollitionType.Impassable),
-                '/' => new Tile(textures[5], CollitionType.Impassable),
+                '/' => new Tile(textures[5], CollitionType.Impassable, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
                 '^' => new Tile(textures[6], CollitionType.Impassable),
-                '\\' => new Tile(textures[7], CollitionType.Impassable),
-
+                '\\' => new Tile(textures[7], CollitionType.Impassable, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
                 _ => new Tile(textures[0], CollitionType.Passable)
             };
         }

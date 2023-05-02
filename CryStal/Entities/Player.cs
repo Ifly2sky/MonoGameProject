@@ -53,7 +53,7 @@ namespace CryStal.Entities
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.IndianRed, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.BlanchedAlmond, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
             spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }

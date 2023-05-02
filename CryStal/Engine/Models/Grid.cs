@@ -40,6 +40,11 @@ namespace CryStal.Engine.Models
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
                 int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
 
+                if(x >= Width || y >= Height)
+                {
+                    return;
+                }
+
                 if (cells[x, y] != null)
                 {
                     cells[x, y].Objects.Add(obj);
