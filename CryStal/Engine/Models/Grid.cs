@@ -16,14 +16,11 @@ namespace CryStal.Engine.Models
     {
         private static Cell[,] cells;
 
-        public static int Width;
-        public static int Height;
+        public const int Width = 40;
+        public const int Height = 20;
 
         static Grid()
         {
-            Width = 40;
-            Height = 20;
-
             cells = new Cell[Width, Height];
         }
         public static void UpdateGrid()
@@ -40,9 +37,9 @@ namespace CryStal.Engine.Models
                 int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
                 int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
 
-                if(x >= Width || y >= Height)
+                if(x >= Width || y >= Height || x<0 || y<0)
                 {
-                    return;
+                    continue;
                 }
 
                 if (cells[x, y] != null)

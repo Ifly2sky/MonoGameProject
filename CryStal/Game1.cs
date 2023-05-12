@@ -103,7 +103,7 @@ namespace CryStal
         {
             GraphicsDevice.Clear(Color.Black);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             player.Draw(_spriteBatch);
             level.DrawLevel(_spriteBatch);

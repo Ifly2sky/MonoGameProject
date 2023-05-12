@@ -60,7 +60,8 @@ namespace CryStal.Engine
         }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)
         {
-            foreach(GameObject obj in objCell.Objects)
+            foreach(GameObject obj 
+                in objCell.Objects)
             {
                 List<GameObject> sortedTargets = targets.OrderBy(x => x.DistanceTo(obj.Center)).ToList();
                 foreach (GameObject target in sortedTargets)

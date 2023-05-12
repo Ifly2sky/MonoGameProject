@@ -9,8 +9,8 @@ namespace CryStal.Engine.Models
 {
     public class Hitbox
     {
-        public Vector2 Size { get; set; } = new Vector2(Game1.TileSize, Game1.TileSize);
-        public Vector2 Position { get; set; } = Vector2.Zero;
+        public Vector2 Size = new Vector2(Game1.TileSize, Game1.TileSize);
+        public Vector2 Position = Vector2.Zero;
 
         public Hitbox() { }
 
