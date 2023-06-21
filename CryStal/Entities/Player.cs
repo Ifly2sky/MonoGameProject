@@ -7,13 +7,15 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
+using CryStal.StateMachines.PlayerStateMachine;
 
 namespace CryStal.Entities
 {
     public class Player : PhysicsObject
     {
         Texture2D _texture;
-        KeyboardState keyboardState;
+        KeyboardState _keyboardState;
+        StateMachine _state = new StateMachine();
 
         float speed;
         float jumpForce;
@@ -46,8 +48,10 @@ namespace CryStal.Entities
 
         public override void Update(float deltaTime)
         {
-            keyboardState = Keyboard.GetState();
-            MovePlayer(keyboardState);
+            _keyboardState = Keyboard.GetState();
+            MovePlayer(_keyboardState);
+
+            _state.UpdateState(Velocity, grounded);
 
             base.Update(deltaTime);
         }
@@ -56,6 +60,7 @@ namespace CryStal.Entities
             spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
             spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
+            spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 82), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
 
         bool jumped = false;
