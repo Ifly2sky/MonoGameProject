@@ -17,9 +17,12 @@ namespace CryStal.Entities
         KeyboardState _keyboardState;
         StateMachine _state = new StateMachine();
 
-        float speed;
-        float jumpForce;
+        public float speed;
+        public float jumpForce;
         Vector2 _direction;
+        bool grounded;
+        public bool crouching;
+
         public Vector2 Direction
         {
             get { return _direction; }
@@ -49,9 +52,8 @@ namespace CryStal.Entities
         public override void Update(float deltaTime)
         {
             _keyboardState = Keyboard.GetState();
-            MovePlayer(_keyboardState);
-
-            _state.UpdateState(Velocity, grounded);
+            grounded = IsGrounded();
+            _state.UpdateState(grounded, _keyboardState, this);
 
             base.Update(deltaTime);
         }
@@ -61,41 +63,6 @@ namespace CryStal.Entities
             spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
             spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 82), Microsoft.Xna.Framework.Color.WhiteSmoke);
-        }
-
-        bool jumped = false;
-        bool grounded;
-        void MovePlayer(KeyboardState keyboardState)
-        {
-            grounded = IsGrounded();
-            if (keyboardState.IsKeyDown(Keys.Space) && !jumped && grounded)
-            {
-                ResetVelocityY();
-                Accelerate(new Vector2(0, -jumpForce * 10));
-                jumped = true;
-            }
-            else if (keyboardState.IsKeyUp(Keys.Space) && jumped)
-            {
-                jumped = false;
-            }
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                Hitbox.Size.Y = Game1.TileSize * 0.5f;
-                Hitbox.Position.Y = Game1.TileSize * 0.5f;
-            }
-            else if (keyboardState.IsKeyUp(Keys.S))
-            {
-                Hitbox.Size.Y = Game1.TileSize;
-                Hitbox.Position.Y = 0;
-            }
-            if (keyboardState.IsKeyDown(Keys.A))
-            {
-                Accelerate(new Vector2(-speed, 0));
-            }
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                Accelerate(new Vector2(speed, 0));
-            }
         }
         private bool IsGrounded()
         {

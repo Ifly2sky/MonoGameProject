@@ -7,6 +7,7 @@ using CryStal.StateMachines.PlayerStateMachine;
 using CryStal.Entities;
 using Microsoft.Xna.Framework;
 using CryStal.Engine;
+using Microsoft.Xna.Framework.Input;
 
 namespace CryStal.StateMachines.PlayerStateMachine
 {
@@ -32,15 +33,15 @@ namespace CryStal.StateMachines.PlayerStateMachine
         private PlayerState GetState(Vector2 velocity, bool isGrounded)
         {
             Vector2 absVel = velocity.Abs();
-            if (absVel.X < 0.1 && isGrounded == true)
+            if (absVel.X <= 0.1 && isGrounded == true)
             {
                 return stoppedState;
             }
-            if (absVel.X > 0 && isGrounded == true)
+            if (absVel.X > 0.1 && isGrounded == true)
             {
                 return runningState;
             }
-            if (velocity.Y < 0 && isGrounded == false)
+            if (velocity.Y <= 0 && isGrounded == false)
             {
                 return jumpingState;
             }
@@ -50,16 +51,16 @@ namespace CryStal.StateMachines.PlayerStateMachine
             }
             return currentState;
         }
-        public void UpdateState(Vector2 velocity, bool isGrounded)
+        public void UpdateState(bool isGrounded, KeyboardState keyboardState, Player player)
         {
-            PlayerState newState = GetState(velocity, isGrounded);
+            PlayerState newState = GetState(player.Velocity, isGrounded);
             if(newState != currentState)
             {
-                currentState.ExitState();
+                currentState.ExitState(newState, player);
                 currentState = newState;
-                currentState.EnterState();
+                currentState.EnterState(player);
             }
-            currentState.UpdateState();
+            currentState.UpdateState(keyboardState, player);
         }
     }
 }
