@@ -12,39 +12,44 @@ namespace CryStal.StateMachines.PlayerStateMachine
         }
         internal override void EnterState(Player player)
         {
-            if (player.crouching)
-            {
-                player.Position -= new Vector2(0, player.Hitbox.Size.Y * 0.5f);
-                player.ResetVelocityY();
-                player.Hitbox.Size.Y = Game1.TileSize;
-            }
-            //-TODO fix crouch bounce bug
+            
         }
-        internal override void UpdateState(KeyboardState keyboardState, Player player)
+        internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {
-            if (keyboardState.IsKeyDown(Keys.Space))
-            {
-                player.ResetVelocityY();
-                player.Accelerate(new Vector2(0, -player.jumpForce * 10));
-            }
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                player.Hitbox.Size.Y = Game1.TileSize * 0.5f;
-                player.Hitbox.Position.Y = Game1.TileSize * 0.5f;
-            }
-            else if (keyboardState.IsKeyUp(Keys.S))
-            {
-                player.Hitbox.Size.Y = Game1.TileSize;
-                player.Hitbox.Position.Y = 0;
-            }
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 player.Accelerate(new Vector2(-player.speed, 0));
+                state = StateMachine.RunningState;
+                return;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
                 player.Accelerate(new Vector2(player.speed, 0));
+                state = StateMachine.RunningState;
+                return;
             }
+            if (keyboardState.IsKeyDown(Keys.Space))
+            {
+                ExitState(StateMachine.JumpingState, player);
+                StateMachine.JumpingState.EnterState(player);
+                state = StateMachine.JumpingState;
+                return;
+            }
+            if (keyboardState.IsKeyDown(Keys.S))
+            {
+                ExitState(StateMachine.CrouchingState, player);
+                StateMachine.CrouchingState.EnterState(player);
+                state = StateMachine.CrouchingState;
+                return;
+            }
+            if (player.Velocity.Y > 0)
+            {
+                ExitState(StateMachine.FallingState, player);
+                StateMachine.FallingState.EnterState(player);
+                state = StateMachine.FallingState;
+                return;
+            }
+            state = this;
         }
         internal override void ExitState(PlayerState newState, Player player)
         {

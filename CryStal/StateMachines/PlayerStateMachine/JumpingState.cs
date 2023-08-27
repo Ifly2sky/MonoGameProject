@@ -17,20 +17,11 @@ namespace CryStal.StateMachines.PlayerStateMachine
         }
         internal override void EnterState(Player player)
         {
-
+            player.ResetVelocityY();
+            player.Accelerate(new Vector2(0, -player.jumpForce * 10));
         }
-        internal override void UpdateState(KeyboardState keyboardState, Player player)
+        internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {
-            if (keyboardState.IsKeyDown(Keys.S))
-            {
-                player.Hitbox.Size.Y = Game1.TileSize * 0.5f;
-                player.crouching = true;
-            }
-            else if (keyboardState.IsKeyUp(Keys.S))
-            {
-                player.Hitbox.Size.Y = Game1.TileSize;
-                player.crouching = false;
-            }
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 player.Accelerate(new Vector2(-player.speed, 0));
@@ -39,9 +30,18 @@ namespace CryStal.StateMachines.PlayerStateMachine
             {
                 player.Accelerate(new Vector2(player.speed, 0));
             }
+            if (player.Velocity.Y > 0)
+            {
+                ExitState(StateMachine.FallingState, player);
+                StateMachine.FallingState.EnterState(player);
+                state = StateMachine.FallingState;
+                return;
+            }
+            state = this;
         }
         internal override void ExitState(PlayerState newState, Player player)
         {
+
         }
     }
 }
