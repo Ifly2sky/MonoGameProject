@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CryStal.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CryStal.Engine.Models
 {
@@ -83,7 +86,40 @@ namespace CryStal.Engine.Models
             }
 
         }
+        public void SetEntities(Stream fileStream)
+        {
+            string[] data;
+            List<string> lines = new();
 
+            using (StreamReader reader = new(fileStream))
+            {
+                string line = reader.ReadLine();
+                while (line != null)
+                {
+                    lines.Add(line);
+                    line = reader.ReadLine();
+                }
+                line = reader.ReadLine();
+                data = line.Split(',', StringSplitOptions.TrimEntries);
+            }
+
+            for (int i = 0; i < lines.Count; i++)
+            {
+                GameObject entity = LoadEntity(data[i * 5]);
+                int x = Game1.TileSize * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
+                int y = Game1.TileSize * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
+                entity.Position = new Vector2(x, y);
+            }
+        }
+        private GameObject LoadEntity(string entityId)
+        {
+            return entityId switch
+            {
+                "P" => GameObject.allObjects.Find(x => x.ID == entityId),
+                "B" => new PhysicsObject(new Hitbox(), Vector2.Zero, "B"),
+                _ => null
+            };
+        }
         private Tile LoadTile(char tiletype)
         {
             return tiletype switch

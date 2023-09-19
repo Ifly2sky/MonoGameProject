@@ -15,6 +15,7 @@ namespace CryStal.Engine
     {
         static Level level = null;
         static string currentLevelPath;
+        static string currentEntityPath;
 
         public static void InitializeLevel(IServiceProvider services)
         {
@@ -27,6 +28,9 @@ namespace CryStal.Engine
             currentLevelPath = GetLevelPath(levelName);
             using (Stream fileStream = TitleContainer.OpenStream(currentLevelPath))
                 level.LoadLevel(fileStream);
+            currentEntityPath = GetEntityDataPath(levelName);
+            using (Stream fileStream = TitleContainer.OpenStream(currentEntityPath))
+                level.SetEntities(fileStream);
         }
         public static void DrawLevel(SpriteBatch spriteBatch)
         {
@@ -38,6 +42,15 @@ namespace CryStal.Engine
             {
                 "Demo" => "Content/Level00.txt",
                 "Demo2" => "Content/Level00(2).txt",
+                _ => null
+            };
+        }
+        private static string GetEntityDataPath(string levelName)
+        {
+            return levelName switch
+            {
+                "Demo" => "Content/Level00entities.txt",
+                "Demo2" => "Content/Level00entities.txt",
                 _ => null
             };
         }

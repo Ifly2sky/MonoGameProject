@@ -35,7 +35,7 @@ namespace CryStal.Entities
             set { _texture = value; }
         }
 
-        public Player(Vector2 position, float speed, float jumpForce = 100):base()
+        public Player(Vector2 position, float speed, float jumpForce = 100, string id = "P"):base()
         {
             Position = position;
             this.speed = speed;
@@ -46,6 +46,7 @@ namespace CryStal.Entities
             Hitbox.Position = Vector2.Zero;
             Drag = new Vector2(0.7f, 1.00f);
             HasGravity = true;
+            ID = id;
 
             allObjects.Add(this);
         }
