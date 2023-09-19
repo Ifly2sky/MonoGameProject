@@ -16,7 +16,6 @@ namespace CryStal
         private SpriteBatch _spriteBatch;
 
         public Player player;
-        public Level level;
 
         List<GameObject> tempObj = new();
 
@@ -49,8 +48,7 @@ namespace CryStal
 
             player = new Player(new Vector2(TileSize, TileSize), 140);
 
-            using (Stream fileStream = TitleContainer.OpenStream("Content/Level00.txt"))
-                level = new Level(Services, fileStream);
+            LevelHandler.InitializeLevel(Services);
 
             base.Initialize();
         }
@@ -62,6 +60,8 @@ namespace CryStal
             Arial = Content.Load<SpriteFont>("Arial");
 
             player.Texture = Content.Load<Texture2D>("Template");
+
+            LevelHandler.LoadLevel("Demo");
 
             //int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
             //int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
@@ -78,16 +78,18 @@ namespace CryStal
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !spawned)
             {
-                for(int i = 0; i < 10; i++)
+                /*for(int i = 0; i < 10; i++)
                 {
                     PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
                     newObj.texture = Content.Load<Texture2D>("Stone");
                     tempObj.Add(newObj);
-                }
+                }*/
+                LevelHandler.LoadLevel("Demo2");
                 spawned = true;
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)   
             {
+                LevelHandler.LoadLevel("Demo");
                 spawned = false;
             }
 
@@ -106,7 +108,7 @@ namespace CryStal
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             player.Draw(_spriteBatch);
-            level.DrawLevel(_spriteBatch);
+            LevelHandler.DrawLevel(_spriteBatch);
 
             foreach(GameObject obj in tempObj)
             {

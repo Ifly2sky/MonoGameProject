@@ -29,13 +29,26 @@ namespace CryStal.Engine.Models
             get { return tiles.GetLength(1); }
         }
 
-        public Level(IServiceProvider serviceProvider, Stream fileStream)
+        public Level(IServiceProvider serviceProvider)
         {
             content = new ContentManager(serviceProvider, "Content");
 
             LoadTextures();
+        }
 
+        public void LoadLevel(Stream fileStream)
+        {
             LoadTiles(fileStream);
+        }
+        public void Unload()
+        {
+            if(tiles != null)
+            {
+                foreach (Tile tile in tiles)
+                {
+                    tile.UnloadTile();
+                }
+            }
         }
 
         private void LoadTiles(Stream fileStream)
@@ -113,6 +126,7 @@ namespace CryStal.Engine.Models
         public void Dispose()
         {
             Content.Unload();
+            textures.Clear();
             GC.SuppressFinalize(this);
         }
     }
