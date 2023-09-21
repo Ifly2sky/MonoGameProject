@@ -35,6 +35,8 @@ namespace CryStal.Engine.Models
         public Texture2D texture;
         public CollitionType CollisionType = CollitionType.Impassable;
 
+        public string ID;
+
         public static List<GameObject> allObjects = new();
 
         public virtual Vector2 Position 

@@ -16,7 +16,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
             get;
         }
         internal abstract void EnterState(Player player);
-        internal abstract void UpdateState(KeyboardState keyboardState, Player player);
+        internal abstract void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state);
         internal abstract void ExitState(PlayerState newState, Player player);
     }
 }

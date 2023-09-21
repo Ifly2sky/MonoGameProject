@@ -13,54 +13,26 @@ namespace CryStal.StateMachines.PlayerStateMachine
 {
     public class StateMachine
     {
+        PlayerState _currentState;
 
-        PlayerState currentState = new StoppedState();
-
-        static StoppedState stoppedState = new StoppedState();
-        static RunningState runningState = new RunningState();
-        static JumpingState jumpingState = new JumpingState();
-        static FallingState fallingState = new FallingState();
+        internal static StoppedState StoppedState = new StoppedState();
+        internal static RunningState RunningState = new RunningState();
+        internal static JumpingState JumpingState = new JumpingState();
+        internal static FallingState FallingState = new FallingState();
+        internal static CrouchingState CrouchingState = new CrouchingState();
 
         public string Name
         {
-            get { return currentState.StateName; }
+            get { return _currentState.StateName; }
         }
 
         public StateMachine()
         {
-            currentState = stoppedState;
-        }
-        private PlayerState GetState(Vector2 velocity, bool isGrounded)
-        {
-            Vector2 absVel = velocity.Abs();
-            if (absVel.X <= 0.1 && isGrounded == true)
-            {
-                return stoppedState;
-            }
-            if (absVel.X > 0.1 && isGrounded == true)
-            {
-                return runningState;
-            }
-            if (velocity.Y <= 0 && isGrounded == false)
-            {
-                return jumpingState;
-            }
-            if (velocity.Y > 0 && isGrounded == false)
-            {
-                return fallingState;
-            }
-            return currentState;
+            _currentState = StoppedState;
         }
         public void UpdateState(bool isGrounded, KeyboardState keyboardState, Player player)
         {
-            PlayerState newState = GetState(player.Velocity, isGrounded);
-            if(newState != currentState)
-            {
-                currentState.ExitState(newState, player);
-                currentState = newState;
-                currentState.EnterState(player);
-            }
-            currentState.UpdateState(keyboardState, player);
+            _currentState.UpdateState(keyboardState, player, out _currentState);
         }
     }
 }

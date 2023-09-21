@@ -8,6 +8,7 @@ using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
 using CryStal.StateMachines.PlayerStateMachine;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CryStal.Entities
 {
@@ -20,8 +21,8 @@ namespace CryStal.Entities
         public float speed;
         public float jumpForce;
         Vector2 _direction;
-        bool grounded;
-        public bool crouching;
+        public bool isGrounded;
+        public bool isCrouching;
 
         public Vector2 Direction
         {
@@ -34,7 +35,7 @@ namespace CryStal.Entities
             set { _texture = value; }
         }
 
-        public Player(Vector2 position, float speed, float jumpForce = 100):base()
+        public Player(Vector2 position, float speed, float jumpForce = 100, string id = "P"):base()
         {
             Position = position;
             this.speed = speed;
@@ -43,8 +44,9 @@ namespace CryStal.Entities
 
             Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
             Hitbox.Position = Vector2.Zero;
-            Drag = new Vector2(0.7f, 1.01f);
+            Drag = new Vector2(0.7f, 1.00f);
             HasGravity = true;
+            ID = id;
 
             allObjects.Add(this);
         }
@@ -52,15 +54,15 @@ namespace CryStal.Entities
         public override void Update(float deltaTime)
         {
             _keyboardState = Keyboard.GetState();
-            grounded = IsGrounded();
-            _state.UpdateState(grounded, _keyboardState, this);
+            isGrounded = IsGrounded();
+            _state.UpdateState(isGrounded, _keyboardState, this);
 
             base.Update(deltaTime);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
-            spriteBatch.DrawString(Game1.Arial, $"On ground: {grounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
+            spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
             spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 82), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }

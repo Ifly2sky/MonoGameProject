@@ -25,10 +25,11 @@ namespace CryStal.Engine.Models
             set { _acceleration = value; }
         }
 
-        public PhysicsObject(Hitbox hitbox, Vector2 Position)
+        public PhysicsObject(Hitbox hitbox, Vector2 Position, string id = "B")
         {
             this.Position = Position;
             this.Hitbox = hitbox;
+            ID = id;
             ResetVelocity();
 
             allObjects.Add(this);
