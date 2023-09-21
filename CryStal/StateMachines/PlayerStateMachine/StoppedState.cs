@@ -12,13 +12,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
         }
         internal override void EnterState(Player player)
         {
-            if (player.crouching)
-            {
-                player.Position -= new Vector2(0, player.Hitbox.Size.Y * 0.5f);
-                player.ResetVelocityY();
-                player.Hitbox.Size.Y = Game1.TileSize;
-            }
-            //-TODO fix crouch bounce bug
+            
         }
         internal override void UpdateState(KeyboardState keyboardState, Player player)
         {
