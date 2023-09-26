@@ -74,5 +74,10 @@ namespace CryStal.Engine.Models
             //lastPos.X = (_position.X == maxX) ? _position.X : lastPos.X;
             //lastPos.Y = (_position.Y == maxY) ? _position.Y : lastPos.Y;
         }
+        public override void Unload()
+        {
+            allObjects.Remove(this);
+            allPhysicsObjects.Remove(this);
+        }
     }
 }

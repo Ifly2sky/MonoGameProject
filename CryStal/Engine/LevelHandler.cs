@@ -25,9 +25,11 @@ namespace CryStal.Engine
         public static void LoadLevel(string levelName)
         {
             level.Unload();
+
             currentLevelPath = GetLevelPath(levelName);
             using (Stream fileStream = TitleContainer.OpenStream(currentLevelPath))
                 level.LoadLevel(fileStream);
+
             currentEntityPath = GetEntityDataPath(levelName);
             using (Stream fileStream = TitleContainer.OpenStream(currentEntityPath))
                 level.SetEntities(fileStream);

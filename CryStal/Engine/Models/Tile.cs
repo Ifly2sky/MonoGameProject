@@ -32,9 +32,5 @@ namespace CryStal.Engine.Models
 
             allObjects.Add(this);
         }
-        public void UnloadTile()
-        {
-            allObjects.Remove(this);
-        }
     }
 }

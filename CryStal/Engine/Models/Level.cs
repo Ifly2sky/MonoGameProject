@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
-using System.Security.Cryptography.X509Certificates;
+using System.Linq;
 
 namespace CryStal.Engine.Models
 {
@@ -15,6 +14,7 @@ namespace CryStal.Engine.Models
         public Tile[,] tiles;
         public string levelPath = @"C:\Users\Miko\source\repos\CryStal\CryStal\Content\";
         public List<Texture2D> textures = new();
+        private List<GameObject> levelEntities = new();
 
         public ContentManager Content 
         {
@@ -49,9 +49,14 @@ namespace CryStal.Engine.Models
             {
                 foreach (Tile tile in tiles)
                 {
-                    tile.UnloadTile();
+                    tile.Unload();
                 }
             }
+            foreach(GameObject entity in levelEntities) 
+            {
+                entity.Unload();
+            }
+            levelEntities.Clear();
         }
 
         private void LoadTiles(Stream fileStream)
@@ -88,37 +93,49 @@ namespace CryStal.Engine.Models
         }
         public void SetEntities(Stream fileStream)
         {
-            string[] data;
-            List<string> lines = new();
+            List<string> data = new();
 
             using (StreamReader reader = new(fileStream))
             {
                 string line = reader.ReadLine();
                 while (line != null)
                 {
-                    lines.Add(line);
+                    data.AddRange(line.Split(',', StringSplitOptions.TrimEntries));
                     line = reader.ReadLine();
                 }
-                line = reader.ReadLine();
-                data = line.Split(',', StringSplitOptions.TrimEntries);
             }
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 0; i < data.Count * 0.2; i++)
             {
-                GameObject entity = LoadEntity(data[i * 5]);
+                GameObject entity = GetEntity(data[i * 5]);
                 int x = Game1.TileSize * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
                 int y = Game1.TileSize * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
                 entity.Position = new Vector2(x, y);
+                if(entity is PhysicsObject)
+                {
+                    PhysicsObject physicsObject = (PhysicsObject)entity;
+                    physicsObject.ResetVelocity();
+                }
             }
         }
-        private GameObject LoadEntity(string entityId)
+        private GameObject GetEntity(string entityId)
         {
-            return entityId switch
+            switch(entityId)
             {
-                "P" => GameObject.allObjects.Find(x => x.ID == entityId),
-                "B" => new PhysicsObject(new Hitbox(), Vector2.Zero, "B"),
-                _ => null
-            };
+                case "P":
+                    return GameObject.allObjects.Find(x => x.ID == entityId);
+                case "B":
+                    PhysicsObject newEntity = new(new Hitbox(), Vector2.Zero, "B");
+                    newEntity.texture = textures[1];
+                    levelEntities.Add(newEntity);
+                    return newEntity;
+                case "T":
+                    Tile tile = new(textures[4], CollitionType.Impassable);
+                    levelEntities.Add(tile);
+                    return tile;
+                default:
+                    return null;
+            }
         }
         private Tile LoadTile(char tiletype)
         {
@@ -156,6 +173,10 @@ namespace CryStal.Engine.Models
                 {
                     spriteBatch.Draw(tile.texture, tile.Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
                 }
+            }
+            foreach(GameObject levelObject in levelEntities)
+            {
+                levelObject.Draw(spriteBatch);
             }
         }
 

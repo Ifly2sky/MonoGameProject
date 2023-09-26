@@ -70,5 +70,9 @@ namespace CryStal.Engine.Models
         {
             return (Center - position).Abs();
         }
+        public virtual void Unload()
+        {
+            allObjects.Remove(this);
+        }
     }
 }
