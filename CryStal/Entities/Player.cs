@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using CryStal.StateMachines.PlayerStateMachine;
 using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
 
 namespace CryStal.Entities
 {
@@ -82,6 +83,11 @@ namespace CryStal.Entities
                 return cell2.Objects.Any(x => x is Tile);
             }
             return false;
+        }
+        private void Destroy()
+        {
+            allObjects.Remove(this);
+            allPhysicsObjects.Remove(this);
         }
     }
 }

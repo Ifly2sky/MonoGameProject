@@ -4,6 +4,7 @@ using CryStal.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -33,6 +34,10 @@ namespace CryStal
         public const int TileSize = 16 * Scale;
         public const float InverseTileSize = 0.02083333333333333333f; // 1/tileSIze
 
+        public static Action OnUpdate;
+        public delegate void DrawAction(SpriteBatch spriteBatch);
+        public static DrawAction OnDraw;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -50,6 +55,9 @@ namespace CryStal
 
             LevelHandler.InitializeLevel(Services);
 
+            OnDraw += player.Draw;
+            OnDraw += LevelHandler.DrawLevel;
+
             base.Initialize();
         }
 
@@ -58,7 +66,6 @@ namespace CryStal
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Arial = Content.Load<SpriteFont>("Arial");
-
             player.Texture = Content.Load<Texture2D>("Template");
 
             LevelHandler.LoadLevel("Demo");
@@ -82,6 +89,7 @@ namespace CryStal
                 {
                     PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
                     newObj.texture = Content.Load<Texture2D>("Stone");
+                    OnDraw += newObj.Draw;
                     tempObj.Add(newObj);
                 }*/
                 LevelHandler.LoadLevel("Demo2");
@@ -107,13 +115,7 @@ namespace CryStal
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            player.Draw(_spriteBatch);
-            LevelHandler.DrawLevel(_spriteBatch);
-
-            foreach(GameObject obj in tempObj)
-            {
-                obj.Draw(_spriteBatch);
-            }
+            OnDraw(_spriteBatch);
 
             DrawDebugTimer();
             drawTimer.Restart();
