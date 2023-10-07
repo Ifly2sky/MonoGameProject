@@ -19,7 +19,6 @@ namespace CryStal.StateMachines.PlayerStateMachine
                 player.ResetVelocityY();
                 player.Hitbox.Size.Y = Game1.TileSize;
             }
-            //--TODO fix crouch bounce bug
         }
         internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {

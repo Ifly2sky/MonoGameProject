@@ -84,10 +84,10 @@ namespace CryStal.Entities
             }
             return false;
         }
-        private void Destroy()
+        public void Destroy()
         {
-            allObjects.Remove(this);
-            allPhysicsObjects.Remove(this);
+            Unload();
+            Game1.OnDraw -= Draw;
         }
     }
 }

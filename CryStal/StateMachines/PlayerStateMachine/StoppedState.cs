@@ -12,7 +12,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
         }
         internal override void EnterState(Player player)
         {
-            
+
         }
         internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {
