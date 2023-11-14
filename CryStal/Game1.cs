@@ -92,11 +92,13 @@ namespace CryStal
                     OnDraw += newObj.Draw;
                     tempObj.Add(newObj);
                 }*/
+                player.Unload();
                 LevelHandler.LoadLevel("Demo2");
                 spawned = true;
             }
             else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)   
             {
+                player.Load();
                 LevelHandler.LoadLevel("Demo");
                 spawned = false;
             }

@@ -35,27 +35,36 @@ namespace CryStal.Engine
                 Vector2 overlap = bounds - absDistance;  //overlap
 
                 // gets side in which the overlap is the largest
-                Vector2 difference;
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
 
                 if (target is Tile)
                 {
-                    Vector2 tileDistance = target.VectorDistanceTo(obj.LastCenter);
-                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
-                    obj.Position += difference * direction;
+                    TileCollided(target, obj, direction, overlap);
                     return;
                 }
 
                 if (obj is Tile)
                 {
-                    Vector2 tileDistance = obj.VectorDistanceTo(target.LastCenter);
-                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
-                    target.Position -= difference * direction;
+                    TileCollided(obj, target, direction, overlap);
                     return;
                 }
-                difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+                Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 obj.Position += difference * direction * 0.5f;
                 target.Position -= difference * direction * 0.5f;
+            }
+        }
+        private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
+        {
+            switch (tile.CollisionType)
+            {
+                case CollitionType.Impassable:
+                    Vector2 tileDistance = tile.VectorDistanceTo(obj.LastCenter);
+                    Vector2 difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
+                    obj.Position += difference * direction;
+                    return;
+                case CollitionType.Spike:
+                    obj.Unload();
+                    return;
             }
         }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)

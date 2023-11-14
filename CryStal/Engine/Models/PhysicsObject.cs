@@ -79,5 +79,10 @@ namespace CryStal.Engine.Models
             allObjects.Remove(this);
             allPhysicsObjects.Remove(this);
         }
+        public override void Load()
+        {
+            allObjects.Add(this);
+            allPhysicsObjects.Add(this);
+        }
     }
 }

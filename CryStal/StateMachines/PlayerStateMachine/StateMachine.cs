@@ -34,5 +34,26 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             _currentState.UpdateState(keyboardState, player, out _currentState);
         }
+        public void SetState(string stateName)
+        {
+            switch (stateName)
+            {
+                case "StoppedState":
+                    _currentState = StoppedState;
+                    break;
+                case "RunningState":
+                    _currentState = RunningState;
+                    break;
+                case "CrouchingState":
+                    _currentState = CrouchingState;
+                    break;
+                case "JumpingState":
+                    _currentState = JumpingState;
+                    break;
+                case "FallingState":
+                    _currentState = FallingState;
+                    break;
+            }
+        }
     }
 }

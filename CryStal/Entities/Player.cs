@@ -84,10 +84,16 @@ namespace CryStal.Entities
             }
             return false;
         }
-        public void Destroy()
+        public override void Unload()
         {
-            Unload();
             Game1.OnDraw -= Draw;
+            base.Unload();
+        }
+        public override void Load()
+        {
+            _state.SetState("StoppedState");
+            Game1.OnDraw += Draw;
+            base.Load();
         }
     }
 }

@@ -25,6 +25,11 @@ namespace CryStal.Engine.Models
         /// A Platform is only passable from the sides and below but not from the top.
         /// </summary>
         Platform = 2,
+
+        /// <summary>
+        /// A Spike damages any entity that hits it.
+        /// </summary>
+        Spike = 3,
     }
     public class GameObject
     {
@@ -73,6 +78,10 @@ namespace CryStal.Engine.Models
         public virtual void Unload()
         {
             allObjects.Remove(this);
+        }
+        public virtual void Load()
+        {
+            allObjects.Add(this);
         }
     }
 }

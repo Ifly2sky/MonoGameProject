@@ -108,6 +108,12 @@ namespace CryStal.Engine.Models
             for (int i = 0; i < data.Count * 0.2; i++)
             {
                 GameObject entity = GetEntity(data[i * 5]);
+
+                if (entity == null)
+                {
+                    return;
+                }
+
                 int x = Game1.TileSize * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
                 int y = Game1.TileSize * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
                 entity.Position = new Vector2(x, y);
@@ -146,9 +152,9 @@ namespace CryStal.Engine.Models
                 'S' => new Tile(textures[2], CollitionType.Impassable),
                 'C' => new Tile(textures[3], CollitionType.Impassable),
                 'L' => new Tile(textures[4], CollitionType.Impassable),
-                '/' => new Tile(textures[5], CollitionType.Impassable, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
-                '^' => new Tile(textures[6], CollitionType.Impassable),
-                '\\' => new Tile(textures[7], CollitionType.Impassable, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                '/' => new Tile(textures[5], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                '^' => new Tile(textures[6], CollitionType.Spike),
+                '\\' => new Tile(textures[7], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
                 _ => new Tile(textures[0], CollitionType.Passable)
             };
         }
