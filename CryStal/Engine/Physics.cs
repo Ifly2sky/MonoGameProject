@@ -53,20 +53,6 @@ namespace CryStal.Engine
                 target.Position -= difference * direction * 0.5f;
             }
         }
-        private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
-        {
-            switch (tile.CollisionType)
-            {
-                case CollitionType.Impassable:
-                    Vector2 tileDistance = tile.VectorDistanceTo(obj.LastCenter);
-                    Vector2 difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
-                    obj.Position += difference * direction;
-                    return;
-                case CollitionType.Spike:
-                    obj.Unload();
-                    return;
-            }
-        }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)
         {
             foreach(GameObject obj 
@@ -80,6 +66,30 @@ namespace CryStal.Engine
                         CalculateCollition(obj, target);
                     }
                 }
+            }
+        }
+        private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
+        {
+            Vector2 tileDistance;
+            Vector2 difference;
+            switch (tile.CollisionType)
+            {
+                case CollitionType.Impassable:
+                    tileDistance = tile.VectorDistanceTo(obj.LastCenter);
+                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
+                    obj.Position += difference * direction;
+                    return;
+                case CollitionType.Spike:
+                    obj.Unload();
+                    return;
+                case CollitionType.Platform:
+                    if(direction.Y > 0)
+                    {
+                        tileDistance = tile.VectorDistanceTo(obj.LastCenter);
+                        difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
+                        obj.Position += difference * direction;
+                    }
+                    return;
             }
         }
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
