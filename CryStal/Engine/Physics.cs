@@ -83,8 +83,9 @@ namespace CryStal.Engine
                     obj.Unload();
                     return;
                 case CollitionType.Platform:
-                    if(direction.Y > 0)
+                    if(direction.Y < 0)
                     {
+                        // TODO make not yeet
                         tileDistance = tile.VectorDistanceTo(obj.LastCenter);
                         difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
                         obj.Position += difference * direction;

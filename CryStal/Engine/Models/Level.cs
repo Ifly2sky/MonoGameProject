@@ -155,6 +155,7 @@ namespace CryStal.Engine.Models
                 '/' => new Tile(textures[5], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
                 '^' => new Tile(textures[6], CollitionType.Spike),
                 '\\' => new Tile(textures[7], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                'P' => new Tile(textures[8], CollitionType.Platform),
                 _ => new Tile(textures[0], CollitionType.Passable)
             };
         }
@@ -169,6 +170,7 @@ namespace CryStal.Engine.Models
             textures.Add(Content.Load<Texture2D>("CrystalSpikes0"));
             textures.Add(Content.Load<Texture2D>("CrystalSpikes1"));
             textures.Add(Content.Load<Texture2D>("CrystalSpikes2"));
+            textures.Add(Content.Load<Texture2D>("Platform"));
         }
 
         public void DrawLevel(SpriteBatch spriteBatch)
