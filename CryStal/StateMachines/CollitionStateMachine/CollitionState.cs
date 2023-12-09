@@ -9,6 +9,6 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal abstract class CollitionState
     {
-        internal abstract void OnCollided(GameObject obj, GameObject target);
+        internal abstract void HandleCollition(GameObject obj, GameObject target);
     }
 }

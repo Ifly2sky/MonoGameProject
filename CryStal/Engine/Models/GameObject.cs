@@ -41,6 +41,7 @@ namespace CryStal.Engine.Models
         public CollitionType CollisionType = CollitionType.Impassable;
 
         public string ID;
+        public bool isKillable = false;
 
         public static List<GameObject> allObjects = new();
 

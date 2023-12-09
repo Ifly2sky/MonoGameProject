@@ -9,7 +9,7 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal class PassableState : CollitionState
     {
-        internal override void OnCollided(GameObject obj, GameObject target)
+        internal override void HandleCollition(GameObject obj, GameObject target)
         {
             //nothing
         }

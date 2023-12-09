@@ -1,4 +1,6 @@
-﻿using CryStal.Engine.Models;
+﻿using CryStal.Engine;
+using CryStal.Engine.Models;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,12 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal class SpikeState : CollitionState
     {
-        internal override void OnCollided(GameObject obj, GameObject target)
+        internal override void HandleCollition(GameObject obj, GameObject target)
         {
-
+            if(target.isKillable)
+            {
+                target.Unload();
+            }
         }
     }
 }

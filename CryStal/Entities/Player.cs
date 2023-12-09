@@ -47,6 +47,7 @@ namespace CryStal.Entities
             Hitbox.Position = Vector2.Zero;
             Drag = new Vector2(0.7f, 1.00f);
             HasGravity = true;
+            isKillable = true;
             ID = id;
 
             allObjects.Add(this);
