@@ -6,6 +6,10 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal class ImpassableTileState : CollitionState
     {
+        internal override string Name
+        {
+            get { return "ImpassableTile"; }
+        }
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
             //check for multiple tiles

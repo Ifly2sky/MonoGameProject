@@ -11,6 +11,10 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal class ImpassableState:CollitionState
     {
+        internal override string Name
+        {
+            get { return "Impassable"; }
+        }
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects and its absolute value

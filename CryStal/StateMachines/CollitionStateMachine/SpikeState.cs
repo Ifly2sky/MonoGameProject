@@ -11,6 +11,10 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     internal class SpikeState : CollitionState
     {
+        internal override string Name
+        {
+            get { return "Spike"; }
+        }
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
             if(target.isKillable)

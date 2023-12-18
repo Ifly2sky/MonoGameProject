@@ -14,6 +14,10 @@ namespace CryStal.StateMachines.CollitionStateMachine
     /// </summary>
     internal class PlatformState : CollitionState
     {
+        internal override string Name
+        {
+            get { return "Platform"; }
+        }
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
             //gets distance between objects and its absolute value

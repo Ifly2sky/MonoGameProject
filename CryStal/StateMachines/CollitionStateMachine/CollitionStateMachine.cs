@@ -41,5 +41,9 @@ namespace CryStal.StateMachines.CollitionStateMachine
                     return;
             }
         }
+        public string GetCollitionStateName()
+        {
+            return currentState.Name;
+        }
     }
 }
