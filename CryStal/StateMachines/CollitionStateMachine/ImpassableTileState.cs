@@ -13,7 +13,7 @@ namespace CryStal.StateMachines.CollitionStateMachine
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
             //check for multiple tiles
-            if (obj is Tile && target is Tile)
+            if (target is Tile)
             {
                 // we don't need to calculate anything
                 return;

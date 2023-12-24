@@ -23,7 +23,7 @@ namespace CryStal.Engine
 
         private static void CalculateCollition(GameObject obj, GameObject target)
         {
-            //gets distance between objects and its absolute value
+            /*//gets distance between objects and its absolute value
             Vector2 distance = obj.Center - target.Center;
             Vector2 absDistance = distance.Abs();
 
@@ -51,7 +51,8 @@ namespace CryStal.Engine
                 Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
                 obj.Position += difference * direction * 0.5f;
                 target.Position -= difference * direction * 0.5f;
-            }
+            }*/
+            obj.CollitionHandler.HandleCollition(obj, target);
         }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)
         {
@@ -68,7 +69,7 @@ namespace CryStal.Engine
                 }
             }
         }
-        private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
+        /*private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
         {
             Vector2 tileDistance;
             Vector2 difference;
@@ -92,7 +93,7 @@ namespace CryStal.Engine
                     }
                     return;
             }
-        }
+        }*/
         private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
         {
             foreach (PhysicsObject obj in PhysicsObject.allPhysicsObjects)

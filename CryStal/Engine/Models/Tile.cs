@@ -17,17 +17,17 @@ namespace CryStal.Engine.Models
                 base.Position = value;
             }
         }
-        public Tile(Texture2D texture, CollitionType collisionType)
+        public Tile(Texture2D texture, string collisionType)
         {
             this.texture = texture;
-            CollisionType = collisionType;
+            CollitionHandler.SetCollitonState(collisionType);
 
             allObjects.Add(this);
         }
-        public Tile(Texture2D texture, CollitionType collisionType, Hitbox hitbox)
+        public Tile(Texture2D texture, string collisionType, Hitbox hitbox)
         {
             this.texture = texture;
-            CollisionType = collisionType;
+            CollitionHandler.SetCollitonState(collisionType);
             Hitbox = hitbox;
 
             allObjects.Add(this);

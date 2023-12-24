@@ -31,8 +31,16 @@ namespace CryStal.StateMachines.CollitionStateMachine
 
                 // gets side in which the overlap is the largest
                 Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
-
                 Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
+
+                if (target is Tile)
+                {
+                    Vector2 tileDistance = target.VectorDistanceTo(obj.LastCenter);
+                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
+                    obj.Position += difference * direction;
+                    return;
+                }
+
                 obj.Position += difference * direction * 0.5f;
                 target.Position -= difference * direction * 0.5f;
             }

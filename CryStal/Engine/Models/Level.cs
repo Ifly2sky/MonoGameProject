@@ -131,12 +131,12 @@ namespace CryStal.Engine.Models
                 case "P":
                     return GameObject.allObjects.Find(x => x.ID == entityId);
                 case "B":
-                    PhysicsObject newEntity = new(new Hitbox(), Vector2.Zero, "B");
+                    PhysicsObject newEntity = new(new Hitbox(), Vector2.Zero, "Impassable", "B");
                     newEntity.texture = textures[1];
                     levelEntities.Add(newEntity);
                     return newEntity;
                 case "T":
-                    Tile tile = new(textures[4], CollitionType.Impassable);
+                    Tile tile = new(textures[4], "Impassable");
                     levelEntities.Add(tile);
                     return tile;
                 default:
@@ -147,16 +147,16 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => new Tile(textures[0], CollitionType.Passable),
-                '#' => new Tile(textures[1], CollitionType.Impassable),
-                'S' => new Tile(textures[2], CollitionType.Impassable),
-                'C' => new Tile(textures[3], CollitionType.Impassable),
-                'L' => new Tile(textures[4], CollitionType.Impassable),
-                '/' => new Tile(textures[5], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
-                '^' => new Tile(textures[6], CollitionType.Spike),
-                '\\' => new Tile(textures[7], CollitionType.Spike, new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
-                'P' => new Tile(textures[8], CollitionType.Platform),
-                _ => new Tile(textures[0], CollitionType.Passable)
+                ' ' => new Tile(textures[0], "Passable"),
+                '#' => new Tile(textures[1], "ImpassableTile"),
+                'S' => new Tile(textures[2], "ImpassableTile"),
+                'C' => new Tile(textures[3], "ImpassableTile"),
+                'L' => new Tile(textures[4], "ImpassableTile"),
+                '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                '^' => new Tile(textures[6], "Spike"),
+                '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                'P' => new Tile(textures[8], "Platform"),
+                _ => new Tile(textures[0], "Passable")
             };
         }
 

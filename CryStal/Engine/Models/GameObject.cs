@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CryStal.StateMachines.CollitionStateMachine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace CryStal.Engine.Models
     /// <summary>
     /// Checks what kind of behavior an object has when colliding
     /// </summary>
-    public enum CollitionType
+    /*public enum CollitionType
     {
         /// <summary>
         /// A Passable object is an object with no collition
@@ -30,7 +31,7 @@ namespace CryStal.Engine.Models
         /// A Spike damages any entity that hits it.
         /// </summary>
         Spike = 3,
-    }
+    }*/
     public class GameObject
     {
         protected Vector2 _position = Vector2.Zero;
@@ -38,7 +39,7 @@ namespace CryStal.Engine.Models
         protected Vector2 lastPos = Vector2.Zero;
 
         public Texture2D texture;
-        public CollitionType CollisionType = CollitionType.Impassable;
+        public CollitionStateMachine CollitionHandler = new CollitionStateMachine();
 
         public string ID;
         public bool isKillable = false;

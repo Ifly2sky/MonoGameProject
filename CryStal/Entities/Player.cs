@@ -49,6 +49,7 @@ namespace CryStal.Entities
             HasGravity = true;
             isKillable = true;
             ID = id;
+            CollitionHandler.SetCollitonState("Impassable");
 
             allObjects.Add(this);
         }
@@ -77,7 +78,7 @@ namespace CryStal.Entities
             Cell cell2 = Grid.GetCell(rightCellOnGrid.Width, rightCellOnGrid.Height);
             if (cell1 != null )
             {
-                return cell1.Objects.Any(x => x is Tile);
+                return cell1.Objects.Any(x => x.CollitionHandler.GetCollitionStateName() == "ImpassableTile");
             }
             else if(cell2 != null)
             {

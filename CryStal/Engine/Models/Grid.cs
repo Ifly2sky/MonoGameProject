@@ -29,7 +29,7 @@ namespace CryStal.Engine.Models
 
            foreach(GameObject obj in GameObject.allObjects)
            {
-                if(obj.CollisionType == CollitionType.Passable)
+                if(obj.CollitionHandler.GetCollitionStateName() == "Passable")
                 {
                     continue;
                 }

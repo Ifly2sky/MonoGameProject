@@ -9,13 +9,16 @@ namespace CryStal.StateMachines.CollitionStateMachine
 {
     public class CollitionStateMachine
     {
-        private static ImpassableState impassableState = new ImpassableState();
-        private static PassableState passableState = new PassableState();
-        private static PlatformState platformState = new PlatformState();
-        private static SpikeState spikeState = new SpikeState();
-        private static ImpassableTileState impassableTileState = new ImpassableTileState();
-        private CollitionState currentState = passableState;
-
+        private ImpassableState impassableState = new ImpassableState();
+        private PassableState passableState = new PassableState();
+        private PlatformState platformState = new PlatformState();
+        private SpikeState spikeState = new SpikeState();
+        private ImpassableTileState impassableTileState = new ImpassableTileState();
+        private CollitionState currentState;
+        public CollitionStateMachine()
+        {
+            currentState = passableState;
+        }
         public void HandleCollition(GameObject obj, GameObject target)
         {
             currentState.HandleCollition(obj, target);
