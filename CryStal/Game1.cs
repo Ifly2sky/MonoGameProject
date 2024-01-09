@@ -51,7 +51,7 @@ namespace CryStal
         {
             _graphics.ApplyChanges();
 
-            player = new Player(new Vector2(TileSize, TileSize), 140);
+            player = new Player(new Vector2(TileSize, TileSize), 560);
 
             LevelHandler.InitializeLevel(Services);
 
