@@ -155,7 +155,7 @@ namespace CryStal.Engine.Models
                 '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
                 '^' => new Tile(textures[6], "Spike"),
                 '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
-                'P' => new Tile(textures[8], "Platform"),
+                'P' => new Tile(textures[8], "Platform", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), Vector2.Zero)),
                 _ => new Tile(textures[0], "Passable")
             };
         }

@@ -24,7 +24,7 @@ namespace CryStal.Entities
         Vector2 _direction;
         public bool isGrounded;
         public bool isCrouching;
-
+        public string stateName => _state.Name;
         public Vector2 Direction
         {
             get { return _direction; }

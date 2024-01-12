@@ -35,6 +35,10 @@ namespace CryStal.StateMachines.CollitionStateMachine
 
                 if (target is Tile)
                 {
+                    if(target.CollitionHandler.GetCollitionStateName() == "Platform")
+                    {
+                        return;
+                    }
                     Vector2 tileDistance = target.VectorDistanceTo(obj.LastCenter);
                     difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
                     obj.Position += difference * direction;
