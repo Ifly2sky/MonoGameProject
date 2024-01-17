@@ -78,11 +78,11 @@ namespace CryStal.Entities
             Cell cell2 = Grid.GetCell(rightCellOnGrid.Width, rightCellOnGrid.Height);
             if (cell1 != null )
             {
-                return cell1.Objects.Any(x => x.CollitionHandler.GetCollitionStateName() == "ImpassableTile");
+                return cell1.Objects.Any(x => x.CollitionHandler.GetCollitionStateName() != "Passable" && x != this);
             }
             else if(cell2 != null)
             {
-                return cell2.Objects.Any(x => x is Tile);
+                return cell2.Objects.Any(x => x.CollitionHandler.GetCollitionStateName() != "Passable" && x != this);
             }
             return false;
         }

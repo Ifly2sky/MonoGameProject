@@ -17,10 +17,18 @@ namespace CryStal.StateMachines.CollitionStateMachine
         }
         internal override void HandleCollition(GameObject obj, GameObject target)
         {
-            if(target.isKillable)
+            if(!target.isKillable)
             {
-                target.Unload();
+                return;
             }
+            if (target.Hitbox.Left > obj.Hitbox.Right || 
+                target.Hitbox.Right < obj.Hitbox.Left || 
+                target.Hitbox.Bottom < obj.Hitbox.Top ||
+                target.Hitbox.Top > obj.Hitbox.Bottom)
+            {
+                return;
+            }
+            target.Unload();
         }
     }
 }

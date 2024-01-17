@@ -13,6 +13,11 @@ namespace CryStal.Engine.Models
         public Vector2 Size = new Vector2(Game1.TileSize, Game1.TileSize);
         public Vector2 Position = Vector2.Zero;
 
+        public float Left => Position.X;
+        public float Top => Position.Y;
+        public float Right => Position.X + Size.X;
+        public float Bottom => Position.Y + Size.Y;
+
         public Hitbox() { }
 
         public Hitbox(Vector2 size, Vector2 position)
