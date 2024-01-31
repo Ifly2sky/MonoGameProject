@@ -56,6 +56,14 @@ namespace CryStal.Entities
 
         public override void Update(float deltaTime)
         {
+            if (IsAlive)
+            {
+                Physics.OnPhysicsFinalize -= Unload;
+            }
+            else
+            {
+                Physics.OnPhysicsFinalize += Unload;
+            }
             _keyboardState = Keyboard.GetState();
             isGrounded = IsGrounded();
             _state.UpdateState(isGrounded, _keyboardState, this);

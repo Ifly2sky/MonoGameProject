@@ -11,12 +11,13 @@ namespace CryStal.Engine
 {
     public static class Physics
     {
-        public static readonly Vector2 gravity = new(0f, 50f); 
+        public static readonly Vector2 gravity = new(0f, 50f);
+        public static Action OnPhysicsFinalize = new(() => { });
 
         public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime
-            UpdatePositions(deltaTime, graphics); //updates object positions
+            UpdatePhysicsObjects(deltaTime, graphics); //updates object positions
             Grid.UpdateGrid();
             UpdateCollitionsWithSubsteps(8);// solves collitions more than once to make physics more accurate
         }
@@ -94,7 +95,7 @@ namespace CryStal.Engine
                     return;
             }
         }*/
-        private static void UpdatePositions(float deltaTime, GraphicsDevice graphics)
+        private static void UpdatePhysicsObjects(float deltaTime, GraphicsDevice graphics)
         {
             foreach (PhysicsObject obj in PhysicsObject.allPhysicsObjects)
             {
@@ -103,6 +104,7 @@ namespace CryStal.Engine
                 obj.Update(deltaTime);
                 obj.Clamp(graphics);
             }
+            OnPhysicsFinalize();
         }
         private static void UpdateCollitions(int maxHeight, int maxWidth, int minHeight = 0, int minWidth = 0)
         {

@@ -28,7 +28,7 @@ namespace CryStal.StateMachines.CollitionStateMachine
             {
                 return;
             }
-            target.Unload();
+            target.SetDead();
         }
     }
 }

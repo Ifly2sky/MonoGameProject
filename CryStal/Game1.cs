@@ -99,6 +99,7 @@ namespace CryStal
             else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)   
             {
                 player.Load();
+                player.SetAlive();
                 LevelHandler.LoadLevel("Demo");
                 spawned = false;
             }

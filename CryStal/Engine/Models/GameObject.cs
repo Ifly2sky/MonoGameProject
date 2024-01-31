@@ -43,6 +43,7 @@ namespace CryStal.Engine.Models
 
         public string ID;
         public bool isKillable = false;
+        private bool _isAlive = true;
 
         public static List<GameObject> allObjects = new();
 
@@ -62,6 +63,17 @@ namespace CryStal.Engine.Models
         public Vector2 LastCenter
         {
             get { return lastPos + Hitbox.Position + Hitbox.Size * 0.5f; }
+        }
+        public bool IsAlive
+        {
+            get
+            {
+                return _isAlive;
+            }
+            protected set 
+            { 
+                _isAlive = value; 
+            }
         }
 
         public Hitbox Hitbox { get; set; } = new Hitbox();
@@ -84,6 +96,14 @@ namespace CryStal.Engine.Models
         public virtual void Load()
         {
             allObjects.Add(this);
+        }
+        public void SetDead()
+        {
+            _isAlive = false;
+        }
+        public void SetAlive()
+        {
+            _isAlive = true;
         }
     }
 }
