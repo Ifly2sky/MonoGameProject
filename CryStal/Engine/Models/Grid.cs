@@ -31,15 +31,15 @@ namespace CryStal.Engine.Models
            {
                 if(obj == null)
                 {
-                    return;
+                    continue;
                 }
                 if(obj.CollitionHandler.GetCollitionStateName() == "Passable")
                 {
                     continue;
                 }
 
-                int x = (int)Math.Floor(obj.Position.X * Game1.InverseTileSize);
-                int y = (int)Math.Floor(obj.Position.Y * Game1.InverseTileSize);
+                int x = (int)Math.Floor(obj.Position.X * Game1.INVERCETILESIZE);
+                int y = (int)Math.Floor(obj.Position.Y * Game1.INVERCETILESIZE);
 
                 if(x >= Width || y >= Height || x<0 || y<0)
                 {
@@ -68,7 +68,7 @@ namespace CryStal.Engine.Models
         //world coordinate can be x or y
         public static Size GetGridCoordinates(Vector2 worldCoordinates)
         {
-            return new Size((int)Math.Floor(worldCoordinates.X * Game1.InverseTileSize), (int)Math.Floor(worldCoordinates.Y * Game1.InverseTileSize));
+            return new Size((int)Math.Floor(worldCoordinates.X * Game1.INVERCETILESIZE), (int)Math.Floor(worldCoordinates.Y * Game1.INVERCETILESIZE));
         }
     }
 }

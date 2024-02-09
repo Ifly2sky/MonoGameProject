@@ -66,8 +66,8 @@ namespace CryStal.Engine.Models
         }
         public void Clamp(GraphicsDevice graphics)
         {
-            float maxX = graphics.Viewport.Width - Game1.TileSize;
-            float maxY = graphics.Viewport.Height - Game1.TileSize;
+            float maxX = graphics.Viewport.Width - Game1.TILESIZE;
+            float maxY = graphics.Viewport.Height - Game1.TILESIZE;
 
             Position = new Vector2(Math.Clamp(Position.X, 0, maxX), Math.Clamp(Position.Y, 0, maxY));
 

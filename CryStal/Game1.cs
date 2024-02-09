@@ -13,10 +13,19 @@ namespace CryStal
 {
     public class Game1 : Game
     {
+        public static int SCREENWIDTH = 1600;
+        public static int SCREENHEIGHT = 900;
+
+        //tile information
+        public const int SCALE = 3;
+        public const int TILESIZE = 16 * SCALE;
+        public const float INVERCETILESIZE = 0.02083333333333333333f; // 1/tileSIze
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public Player player;
+        public Camera camera;
 
         List<GameObject> tempObj = new();
 
@@ -29,13 +38,9 @@ namespace CryStal
         //Default Font
         public static SpriteFont Arial;
 
-        //tile information
-        public const int Scale = 3;
-        public const int TileSize = 16 * Scale;
-        public const float InverseTileSize = 0.02083333333333333333f; // 1/tileSIze
-
+        //delegates
         public static Action OnUpdate;
-        public delegate void DrawAction(SpriteBatch spriteBatch);
+        public delegate void DrawAction(SpriteBatch spriteBatch, Camera camera);
         public static DrawAction OnDraw;
 
         public Game1()
@@ -51,7 +56,8 @@ namespace CryStal
         {
             _graphics.ApplyChanges();
 
-            player = new Player(new Vector2(TileSize, TileSize), 560);
+            player = new Player(new Vector2(TILESIZE, TILESIZE), 460);
+            camera = new Camera(new Vector2(0, 0), new Rectangle(0, 0, SCREENWIDTH, SCREENHEIGHT), new Vector2(1.0f));
 
             LevelHandler.InitializeLevel(Services);
 
@@ -118,7 +124,7 @@ namespace CryStal
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            OnDraw(_spriteBatch);
+            OnDraw(_spriteBatch, camera);
 
             DrawDebugTimer();
             drawTimer.Restart();

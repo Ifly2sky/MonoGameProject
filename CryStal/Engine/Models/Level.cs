@@ -86,7 +86,7 @@ namespace CryStal.Engine.Models
                     // to load each tile.
                     char tileType = lines[y][x];
                     tiles[x, y] = LoadTile(tileType);
-                    tiles[x, y].Position = new Vector2(Game1.TileSize * x, Game1.TileSize * y);
+                    tiles[x, y].Position = new Vector2(Game1.TILESIZE * x, Game1.TILESIZE * y);
                 }
             }
 
@@ -114,8 +114,8 @@ namespace CryStal.Engine.Models
                     return;
                 }
 
-                int x = Game1.TileSize * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
-                int y = Game1.TileSize * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
+                int x = Game1.TILESIZE * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
+                int y = Game1.TILESIZE * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
                 entity.Position = new Vector2(x, y);
                 if(entity is PhysicsObject)
                 {
@@ -152,10 +152,10 @@ namespace CryStal.Engine.Models
                 'S' => new Tile(textures[2], "ImpassableTile"),
                 'C' => new Tile(textures[3], "ImpassableTile"),
                 'L' => new Tile(textures[4], "ImpassableTile"),
-                '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
+                '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
                 '^' => new Tile(textures[6], "Spike"),
-                '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.5f), new Vector2(0, Game1.TileSize * 0.5f))),
-                'P' => new Tile(textures[8], "Platform", new Hitbox(new Vector2(Game1.TileSize, Game1.TileSize * 0.1f), Vector2.Zero)),
+                '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
+                'P' => new Tile(textures[8], "Platform", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.1f), Vector2.Zero)),
                 _ => new Tile(textures[0], "Passable")
             };
         }
@@ -173,18 +173,25 @@ namespace CryStal.Engine.Models
             textures.Add(Content.Load<Texture2D>("Platform"));
         }
 
-        public void DrawLevel(SpriteBatch spriteBatch)
+        public void DrawLevel(SpriteBatch spriteBatch, Camera camera)
         {
             foreach(Tile tile in tiles)
             {
                 if (tile.texture != null) 
                 {
-                    spriteBatch.Draw(tile.texture, tile.Position, null, Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+                    Vector2 drawPos = (tile.Position - camera.Position) * camera.Scale;
+                    if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - tile.Hitbox.Size.X &&
+                        drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
+                        drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - tile.Hitbox.Size.Y &&
+                        drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+                    {
+                        spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
+                    }
                 }
             }
             foreach(GameObject levelObject in levelEntities)
             {
-                levelObject.Draw(spriteBatch);
+                levelObject.Draw(spriteBatch, camera);
             }
         }
 

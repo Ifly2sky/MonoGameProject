@@ -10,7 +10,7 @@ namespace CryStal.Engine.Models
     public class Hitbox
     {
         //TODO replace with rectangle and force it to do the hard work of collition detection
-        public Vector2 Size = new Vector2(Game1.TileSize, Game1.TileSize);
+        public Vector2 Size = new Vector2(Game1.TILESIZE, Game1.TILESIZE);
         public Vector2 Position = Vector2.Zero;
 
         public float Left => Position.X;

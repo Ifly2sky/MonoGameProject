@@ -16,7 +16,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
 
         internal override void EnterState(Player player)
         {
-            player.Hitbox.Size.Y = Game1.TileSize * 0.5f;
+            player.Hitbox.Size.Y = Game1.TILESIZE * 0.5f;
             player.isCrouching = true;
         }
 
@@ -51,7 +51,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             player.Position -= new Vector2(0, player.Hitbox.Size.Y);
             player.ResetVelocityY();
-            player.Hitbox.Size.Y = Game1.TileSize;
+            player.Hitbox.Size.Y = Game1.TILESIZE;
             player.isCrouching = false;
         }
     }

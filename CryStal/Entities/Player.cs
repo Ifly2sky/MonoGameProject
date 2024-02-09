@@ -43,7 +43,7 @@ namespace CryStal.Entities
             this.jumpForce = jumpForce;
             ResetVelocity();
 
-            Hitbox.Size = new Vector2(Game1.TileSize, Game1.TileSize);
+            Hitbox.Size = new Vector2(Game1.TILESIZE, Game1.TILESIZE);
             Hitbox.Position = Vector2.Zero;
             Drag = new Vector2(0, 1.00f);
             HasGravity = true;
@@ -70,9 +70,18 @@ namespace CryStal.Entities
 
             base.Update(deltaTime);
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            spriteBatch.Draw(Texture, Position, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.Scale, SpriteEffects.None, 0f);
+            Vector2 drawPos = (Position - camera.Position) * camera.Scale;
+            if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - Hitbox.Size.X &&
+                drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
+                drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - Hitbox.Size.Y &&
+                drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+            {
+                spriteBatch.Draw(Texture, drawPos, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
+            }
+
+            //draw debug
             spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
             spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 82), Microsoft.Xna.Framework.Color.WhiteSmoke);
