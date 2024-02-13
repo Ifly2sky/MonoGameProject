@@ -68,6 +68,12 @@
 /processorParam:TextureFormat=Color
 /build:CrystalSpikes2.png
 
+#begin File.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:File.fx
+
 #begin LightStone.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -91,6 +97,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Platform.png
+
+#begin Shaders/PaletteSwap.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/PaletteSwap.fx
 
 #begin Stone.png
 /importer:TextureImporter
