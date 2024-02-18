@@ -21,14 +21,14 @@ namespace CryStal.StateMachines.CollitionStateMachine
             {
                 return;
             }
-            if (target.Hitbox.Left > obj.Hitbox.Right || 
-                target.Hitbox.Right < obj.Hitbox.Left || 
-                target.Hitbox.Bottom < obj.Hitbox.Top ||
-                target.Hitbox.Top > obj.Hitbox.Bottom)
+            if (target.Position.X + target.Hitbox.Left > obj.Position.X + obj.Hitbox.Right ||
+                target.Position.X + target.Hitbox.Right < obj.Position.X + obj.Hitbox.Left ||
+                target.Position.Y + target.Hitbox.Bottom < obj.Position.Y + obj.Hitbox.Top ||
+                target.Position.Y + target.Hitbox.Top > obj.Position.Y + obj.Hitbox.Bottom)
             {
                 return;
             }
-            target.SetDead();
+             target.SetDead();
         }
     }
 }

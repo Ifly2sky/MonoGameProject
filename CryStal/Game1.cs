@@ -23,6 +23,7 @@ namespace CryStal
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Effect _paletteSwap;
 
         public Player player;
         public Camera camera;
@@ -41,7 +42,9 @@ namespace CryStal
         //delegates
         public static Action OnUpdate;
         public delegate void DrawAction(SpriteBatch spriteBatch, Camera camera);
-        public static DrawAction OnDraw;
+        public static DrawAction OnDefaultDraw;
+        public delegate void PaletteDrawAction(SpriteBatch spriteBatch, Camera camera, Effect effect);
+        public static PaletteDrawAction OnPaletteDraw;
 
         public Game1()
         {
@@ -61,8 +64,8 @@ namespace CryStal
 
             LevelHandler.InitializeLevel(Services);
 
-            OnDraw += player.Draw;
-            OnDraw += LevelHandler.DrawLevel;
+            OnPaletteDraw += player.Draw;
+            OnDefaultDraw += LevelHandler.DrawLevel;
 
             base.Initialize();
         }
@@ -72,7 +75,9 @@ namespace CryStal
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Arial = Content.Load<SpriteFont>("Arial");
-            player.Texture = Content.Load<Texture2D>("Template");
+            player.Texture = Content.Load<Texture2D>("Player");
+            player.Palette = Content.Load<Texture2D>("PlayerPalette");
+            _paletteSwap = Content.Load<Effect>("Shaders\\PaletteSwap");
 
             LevelHandler.LoadLevel("Demo");
 
@@ -102,7 +107,7 @@ namespace CryStal
                 LevelHandler.LoadLevel("Demo2");
                 spawned = true;
             }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)   
+            else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)
             {
                 player.Load();
                 player.SetAlive();
@@ -122,12 +127,20 @@ namespace CryStal
         {
             GraphicsDevice.Clear(Color.Black);
 
+            //Default draw call
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            OnDraw(_spriteBatch, camera);
+            OnDefaultDraw(_spriteBatch, camera);
 
             DrawDebugTimer();
             drawTimer.Restart();
+
+            _spriteBatch.End();
+
+            //Palette Draw Call
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _paletteSwap);
+
+            OnPaletteDraw(_spriteBatch, camera, _paletteSwap);
 
             _spriteBatch.End();
 

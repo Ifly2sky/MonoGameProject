@@ -3,19 +3,17 @@ using CryStal.Engine.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
 using CryStal.StateMachines.PlayerStateMachine;
-using System.Security.Cryptography.X509Certificates;
-using System.Runtime.CompilerServices;
 
 namespace CryStal.Entities
 {
     public class Player : PhysicsObject
     {
-        Texture2D _texture;
+        public Texture2D Texture;
+        public Texture2D Palette;
         KeyboardState _keyboardState;
         StateMachine _state = new StateMachine();
 
@@ -29,11 +27,6 @@ namespace CryStal.Entities
         {
             get { return _direction; }
             set { _direction = value; }
-        }
-        public Texture2D Texture
-        {
-            get { return _texture; }
-            set { _texture = value; }
         }
 
         public Player(Vector2 position, float speed, float jumpForce = 100, string id = "P"):base()
@@ -70,7 +63,7 @@ namespace CryStal.Entities
 
             base.Update(deltaTime);
         }
-        public override void Draw(SpriteBatch spriteBatch, Camera camera)
+        public void Draw(SpriteBatch spriteBatch, Camera camera, Effect effect)
         {
             Vector2 drawPos = (Position - camera.Position) * camera.Scale;
             if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - Hitbox.Size.X &&
@@ -78,6 +71,7 @@ namespace CryStal.Entities
                 drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - Hitbox.Size.Y &&
                 drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
             {
+                effect.Parameters["PaletteTexture"].SetValue(Palette);
                 spriteBatch.Draw(Texture, drawPos, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
             }
 
@@ -105,13 +99,13 @@ namespace CryStal.Entities
         }
         public override void Unload()
         {
-            Game1.OnDraw -= Draw;
+            Game1.OnPaletteDraw -= Draw;
             base.Unload();
         }
         public override void Load()
         {
             _state.SetState("StoppedState");
-            Game1.OnDraw += Draw;
+            Game1.OnPaletteDraw += Draw;
             base.Load();
         }
     }
