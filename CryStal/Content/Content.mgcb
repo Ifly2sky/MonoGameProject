@@ -80,6 +80,18 @@
 /processorParam:TextureFormat=Color
 /build:CrystalSpikes1.png
 
+#begin CrystalSpikes1Specular.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:CrystalSpikes1Specular.png
+
 #begin CrystalSpikes2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -116,11 +128,11 @@
 /processorParam:TextureFormat=Color
 /build:Platform.png
 
-#begin Shaders/File.fx
+#begin Shaders/LightingShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Shaders/File.fx;Shaders/LightingShader.fx
+/build:Shaders/LightingShader.fx
 
 #begin Shaders/PaletteSwap.fx
 /importer:EffectImporter

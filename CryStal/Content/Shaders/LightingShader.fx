@@ -6,31 +6,24 @@
 	#define VS_SHADERMODEL vs_4_0_level_9_1
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
-struct Material
+
+cbuffer world
 {
-    sampler2D diffuse;
-    sampler2D specular;
-    float shininess;
+     float4x4 World;
+     float4x4 Model;
+};
+cbuffer LightingConstants
+{
+    float2 lightPosition;
+
+    float constantT;
+    float linearT;
+    float quadraticT;
+
+    float3 lightAmbient;
 };
 
-struct PointLight
-{
-    float3 position;
-	
-    float constant;
-	float line;
-    float quadratic;
-	
-    float3 ambient;
-    float3 diffuse;
-    float3 specular;
-};
-#define NR_POINT_LIGHTS 2
-PointLight pointLights[NR_POINT_LIGHTS];
-
-float3 viewPos;
 Texture2D SpriteTexture;
-Material material;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -42,50 +35,39 @@ struct VertexShaderOutput
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR0;
 	float2 TextureCoordinates : TEXCOORD0;
+    float2 WorldPos : TEXCOORD1;
 };
-
-float3 CalcPointLight(VertexShaderOutput input, PointLight light, float3 normal, float3 fragPos, float3 viewDir);
+VertexShaderOutput VS(float4 position : SV_POSITION, float4 color : COLOR0, float2 texCoord : TEXCOORD0)
+{
+        VertexShaderOutput output;
+        
+        output.Position = mul(position, Model);
+        output.Color = color;
+        output.TextureCoordinates = texCoord;
+        output.WorldPos = mul(position, World).xy;
+        
+        return output;
+}
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float4 result;
+    float3 result;
+    //ambient
+    float3 ambient = lightAmbient * tex2D(SpriteTextureSampler, input.TextureCoordinates).rgb;
+    //attenuation
+    float distance = length(lightPosition - input.WorldPos);
+    float attenuation = 1.0 / (constantT + linearT * distance + quadraticT * (distance * distance));
     
-    float3 norm = (0, 0, 1);
-    float3 viewDir = viewPos - input.Position.xyz;
+    result = ambient * attenuation;
     
-    for (int i = 0; i < NR_POINT_LIGHTS; i++)
-    {
-        result += CalcPointLight(input, pointLights[i], norm, input.Position.xyz, viewDir);
-    }
-    
-    return (result, 0);
-}
-float3 CalcPointLight(VertexShaderOutput input, PointLight light, float3 normal, float3 fragPos, float3 viewDir)
-{
-    float3 lightDir = (normalize(light.position - fragPos), 1.0);
-	// diffuse
-    float diff = max(dot(normal, lightDir), 0.0);
-    float3 reflectDir = reflect(-lightDir, normal);
-	// specular
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // attenuation
-    float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.line * distance + light.quadratic * (distance * distance));
-    // combine
-    float3 ambient = light.ambient * float3(tex2D(material.diffuse, input.TextureCoordinates).xyz);
-    float3 diffuse = light.diffuse * diff * float3(tex2D(material.diffuse, input.TextureCoordinates).xyz);
-    float3 specular = light.specular * spec * float3(tex2D(material.specular, input.TextureCoordinates).xyz);
-    
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
-    return (ambient + diffuse + specular);
+    return float4((result), 1.0);
 }
 
 technique SpriteDrawing
 {
 	pass P0
 	{
-		PixelShader = compile PS_SHADERMODEL MainPS();
-	}
+        VertexShader = compile VS_SHADERMODEL VS();
+        PixelShader = compile PS_SHADERMODEL MainPS();
+    }
 };

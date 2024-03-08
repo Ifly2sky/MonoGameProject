@@ -14,7 +14,9 @@ namespace CryStal.Engine.Models
         public Tile[,] tiles;
         public string levelPath = @"C:\Users\Miko\source\repos\CryStal\CryStal\Content\";
         public List<Texture2D> textures = new();
+        public List<Texture2D> specularMaps = new();
         private List<GameObject> levelEntities = new();
+        private List<GameObject> lightingTiles = new();
 
         public ContentManager Content 
         {
@@ -37,6 +39,7 @@ namespace CryStal.Engine.Models
             content = new ContentManager(serviceProvider, "Content");
 
             LoadTextures();
+            LoadSpecularMaps();
         }
 
         public void LoadLevel(Stream fileStream)
@@ -85,7 +88,10 @@ namespace CryStal.Engine.Models
                 {
                     // to load each tile.
                     char tileType = lines[y][x];
-                    tiles[x, y] = LoadTile(tileType);
+                    Tile tile = LoadTile(tileType);
+                    if(tile.specularMap != null)
+                        lightingTiles.Add(tile);
+                    tiles[x, y] = tile;
                     tiles[x, y].Position = new Vector2(Game1.TILESIZE * x, Game1.TILESIZE * y);
                 }
             }
@@ -153,7 +159,7 @@ namespace CryStal.Engine.Models
                 'C' => new Tile(textures[3], "ImpassableTile"),
                 'L' => new Tile(textures[4], "ImpassableTile"),
                 '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
-                '^' => new Tile(textures[6], "Spike"),
+                '^' => new Tile(textures[6], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE), new Vector2(0, Game1.TILESIZE * 0.5f)), specularMaps[1]),
                 '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
                 'P' => new Tile(textures[8], "Platform", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.1f), Vector2.Zero)),
                 _ => new Tile(textures[0], "Passable")
@@ -172,12 +178,17 @@ namespace CryStal.Engine.Models
             textures.Add(Content.Load<Texture2D>("CrystalSpikes2"));
             textures.Add(Content.Load<Texture2D>("Platform"));
         }
+        public void LoadSpecularMaps()
+        {
+            specularMaps.Add(null);
+            specularMaps.Add(Content.Load<Texture2D>("CrystalSpikes1Specular"));
+        }
 
         public void DrawLevel(SpriteBatch spriteBatch, Camera camera)
         {
             foreach(Tile tile in tiles)
             {
-                if (tile.texture != null) 
+                if (tile.texture != null && tile.specularMap == null) 
                 {
                     Vector2 drawPos = (tile.Position - camera.Position) * camera.Scale;
                     if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - tile.Hitbox.Size.X &&
@@ -190,6 +201,29 @@ namespace CryStal.Engine.Models
                 }
             }
             foreach(GameObject levelObject in levelEntities)
+            {
+                levelObject.Draw(spriteBatch, camera);
+            }
+        }
+        //temporary function, should be merged into everything
+        public void DrawLevelLighting(SpriteBatch spriteBatch, Camera camera, Effect effect)
+        {
+            foreach (Tile tile in lightingTiles)
+            {
+                if (tile.texture != null)
+                {
+                    Vector2 drawPos = (tile.Position - camera.Position) * camera.Scale;
+                    if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - tile.Hitbox.Size.X &&
+                        drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
+                        drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - tile.Hitbox.Size.Y &&
+                        drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+                    {
+                        //effect.Parameters["specular"].SetValue(tile.specularMap);
+                        spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
+                    }
+                }
+            }
+            foreach (GameObject levelObject in levelEntities)
             {
                 levelObject.Draw(spriteBatch, camera);
             }

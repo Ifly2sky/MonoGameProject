@@ -38,6 +38,10 @@ namespace CryStal.Engine
         {
             level.DrawLevel(spriteBatch, camera);
         }
+        public static void DrawLevelLighting(SpriteBatch spriteBatch, Camera camera, Effect effect)
+        {
+            level.DrawLevelLighting(spriteBatch, camera, effect);
+        }
         private static string GetLevelPath(string levelName)
         {
             return levelName switch

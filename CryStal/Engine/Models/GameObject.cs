@@ -39,6 +39,7 @@ namespace CryStal.Engine.Models
         protected Vector2 lastPos = Vector2.Zero;
 
         public Texture2D texture;
+        public Texture2D specularMap;
         public CollitionStateMachine CollitionHandler = new CollitionStateMachine();
 
         public string ID;

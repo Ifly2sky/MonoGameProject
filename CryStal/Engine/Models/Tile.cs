@@ -32,5 +32,14 @@ namespace CryStal.Engine.Models
 
             allObjects.Add(this);
         }
+        public Tile(Texture2D texture, string collisionType, Hitbox hitbox, Texture2D specular)
+        {
+            this.texture = texture;
+            this.specularMap = specular;
+            CollitionHandler.SetCollitonState(collisionType);
+            Hitbox = hitbox;
+
+            allObjects.Add(this);
+        }
     }
 }
