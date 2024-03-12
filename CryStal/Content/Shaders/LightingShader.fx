@@ -35,7 +35,7 @@ struct VertexShaderOutput
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR0;
 	float2 TextureCoordinates : TEXCOORD0;
-    float2 WorldPos : TEXCOORD1;
+    float4 WorldPos : TEXCOORD1;
 };
 VertexShaderOutput VS(float4 position : SV_POSITION, float4 color : COLOR0, float2 texCoord : TEXCOORD0)
 {
@@ -44,7 +44,7 @@ VertexShaderOutput VS(float4 position : SV_POSITION, float4 color : COLOR0, floa
         output.Position = mul(position, Model);
         output.Color = color;
         output.TextureCoordinates = texCoord;
-        output.WorldPos = mul(position, World).xy;
+        output.WorldPos = mul(position, World);
         
         return output;
 }
@@ -55,7 +55,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //ambient
     float3 ambient = lightAmbient * tex2D(SpriteTextureSampler, input.TextureCoordinates).rgb;
     //attenuation
-    float distance = length(lightPosition - input.WorldPos);
+    float distance = length(lightPosition - input.WorldPos.xy);
     float attenuation = 1.0 / (constantT + linearT * distance + quadraticT * (distance * distance));
     
     result = ambient * attenuation;

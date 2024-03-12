@@ -53,17 +53,6 @@ namespace CryStal
         public static EffectDrawAction OnPaletteDraw;
         public static EffectDrawAction OnLightingDraw;
 
-
-        //Vector2[] lightPosition = new Vector2[2];
-
-        //float[] constant = new float[2];
-        //float[] fLinear = new float[2];
-        //float[] quadratic = new float[2];
-
-        //Vector3[] lightAmbient = new Vector3[2];
-        //Vector3[] lightDiffuse = new Vector3[2];
-        //Vector3[] lightSpecular = new Vector3[2];
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -188,18 +177,6 @@ namespace CryStal
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
-        }
-        private void AddPointLight(PointLight light, int index)
-        {
-            //lightPosition[index] = light.Position;
-
-            //constant[index] = light.constant;
-            //fLinear[index] = light.linear;
-            //quadratic[index] = light.quadratic;
-
-            //lightAmbient[index] = light.ambient;
-            //lightDiffuse[index] = light.diffuse;
-            //lightSpecular[index] = light.specular;
         }
         private void UsePointLights()
         {

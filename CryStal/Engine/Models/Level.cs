@@ -218,7 +218,6 @@ namespace CryStal.Engine.Models
                         drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - tile.Hitbox.Size.Y &&
                         drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
                     {
-                        //effect.Parameters["specular"].SetValue(tile.specularMap);
                         spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
                     }
                 }
