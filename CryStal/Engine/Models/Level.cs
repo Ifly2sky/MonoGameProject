@@ -222,10 +222,6 @@ namespace CryStal.Engine.Models
                     }
                 }
             }
-            foreach (GameObject levelObject in levelEntities)
-            {
-                levelObject.Draw(spriteBatch, camera);
-            }
         }
 
         public void Dispose()

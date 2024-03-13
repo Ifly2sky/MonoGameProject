@@ -30,11 +30,12 @@ struct VertexShaderOutput
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
+    float4 paletteColor = color;
     if (color.a > 0)
     {
-        color = tex1D(PaletteTextureSampler, color.r);
+        paletteColor = tex1D(PaletteTextureSampler, color.r);
     }
-    return color;
+    return float4(paletteColor.rgb, color.a);
 }
 
 technique SpriteDrawing

@@ -7,12 +7,9 @@
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-cbuffer world
-{
-     float4x4 World;
-     float4x4 Model;
-};
-cbuffer LightingConstants
+float2 WorldSize;
+
+cbuffer cb
 {
     float2 lightPosition;
 
@@ -32,42 +29,48 @@ sampler2D SpriteTextureSampler = sampler_state
 
 struct VertexShaderOutput
 {
-	float4 Position : SV_POSITION;
-	float4 Color : COLOR0;
-	float2 TextureCoordinates : TEXCOORD0;
-    float4 WorldPos : TEXCOORD1;
+    float4 Position : SV_Position;
+    float4 Color : COLOR0;
+    float2 TextureCoordinates : TEXCOORD0;
 };
-VertexShaderOutput VS(float4 position : SV_POSITION, float4 color : COLOR0, float2 texCoord : TEXCOORD0)
-{
-        VertexShaderOutput output;
+//VertexShaderOutput VS(float4 position : SV_POSITION, float4 color : COLOR0, float2 texCoord : TEXCOORD0)
+//{
+//        VertexShaderOutput output;
         
-        output.Position = mul(position, Model);
-        output.Color = color;
-        output.TextureCoordinates = texCoord;
-        output.WorldPos = mul(position, World);
+//        output.Position = position;
+//        output.Color = color;
+//        output.TextureCoordinates = texCoord;
         
-        return output;
-}
+//        return output;
+//}
 
-float4 MainPS(VertexShaderOutput input) : COLOR
+float4 MainPS(VertexShaderOutput input) : COLOR0
 {
     float3 result;
+    
+    float2 pxPos;
+    pxPos.x = input.Position.x;
+    pxPos.y = WorldSize.y - input.Position.y;
+    
+    //Pixel Color
+    float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
+    
     //ambient
-    float3 ambient = lightAmbient * tex2D(SpriteTextureSampler, input.TextureCoordinates).rgb;
+    float3 ambient = lightAmbient * color.rgb;
+    
     //attenuation
-    float distance = length(lightPosition - input.WorldPos.xy);
+    float distance = length(lightPosition - pxPos);
     float attenuation = 1.0 / (constantT + linearT * distance + quadraticT * (distance * distance));
     
-    result = ambient * attenuation;
+    result = color.rgb * ambient + color.rgb * attenuation;
     
-    return float4((result), 1.0);
+    return float4(result, color.a);
 }
 
 technique SpriteDrawing
 {
 	pass P0
 	{
-        VertexShader = compile VS_SHADERMODEL VS();
         PixelShader = compile PS_SHADERMODEL MainPS();
     }
 };

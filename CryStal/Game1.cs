@@ -32,7 +32,7 @@ namespace CryStal
 
         public Player player;
         public Camera camera;
-        public PointLight light1 = new PointLight(new Vector2(0,0), 1.0f, 0.09f, 0.032f, new Vector3(0.05f), new Vector3(0.8f), new Vector3(1f));
+        public PointLight light1 = new PointLight(new Vector2(0,0), 1.0f, 0.0014f, 0.000007f, new Vector3(0.05f), new Vector3(0.8f), new Vector3(1f));
 
         List<GameObject> tempObj = new();
 
@@ -87,6 +87,7 @@ namespace CryStal
             player.Palette = Content.Load<Texture2D>("PlayerPalette");
             _paletteSwap = Content.Load<Effect>("Shaders\\PaletteSwap");
             _lightingShader = Content.Load<Effect>("Shaders\\LightingShader");
+            _lightingShader.Parameters["WorldSize"].SetValue(new Vector2(SCREENWIDTH, SCREENHEIGHT));
 
             LevelHandler.LoadLevel("Demo");
 
@@ -139,7 +140,7 @@ namespace CryStal
             //Default draw call
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            OnDefaultDraw(_spriteBatch, camera);
+            //OnDefaultDraw(_spriteBatch, camera);
 
             DrawDebugTimer();
             drawTimer.Restart();
@@ -155,17 +156,10 @@ namespace CryStal
             //Lighting Draw Call
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _lightingShader);
 
-
-            _lightingShader.Parameters["World"].SetValue(new Matrix(new Vector4(1, 0, 0, 0),
-                                                                    new Vector4(0, 1, 0, 0),
-                                                                    new Vector4(0, 0, 1, 0),
-                                                                    new Vector4(0, 0, 0, 1)));
-            _lightingShader.Parameters["Model"].SetValue(Matrix.CreateOrthographicOffCenter(0, 1600, 900, 0, -2000.0f, 2000.0f));
-            light1.Position = player.Position;
-            //AddPointLight(light1, 0);
+            light1.Position = player.Center;
             UsePointLights();
 
-            //OnDefaultDraw(_spriteBatch, camera);
+            OnDefaultDraw(_spriteBatch, camera);
             OnLightingDraw(_spriteBatch, camera, _lightingShader);
 
             _spriteBatch.End();
