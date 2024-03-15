@@ -181,7 +181,7 @@ namespace CryStal
             _lightingShader.Parameters["quadraticT"].SetValue(light1.quadratic);
 
             _lightingShader.Parameters["lightAmbient"].SetValue(light1.ambient);
-            //_lightingShader.Parameters["lightDiffuse"].SetValue(lightDiffuse[0]);
+            _lightingShader.Parameters["lightDiffuse"].SetValue(light1.diffuse);
             //_lightingShader.Parameters["lightSpecular"].SetValue(lightSpecular[0]);
         }
     }

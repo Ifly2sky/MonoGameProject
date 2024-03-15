@@ -18,6 +18,7 @@ cbuffer cb
     float quadraticT;
 
     float3 lightAmbient;
+    float3 lightDiffuse;
 };
 
 Texture2D SpriteTexture;
@@ -58,11 +59,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR0
     //ambient
     float3 ambient = lightAmbient * color.rgb;
     
+    float3 diffuse = lightDiffuse * color.rgb;
+    
     //attenuation
     float distance = length(lightPosition - pxPos);
     float attenuation = 1.0 / (constantT + linearT * distance + quadraticT * (distance * distance));
     
-    result = color.rgb * ambient + color.rgb * attenuation;
+    result = color.rgb * ambient + diffuse * attenuation;
     
     return float4(result, color.a);
 }
