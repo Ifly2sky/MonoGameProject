@@ -31,5 +31,18 @@ namespace CryStal.Engine.Models
             this.diffuse = diffuse;
             this.specular = specular;
         }
+
+        public void Use(Effect shader)
+        {
+
+            shader.Parameters["lightPosition"].SetValue(Position);
+            
+            shader.Parameters["constantT"].SetValue(constant);
+            shader.Parameters["linearT"].SetValue(linear);
+            shader.Parameters["quadraticT"].SetValue(quadratic);
+            
+            shader.Parameters["lightAmbient"].SetValue(ambient);
+            shader.Parameters["lightDiffuse"].SetValue(diffuse);
+        }
     }
 }

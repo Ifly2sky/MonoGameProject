@@ -157,7 +157,7 @@ namespace CryStal
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _lightingShader);
 
             light1.Position = player.Center;
-            UsePointLights();
+            light1.Use(_lightingShader);
 
             OnDefaultDraw(_spriteBatch, camera);
             OnLightingDraw(_spriteBatch, camera, _lightingShader);
@@ -171,18 +171,6 @@ namespace CryStal
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
-        }
-        private void UsePointLights()
-        {
-            _lightingShader.Parameters["lightPosition"].SetValue(light1.Position);
-
-            _lightingShader.Parameters["constantT"].SetValue(light1.constant);
-            _lightingShader.Parameters["linearT"].SetValue(light1.linear);
-            _lightingShader.Parameters["quadraticT"].SetValue(light1.quadratic);
-
-            _lightingShader.Parameters["lightAmbient"].SetValue(light1.ambient);
-            _lightingShader.Parameters["lightDiffuse"].SetValue(light1.diffuse);
-            //_lightingShader.Parameters["lightSpecular"].SetValue(lightSpecular[0]);
         }
     }
 }
