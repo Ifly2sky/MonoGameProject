@@ -137,6 +137,19 @@ namespace CryStal
         {
             GraphicsDevice.Clear(Color.Black);
 
+            //Lighting Draw Call
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _lightingShader);
+
+            LevelHandler.DrawBackground(_spriteBatch, camera);
+
+            light1.Position = player.Center;
+            light1.Use(_lightingShader);
+
+            OnDefaultDraw(_spriteBatch, camera);
+            OnLightingDraw(_spriteBatch, camera, _lightingShader);
+
+            _spriteBatch.End();
+
             //Default draw call
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
@@ -150,17 +163,6 @@ namespace CryStal
             //Palette Draw Call
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _paletteSwap);
             OnPaletteDraw(_spriteBatch, camera, _paletteSwap);
-
-            _spriteBatch.End();
-
-            //Lighting Draw Call
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, effect: _lightingShader);
-
-            light1.Position = player.Center;
-            light1.Use(_lightingShader);
-
-            OnDefaultDraw(_spriteBatch, camera);
-            OnLightingDraw(_spriteBatch, camera, _lightingShader);
 
             _spriteBatch.End();
 

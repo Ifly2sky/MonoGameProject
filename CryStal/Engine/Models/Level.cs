@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace CryStal.Engine.Models
 {
@@ -14,6 +15,7 @@ namespace CryStal.Engine.Models
         public Tile[,] tiles;
         public string levelPath = @"C:\Users\Miko\source\repos\CryStal\CryStal\Content\";
         public List<Texture2D> textures = new();
+        public List<Texture2D> BackgroundTextures = new(); 
         public List<Texture2D> specularMaps = new();
         private List<GameObject> levelEntities = new();
         private List<GameObject> lightingTiles = new();
@@ -177,13 +179,18 @@ namespace CryStal.Engine.Models
             textures.Add(Content.Load<Texture2D>("CrystalSpikes1"));
             textures.Add(Content.Load<Texture2D>("CrystalSpikes2"));
             textures.Add(Content.Load<Texture2D>("Platform"));
+            BackgroundTextures.Add(null);
+            BackgroundTextures.Add(Content.Load<Texture2D>("DemoBackground2"));
         }
         public void LoadSpecularMaps()
         {
             specularMaps.Add(null);
             specularMaps.Add(Content.Load<Texture2D>("CrystalSpikes1Specular"));
         }
-
+        public void DrawBackground(SpriteBatch spriteBatch, Camera camera, int index)
+        {
+            spriteBatch.Draw(BackgroundTextures[index], Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+        }
         public void DrawLevel(SpriteBatch spriteBatch, Camera camera)
         {
             foreach(Tile tile in tiles)

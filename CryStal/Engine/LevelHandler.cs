@@ -34,6 +34,10 @@ namespace CryStal.Engine
             using (Stream fileStream = TitleContainer.OpenStream(currentEntityPath))
                 level.SetEntities(fileStream);
         }
+        public static void DrawBackground(SpriteBatch spriteBatch, Camera camera)
+        {
+            level.DrawBackground(spriteBatch, camera, 1);
+        }
         public static void DrawLevel(SpriteBatch spriteBatch, Camera camera)
         {
             level.DrawLevel(spriteBatch, camera);
