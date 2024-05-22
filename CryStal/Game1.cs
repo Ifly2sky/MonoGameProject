@@ -67,7 +67,7 @@ namespace CryStal
             _graphics.ApplyChanges();
 
             player = new Player(new Vector2(TILESIZE, TILESIZE), 460);
-            camera = new Camera(new Vector2(0, 0), new Rectangle(0, 0, SCREENWIDTH, SCREENHEIGHT), new Vector2(1.0f));
+            camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));
 
             LevelHandler.InitializeLevel(Services);
 
@@ -101,29 +101,7 @@ namespace CryStal
         bool spawned = false;
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !spawned)
-            {
-                /*for(int i = 0; i < 10; i++)
-                {
-                    PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
-                    newObj.texture = Content.Load<Texture2D>("Stone");
-                    OnDraw += newObj.Draw;
-                    tempObj.Add(newObj);
-                }*/
-                player.Unload();
-                LevelHandler.LoadLevel("Demo2");
-                spawned = true;
-            }
-            else if (Keyboard.GetState().IsKeyUp(Keys.Enter) && spawned)
-            {
-                player.Load();
-                player.SetAlive();
-                LevelHandler.LoadLevel("Demo");
-                spawned = false;
-            }
+            checkGlobalKeys(Keyboard.GetState(), gameTime);
 
             simulationTimer.Restart();
             Physics.Update(gameTime, _graphics.GraphicsDevice);
@@ -142,6 +120,7 @@ namespace CryStal
 
             LevelHandler.DrawBackground(_spriteBatch, camera);
 
+            _lightingShader.Parameters["CameraPos"].SetValue(camera.getLocation());
             light1.Position = player.Center;
             light1.Use(_lightingShader);
 
@@ -173,6 +152,50 @@ namespace CryStal
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
+        }
+
+        private void checkGlobalKeys(KeyboardState keyboard, GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            if (keyboard.IsKeyDown(Keys.Enter) && !spawned)
+            {
+                /*for(int i = 0; i < 10; i++)
+                {
+                    PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
+                    newObj.texture = Content.Load<Texture2D>("Stone");
+                    OnDraw += newObj.Draw;
+                    tempObj.Add(newObj);
+                }*/
+                player.Unload();
+                LevelHandler.LoadLevel("Demo2");
+                spawned = true;
+            }
+            else if (keyboard.IsKeyUp(Keys.Enter) && spawned)
+            {
+                player.Load();
+                player.SetAlive();
+                LevelHandler.LoadLevel("Demo");
+                spawned = false;
+            }
+
+            if (keyboard.IsKeyDown(Keys.Up))
+            {
+                camera.Y -= 460 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.Down))
+            {
+                camera.Y += 460 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.Left))
+            {
+                camera.X -= 460 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if (keyboard.IsKeyDown(Keys.Right))
+            {
+                camera.X += 460 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
         }
     }
 }

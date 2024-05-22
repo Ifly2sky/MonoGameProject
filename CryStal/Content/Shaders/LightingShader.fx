@@ -8,6 +8,7 @@
 #endif
 
 float2 WorldSize;
+float2 CameraPos;
 
 cbuffer cb
 {
@@ -53,6 +54,8 @@ float4 MainPS(VertexShaderOutput input) : COLOR0
     pxPos.x = input.Position.x;
     pxPos.y = WorldSize.y - input.Position.y;
     
+    float2 lightTransPos = lightPosition - CameraPos;
+    
     //Pixel Color
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
     
@@ -62,7 +65,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR0
     float3 diffuse = lightDiffuse * color.rgb;
     
     //attenuation
-    float distance = length(lightPosition - pxPos);
+    float distance = length(lightTransPos - pxPos);
     float attenuation = 1.0 / (constantT + linearT * distance + quadraticT * (distance * distance));
     
     result = color.rgb * ambient + diffuse * attenuation;

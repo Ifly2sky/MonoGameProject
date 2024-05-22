@@ -65,11 +65,13 @@ namespace CryStal.Entities
         }
         public void Draw(SpriteBatch spriteBatch, Camera camera, Effect effect)
         {
-            Vector2 drawPos = (Position - camera.Position) * camera.Scale;
-            if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - Hitbox.Size.X &&
-                drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
-                drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - Hitbox.Size.Y &&
-                drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+            Vector2 drawPos = Position;
+            drawPos.X -= camera.X;
+            drawPos.Y -= camera.Y;
+            if (drawPos.X < camera.Width &&
+                drawPos.X > -Hitbox.Size.X &&
+                drawPos.Y < camera.Height &&
+                drawPos.Y > -Hitbox.Size.Y)
             {
                 effect.Parameters["PaletteTexture"].SetValue(Palette);
                 spriteBatch.Draw(Texture, drawPos, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);

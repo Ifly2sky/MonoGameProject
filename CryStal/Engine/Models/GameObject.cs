@@ -80,11 +80,17 @@ namespace CryStal.Engine.Models
         public Hitbox Hitbox { get; set; } = new Hitbox();
         public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            Vector2 drawPos = (Position - camera.Position) * camera.Scale;
-            if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - Hitbox.Size.X &&
-                drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
-                drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - Hitbox.Size.Y &&
-                drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+            /*if (Position.X < camera.X + camera.Width &&
+                Position.X > -Hitbox.Size.X &&
+                Position.Y < camera.Y + camera.Height &&
+                Position.Y > -Hitbox.Size.Y*/
+            Vector2 drawPos = Position;
+            drawPos.X -= camera.X;
+            drawPos.Y -= camera.Y;
+            if (drawPos.X < camera.Width &&
+                drawPos.X > -Hitbox.Size.X &&
+                drawPos.Y < camera.Height &&
+                drawPos.Y > -Hitbox.Size.Y)
             {
                 spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
             }

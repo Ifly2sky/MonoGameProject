@@ -197,11 +197,13 @@ namespace CryStal.Engine.Models
             {
                 if (tile.texture != null && tile.specularMap == null) 
                 {
-                    Vector2 drawPos = (tile.Position - camera.Position) * camera.Scale;
-                    if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - tile.Hitbox.Size.X &&
-                        drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
-                        drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - tile.Hitbox.Size.Y &&
-                        drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+                    Vector2 drawPos = tile.Position;
+                    drawPos.X -= camera.X;
+                    drawPos.Y -= camera.Y;
+                    if (drawPos.X < camera.Width &&
+                        drawPos.X > -tile.Hitbox.Size.X &&
+                        drawPos.Y < camera.Height &&
+                        drawPos.Y > -tile.Hitbox.Size.Y)
                     {
                         spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
                     }
@@ -219,11 +221,18 @@ namespace CryStal.Engine.Models
             {
                 if (tile.texture != null)
                 {
-                    Vector2 drawPos = (tile.Position - camera.Position) * camera.Scale;
-                    if (drawPos.X > (camera.Crop.Left) * camera.Scale.X - tile.Hitbox.Size.X &&
-                        drawPos.X < (camera.Crop.Right) * camera.Scale.X &&
-                        drawPos.Y > (camera.Crop.Top) * camera.Scale.Y - tile.Hitbox.Size.Y &&
-                        drawPos.Y < (camera.Crop.Bottom) * camera.Scale.Y)
+                    /*
+                    if (tile.Position.X < camera.X + camera.Width &&
+                        tile.Position.X > -tile.Hitbox.Size.X &&
+                        tile.Position.Y < camera.Y + camera.Height &&
+                        tile.Position.Y > -tile.Hitbox.Size.Y*/
+                    Vector2 drawPos = tile.Position;
+                    drawPos.X -= camera.X;
+                    drawPos.Y -= camera.Y;
+                    if (drawPos.X < camera.Width &&
+                        drawPos.X > -tile.Hitbox.Size.X &&
+                        drawPos.Y < camera.Height &&
+                        drawPos.Y > -tile.Hitbox.Size.Y)
                     {
                         spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
                     }
