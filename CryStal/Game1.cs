@@ -91,9 +91,6 @@ namespace CryStal
 
             LevelHandler.LoadLevel("Demo");
 
-            //int gridX = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Width * InverseTileSize);
-            //int gridY = (int)Math.Ceiling(_graphics.GraphicsDevice.Viewport.Height * InverseTileSize);
-
             simulationTimer.Start();
             drawTimer.Start();
         }
@@ -161,13 +158,6 @@ namespace CryStal
 
             if (keyboard.IsKeyDown(Keys.Enter) && !spawned)
             {
-                /*for(int i = 0; i < 10; i++)
-                {
-                    PhysicsObject newObj = new PhysicsObject(player.Hitbox, new Vector2(TileSize, TileSize * i));
-                    newObj.texture = Content.Load<Texture2D>("Stone");
-                    OnDraw += newObj.Draw;
-                    tempObj.Add(newObj);
-                }*/
                 player.Unload();
                 LevelHandler.LoadLevel("Demo2");
                 spawned = true;

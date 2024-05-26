@@ -24,35 +24,6 @@ namespace CryStal.Engine
 
         private static void CalculateCollition(GameObject obj, GameObject target)
         {
-            /*//gets distance between objects and its absolute value
-            Vector2 distance = obj.Center - target.Center;
-            Vector2 absDistance = distance.Abs();
-
-            //gets the minimum x and y distance of the objects
-            Vector2 bounds = target.Hitbox.Size * 0.5f + obj.Hitbox.Size * 0.5f;
-
-            if (absDistance.X < bounds.X && absDistance.Y < bounds.Y)
-            {
-                Vector2 overlap = bounds - absDistance;  //overlap
-
-                // gets side in which the overlap is the largest
-                Vector2 direction = new(distance.X < 0 ? -1 : 1, distance.Y < 0 ? -1 : 1);
-
-                if (target is Tile)
-                {
-                    TileCollided(target, obj, direction, overlap);
-                    return;
-                }
-
-                if (obj is Tile)
-                {
-                    TileCollided(obj, target, direction, overlap);
-                    return;
-                }
-                Vector2 difference = new((overlap.Y < overlap.X) ? 0 : overlap.X, (overlap.Y > overlap.X) ? 0 : overlap.Y);
-                obj.Position += difference * direction * 0.5f;
-                target.Position -= difference * direction * 0.5f;
-            }*/
             obj.CollitionHandler.HandleCollition(obj, target);
         }
         private static void CalculateCollition(Cell objCell, List<GameObject> targets)
@@ -70,31 +41,6 @@ namespace CryStal.Engine
                 }
             }
         }
-        /*private static void TileCollided(GameObject tile, GameObject obj, Vector2 direction, Vector2 overlap)
-        {
-            Vector2 tileDistance;
-            Vector2 difference;
-            switch (tile.CollisionType)
-            {
-                case CollitionType.Impassable:
-                    tileDistance = tile.VectorDistanceTo(obj.LastCenter);
-                    difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
-                    obj.Position += difference * direction;
-                    return;
-                case CollitionType.Spike:
-                    obj.Unload();
-                    return;
-                case CollitionType.Platform:
-                    if(direction.Y < 0)
-                    {
-                        // TODO make not yeet
-                        tileDistance = tile.VectorDistanceTo(obj.LastCenter);
-                        difference = new((tileDistance.Y > tileDistance.X) ? 0 : overlap.X, (tileDistance.Y < tileDistance.X) ? 0 : overlap.Y);
-                        obj.Position += difference * direction;
-                    }
-                    return;
-            }
-        }*/
         private static void UpdatePhysicsObjects(float deltaTime, GraphicsDevice graphics)
         {
             foreach (PhysicsObject obj in PhysicsObject.allPhysicsObjects)

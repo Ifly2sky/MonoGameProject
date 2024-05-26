@@ -80,10 +80,6 @@ namespace CryStal.Engine.Models
         public Hitbox Hitbox { get; set; } = new Hitbox();
         public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            /*if (Position.X < camera.X + camera.Width &&
-                Position.X > -Hitbox.Size.X &&
-                Position.Y < camera.Y + camera.Height &&
-                Position.Y > -Hitbox.Size.Y*/
             Vector2 drawPos = Position;
             drawPos.X -= camera.X;
             drawPos.Y -= camera.Y;

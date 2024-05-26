@@ -70,10 +70,6 @@ namespace CryStal.Engine.Models
             float maxY = graphics.Viewport.Height - Game1.TILESIZE;
 
             Position = new Vector2(Math.Clamp(Position.X, 0, maxX), Math.Clamp(Position.Y, 0, maxY));
-
-            //this code stops bouncing off the edges of the screen. also makes blocks stack there more often.
-            //lastPos.X = (_position.X == maxX) ? _position.X : lastPos.X;
-            //lastPos.Y = (_position.Y == maxY) ? _position.Y : lastPos.Y;
         }
         public override void Unload()
         {

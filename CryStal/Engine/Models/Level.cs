@@ -221,11 +221,6 @@ namespace CryStal.Engine.Models
             {
                 if (tile.texture != null)
                 {
-                    /*
-                    if (tile.Position.X < camera.X + camera.Width &&
-                        tile.Position.X > -tile.Hitbox.Size.X &&
-                        tile.Position.Y < camera.Y + camera.Height &&
-                        tile.Position.Y > -tile.Hitbox.Size.Y*/
                     Vector2 drawPos = tile.Position;
                     drawPos.X -= camera.X;
                     drawPos.Y -= camera.Y;
