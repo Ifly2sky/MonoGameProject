@@ -48,7 +48,7 @@ namespace CryStal.Engine
                 if (obj.HasGravity)
                     obj.Accelerate(gravity);
                 obj.Update(deltaTime);
-                obj.Clamp(graphics);
+                //obj.Clamp(graphics);
             }
             OnPhysicsFinalize();
         }

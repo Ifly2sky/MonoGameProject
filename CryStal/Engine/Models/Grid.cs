@@ -16,8 +16,8 @@ namespace CryStal.Engine.Models
     {
         private static Cell[,] cells;
 
-        public const int Width = 40;
-        public const int Height = 20;
+        public static int Width = 40;
+        public static int Height = 20;
 
         static Grid()
         {
