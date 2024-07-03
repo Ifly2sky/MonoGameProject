@@ -189,7 +189,7 @@ namespace CryStal.Engine.Models
         }
         public void DrawBackground(SpriteBatch spriteBatch, Camera camera, int index)
         {
-            spriteBatch.Draw(BackgroundTextures[index], Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            spriteBatch.Draw(BackgroundTextures[index], Vector2.Zero, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
         }
         public void DrawLevel(SpriteBatch spriteBatch, Camera camera)
         {
