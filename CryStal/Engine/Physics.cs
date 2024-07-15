@@ -13,7 +13,7 @@ namespace CryStal.Engine
     {
         public static readonly Vector2 gravity = new(0f, 50f);
         public static Action OnPhysicsFinalize = new(() => { });
-
+        
         public static void Update(GameTime gameTime, GraphicsDevice graphics)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds; // gets deltatime

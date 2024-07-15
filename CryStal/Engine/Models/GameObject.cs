@@ -7,31 +7,6 @@ using System.Xml.Linq;
 
 namespace CryStal.Engine.Models
 {
-    /// <summary>
-    /// Checks what kind of behavior an object has when colliding
-    /// </summary>
-    /*public enum CollitionType
-    {
-        /// <summary>
-        /// A Passable object is an object with no collition
-        /// </summary>
-        Passable = 0,
-
-        /// <summary>
-        /// An Impassable object is one with collition
-        /// </summary>
-        Impassable = 1,
-
-        /// <summary>
-        /// A Platform is only passable from the sides and below but not from the top.
-        /// </summary>
-        Platform = 2,
-
-        /// <summary>
-        /// A Spike damages any entity that hits it.
-        /// </summary>
-        Spike = 3,
-    }*/
     public class GameObject
     {
         protected Vector2 _position = Vector2.Zero;
