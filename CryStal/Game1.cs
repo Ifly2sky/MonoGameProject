@@ -4,14 +4,11 @@ using CryStal.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using nkast.Aether.Physics2D.Collision.Shapes;
+using nkast.Aether.Physics2D.Dynamics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace CryStal
 {
@@ -24,6 +21,16 @@ namespace CryStal
         public const int SCALE = 3;
         public const int TILESIZE = 16 * SCALE;
         public const float INVERCETILESIZE = 0.02083333333333333333f; // 1/tileSIze
+
+        //Aether2d
+        const float _timeStep = 1.0f / 60.0f;
+        const int _subStepCount = 4;
+        SolverIterations _solverIterations;
+
+        World _world;
+        Body _ground;
+        Body _testBody;
+
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -60,6 +67,12 @@ namespace CryStal
             _graphics.PreferredBackBufferWidth = 1600;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _world = new World(new Vector2(0.0f, -10.0f));
+
+            _solverIterations.VelocityIterations = 4;
+            _solverIterations.PositionIterations = 4;
+            _solverIterations.TOIPositionIterations = 4;
+            _solverIterations.TOIVelocityIterations = 4;
         }
 
         protected override void Initialize()
@@ -68,6 +81,11 @@ namespace CryStal
 
             player = new Player(new Vector2(TILESIZE, TILESIZE), 460);
             camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));
+
+            _ground = _world.CreateRectangle(50.0f, 10.0f, 1, new Vector2(0.0f, -10.0f), bodyType:BodyType.Static);
+            _testBody = _world.CreateRectangle(1.0f, 1.0f, 1.0f, new Vector2(0.0f, 4.0f), bodyType:BodyType.Dynamic);
+            _testBody.FixtureList[0].Friction = 1.0f;
+            _testBody.FixtureList[0].Shape.Density = 1.0f;
 
             LevelHandler.InitializeLevel(Services);
 
@@ -94,8 +112,6 @@ namespace CryStal
             simulationTimer.Start();
             drawTimer.Start();
         }
-
-        bool spawned = false;
         protected override void Update(GameTime gameTime)
         {
             checkGlobalKeys(Keyboard.GetState(), gameTime);
@@ -133,6 +149,7 @@ namespace CryStal
 
             DrawDebugTimer();
             drawTimer.Restart();
+            player.DrawDebug(_spriteBatch);
 
             _spriteBatch.End();
 
@@ -146,11 +163,21 @@ namespace CryStal
         }
         private void DrawDebugTimer()
         {
+            //old engine
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
+
+            // Aether2d
+            _spriteBatch.DrawString(Arial, $"_testBody fixtures: {_testBody.FixtureList.Count}", new Vector2(4, 96), Color.WhiteSmoke);
+
+            Vector2 position = _testBody.Position;
+            float rotation = _testBody.Rotation;
+            _spriteBatch.DrawString(Arial, $"_testBody data: \npos: ({position.X}, {position.Y}) \nrotation: {rotation}", new Vector2(4, 112), Color.WhiteSmoke);
         }
 
+        bool spawned = false;
+        bool stepped = false;
         private void checkGlobalKeys(KeyboardState keyboard, GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -168,6 +195,15 @@ namespace CryStal
                 player.SetAlive();
                 LevelHandler.LoadLevel("Demo");
                 spawned = false;
+            }
+            if (keyboard.IsKeyDown(Keys.P) && !stepped)
+            {
+                _world.Step(_timeStep, ref _solverIterations);
+                stepped = true;
+            }
+            else if (keyboard.IsKeyUp(Keys.P) && stepped)
+            {
+                stepped = false;
             }
 
             if (keyboard.IsKeyDown(Keys.Up))

@@ -76,11 +76,13 @@ namespace CryStal.Entities
                 effect.Parameters["PaletteTexture"].SetValue(Palette);
                 spriteBatch.Draw(Texture, drawPos, null, Microsoft.Xna.Framework.Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
             }
-
+        }
+        public void DrawDebug(SpriteBatch spriteBatch)
+        {
             //draw debug
-            spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke); 
+            spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke);
             spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
-            spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 82), Microsoft.Xna.Framework.Color.WhiteSmoke);
+            spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 80), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
         private bool IsGrounded()
         {
