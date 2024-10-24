@@ -2,11 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using nkast.Aether.Physics2D.Dynamics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace CryStal.Engine.Models
 {
@@ -19,6 +18,9 @@ namespace CryStal.Engine.Models
         public List<Texture2D> specularMaps = new();
         private List<GameObject> levelEntities = new();
         private List<GameObject> lightingTiles = new();
+
+        private Player _player = null;
+        private World _world = null;
 
         public ContentManager Content 
         {
@@ -36,9 +38,12 @@ namespace CryStal.Engine.Models
             get { return tiles.GetLength(1); }
         }
 
-        public Level(IServiceProvider serviceProvider)
+        public Level(World world, Player player, IServiceProvider serviceProvider)
         {
             content = new ContentManager(serviceProvider, "Content");
+
+            _world = world;
+            _player = player;
 
             LoadTextures();
             LoadSpecularMaps();
@@ -54,12 +59,12 @@ namespace CryStal.Engine.Models
             {
                 foreach (Tile tile in tiles)
                 {
-                    tile.Unload();
+                    tile.Unload(_world);
                 }
             }
             foreach(GameObject entity in levelEntities) 
             {
-                entity.Unload();
+                entity.Unload(_world);
             }
             levelEntities.Clear();
         }
@@ -128,7 +133,6 @@ namespace CryStal.Engine.Models
                 if(entity is PhysicsObject)
                 {
                     PhysicsObject physicsObject = (PhysicsObject)entity;
-                    physicsObject.ResetVelocity();
                 }
             }
         }
@@ -137,14 +141,14 @@ namespace CryStal.Engine.Models
             switch(entityId)
             {
                 case "P":
-                    return PhysicsObject.allPhysicsObjects.Find(x => x.ID == entityId);
+                    return _player;
                 case "B":
-                    PhysicsObject newEntity = new(new Hitbox(), Vector2.Zero, "Impassable", "B");
+                    PhysicsObject newEntity = new(_world);
                     newEntity.texture = textures[1];
                     levelEntities.Add(newEntity);
                     return newEntity;
                 case "T":
-                    Tile tile = new(textures[4], "Impassable");
+                    Tile tile = new(textures[4]);
                     levelEntities.Add(tile);
                     return tile;
                 default:
@@ -155,16 +159,16 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => new Tile(textures[0], "Passable"),
-                '#' => new Tile(textures[1], "ImpassableTile"),
-                'S' => new Tile(textures[2], "ImpassableTile"),
-                'C' => new Tile(textures[3], "ImpassableTile"),
-                'L' => new Tile(textures[4], "ImpassableTile"),
-                '/' => new Tile(textures[5], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
-                '^' => new Tile(textures[6], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE), new Vector2(0, Game1.TILESIZE * 0.5f)), specularMaps[1]),
-                '\\' => new Tile(textures[7], "Spike", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.5f), new Vector2(0, Game1.TILESIZE * 0.5f))),
-                'P' => new Tile(textures[8], "Platform", new Hitbox(new Vector2(Game1.TILESIZE, Game1.TILESIZE * 0.1f), Vector2.Zero)),
-                _ => new Tile(textures[0], "Passable")
+                ' ' => new Tile(textures[0]),
+                '#' => new Tile(_world, textures[1]),
+                'S' => new Tile(_world, textures[2]),
+                'C' => new Tile(_world, textures[3]),
+                'L' => new Tile(_world, textures[4]),
+                '/' => new Tile(_world, textures[5], Game1.TILESIZE, Game1.TILESIZE * 0.5f),
+                '^' => new Tile(_world, textures[6], specularMaps[1]),
+                '\\' => new Tile(_world, textures[7], Game1.TILESIZE, Game1.TILESIZE * 0.5f),
+                'P' => new Tile(_world, textures[8], Game1.TILESIZE, Game1.TILESIZE * 0.1f),
+                _ => new Tile(textures[0])
             };
         }
 
@@ -201,9 +205,9 @@ namespace CryStal.Engine.Models
                     drawPos.X -= camera.X;
                     drawPos.Y -= camera.Y;
                     if (drawPos.X < camera.Width &&
-                        drawPos.X > -tile.Hitbox.Size.X &&
+                        drawPos.X > -tile.Width &&
                         drawPos.Y < camera.Height &&
-                        drawPos.Y > -tile.Hitbox.Size.Y)
+                        drawPos.Y > -tile.Height)
                     {
                         spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
                     }
@@ -225,9 +229,9 @@ namespace CryStal.Engine.Models
                     drawPos.X -= camera.X;
                     drawPos.Y -= camera.Y;
                     if (drawPos.X < camera.Width &&
-                        drawPos.X > -tile.Hitbox.Size.X &&
+                        drawPos.X > -tile.Width &&
                         drawPos.Y < camera.Height &&
-                        drawPos.Y > -tile.Hitbox.Size.Y)
+                        drawPos.Y > -tile.Height)
                     {
                         spriteBatch.Draw(tile.texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
                     }

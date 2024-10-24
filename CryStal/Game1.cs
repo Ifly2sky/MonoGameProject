@@ -14,6 +14,7 @@ namespace CryStal
 {
     public class Game1 : Game
     {
+        //screen information
         public static int SCREENWIDTH = 1600;
         public static int SCREENHEIGHT = 900;
 
@@ -26,11 +27,7 @@ namespace CryStal
         const float _timeStep = 1.0f / 60.0f;
         const int _subStepCount = 4;
         SolverIterations _solverIterations;
-
         World _world;
-        Body _ground;
-        Body _testBody;
-
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -63,11 +60,10 @@ namespace CryStal
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferHeight = 900;
-            _graphics.PreferredBackBufferWidth = 1600;
+            _graphics.PreferredBackBufferHeight = SCREENHEIGHT;
+            _graphics.PreferredBackBufferWidth = SCREENWIDTH;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _world = new World(new Vector2(0.0f, -10.0f));
 
             _solverIterations.VelocityIterations = 4;
             _solverIterations.PositionIterations = 4;
@@ -79,15 +75,10 @@ namespace CryStal
         {
             _graphics.ApplyChanges();
 
-            player = new Player(new Vector2(TILESIZE, TILESIZE), 460);
+            player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 460);
             camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));
 
-            _ground = _world.CreateRectangle(50.0f, 10.0f, 1, new Vector2(0.0f, -10.0f), bodyType:BodyType.Static);
-            _testBody = _world.CreateRectangle(1.0f, 1.0f, 1.0f, new Vector2(0.0f, 4.0f), bodyType:BodyType.Dynamic);
-            _testBody.FixtureList[0].Friction = 1.0f;
-            _testBody.FixtureList[0].Shape.Density = 1.0f;
-
-            LevelHandler.InitializeLevel(Services);
+            LevelHandler.InitializeLevel(_world, player, Services);
 
             OnPaletteDraw += player.Draw;
             OnDefaultDraw += LevelHandler.DrawLevel;
@@ -117,7 +108,8 @@ namespace CryStal
             checkGlobalKeys(Keyboard.GetState(), gameTime);
 
             simulationTimer.Restart();
-            Physics.Update(gameTime, _graphics.GraphicsDevice);
+            //Physics.Update(gameTime, _graphics.GraphicsDevice);
+            _world.Step(_timeStep);
             simulationTime = simulationTimer.ElapsedMilliseconds;
             simulationTimer.Stop();
 
@@ -134,7 +126,7 @@ namespace CryStal
             LevelHandler.DrawBackground(_spriteBatch, camera);
 
             _lightingShader.Parameters["CameraPos"].SetValue(camera.getLocation());
-            light1.Position = player.Center;
+            light1.Position = player.Position;
             light1.Use(_lightingShader);
 
             OnDefaultDraw(_spriteBatch, camera);
@@ -165,15 +157,7 @@ namespace CryStal
         {
             //old engine
             _spriteBatch.DrawString(Arial, $"Simulation Time: {simulationTime}ms", new Vector2(4, 0), Color.WhiteSmoke);
-            _spriteBatch.DrawString(Arial, $"Object Count: {GameObject.allObjects.Count}", new Vector2(4, 16), Color.WhiteSmoke);
             _spriteBatch.DrawString(Arial, $"Draw Time: {drawTimer.ElapsedMilliseconds}ms", new Vector2(4, 32), Color.WhiteSmoke);
-
-            // Aether2d
-            _spriteBatch.DrawString(Arial, $"_testBody fixtures: {_testBody.FixtureList.Count}", new Vector2(4, 96), Color.WhiteSmoke);
-
-            Vector2 position = _testBody.Position;
-            float rotation = _testBody.Rotation;
-            _spriteBatch.DrawString(Arial, $"_testBody data: \npos: ({position.X}, {position.Y}) \nrotation: {rotation}", new Vector2(4, 112), Color.WhiteSmoke);
         }
 
         bool spawned = false;
@@ -185,27 +169,17 @@ namespace CryStal
 
             if (keyboard.IsKeyDown(Keys.Enter) && !spawned)
             {
-                player.Unload();
+                player.Unload(_world);
                 LevelHandler.LoadLevel("Demo2");
                 spawned = true;
             }
             else if (keyboard.IsKeyUp(Keys.Enter) && spawned)
             {
-                player.Load();
+                player.Load(_world);
                 player.SetAlive();
                 LevelHandler.LoadLevel("Demo");
                 spawned = false;
             }
-            if (keyboard.IsKeyDown(Keys.P) && !stepped)
-            {
-                _world.Step(_timeStep, ref _solverIterations);
-                stepped = true;
-            }
-            else if (keyboard.IsKeyUp(Keys.P) && stepped)
-            {
-                stepped = false;
-            }
-
             if (keyboard.IsKeyDown(Keys.Up))
             {
                 camera.Y -= 460 * (float)gameTime.ElapsedGameTime.TotalSeconds;

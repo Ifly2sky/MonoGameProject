@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿/*using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -71,4 +71,4 @@ namespace CryStal.Engine.Models
             return new Size((int)Math.Floor(worldCoordinates.X * Game1.INVERCETILESIZE), (int)Math.Floor(worldCoordinates.Y * Game1.INVERCETILESIZE));
         }
     }
-}
+}*/

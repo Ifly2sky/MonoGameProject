@@ -1,45 +1,32 @@
 ﻿using CryStal.StateMachines.CollitionStateMachine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace CryStal.Engine.Models
 {
     public class GameObject
     {
-        protected Vector2 _position = Vector2.Zero;
-        protected Vector2 _center = Vector2.Zero;
-        protected Vector2 lastPos = Vector2.Zero;
+        protected Body _body;
+        protected Fixture _fixture;
+
+        float _width;
+        float _height;
 
         public Texture2D texture;
         public Texture2D specularMap;
-        public CollitionStateMachine CollitionHandler = new CollitionStateMachine();
 
         public string ID;
         public bool isKillable = false;
         private bool _isAlive = true;
 
-        public static List<GameObject> allObjects = new();
-
         public virtual Vector2 Position 
         {
-            get { return _position; } 
-            set 
-            { 
-                _position = value;
-                _center = _position + Hitbox.Position + Hitbox.Size * 0.5f;
-            }
+            get { return _body.Position; }
+            set { _body.Position = value; }
         }
-        public Vector2 Center
-        {
-            get { return _center; }
-        }
-        public Vector2 LastCenter
-        {
-            get { return lastPos + Hitbox.Position + Hitbox.Size * 0.5f; }
-        }
+        public float Width { get; set; }
+        public float Height { get; set; }
         public bool IsAlive
         {
             get
@@ -51,36 +38,45 @@ namespace CryStal.Engine.Models
                 _isAlive = value; 
             }
         }
-
-        public Hitbox Hitbox { get; set; } = new Hitbox();
+        public GameObject() { }
+        public GameObject(World world)
+        {
+            _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
+            _fixture = _body.CreateRectangle(Game1.TILESIZE, Game1.TILESIZE, 1, Vector2.Zero);
+        }
+        public GameObject(World world, float width, float height)
+        {
+            _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
+            _fixture = _body.CreateRectangle(Game1.TILESIZE, Game1.TILESIZE, 1, Vector2.Zero);
+        }
+        public GameObject(World world, Vector2 position, float width, float height, string id)
+        {
+            _body = world.CreateBody(Position, 0, BodyType.Static);
+            _fixture = _body.CreateRectangle(width, height, 1, Vector2.Zero);
+            this.Width = width;
+            this.Height = height;
+            ID = id;
+        }
         public virtual void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             Vector2 drawPos = Position;
             drawPos.X -= camera.X;
             drawPos.Y -= camera.Y;
             if (drawPos.X < camera.Width &&
-                drawPos.X > -Hitbox.Size.X &&
+                drawPos.X > -Width &&
                 drawPos.Y < camera.Height &&
-                drawPos.Y > -Hitbox.Size.Y)
+                drawPos.Y > -Height)
             {
                 spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
             }
         }
-        public float DistanceTo(Vector2 position)
+        public virtual void Unload(World world)
         {
-            return (Center - position).Abs().Length();
+            world.Remove(_body);
         }
-        public Vector2 VectorDistanceTo(Vector2 position)
+        public virtual void Load(World world)
         {
-            return (Center - position).Abs();
-        }
-        public virtual void Unload()
-        {
-            allObjects.Remove(this);
-        }
-        public virtual void Load()
-        {
-            allObjects.Add(this);
+            world.Add(_body);
         }
         public void SetDead()
         {

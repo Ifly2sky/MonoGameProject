@@ -1,45 +1,36 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace CryStal.Engine.Models
 {
     public class Tile : GameObject
     {
-        public override Vector2 Position
-        {
-            get
-            {
-                return base.Position;
-            }
-            set
-            {
-                lastPos = value;
-                base.Position = value;
-            }
-        }
-        public Tile(Texture2D texture, string collisionType)
+        public Tile(Texture2D texture) : base()
         {
             this.texture = texture;
-            CollitionHandler.SetCollitonState(collisionType);
-
-            allObjects.Add(this);
         }
-        public Tile(Texture2D texture, string collisionType, Hitbox hitbox)
+        public Tile(Texture2D texture, Texture2D specular) : base()
         {
             this.texture = texture;
-            CollitionHandler.SetCollitonState(collisionType);
-            Hitbox = hitbox;
-
-            allObjects.Add(this);
         }
-        public Tile(Texture2D texture, string collisionType, Hitbox hitbox, Texture2D specular)
+        public Tile(World world, Texture2D texture, float width = Game1.TILESIZE, float height = Game1.TILESIZE) : base(world)
+        {
+            this.texture = texture;
+        }
+        public Tile(World world, Texture2D texture, Vector2 position, float width, float height, string id) : base(world)
+        {
+            this.texture = texture;
+        }
+        public Tile(World world, Texture2D texture, Texture2D specular, float width = Game1.TILESIZE, float height = Game1.TILESIZE) : base(world)
         {
             this.texture = texture;
             this.specularMap = specular;
-            CollitionHandler.SetCollitonState(collisionType);
-            Hitbox = hitbox;
-
-            allObjects.Add(this);
+        }
+        public Tile(World world, Texture2D texture, Texture2D specular, Vector2 position, float width, float height, string id) : base(world, position, width, height, id)
+        {
+            this.texture = texture;
+            this.specularMap = specular;
         }
     }
 }

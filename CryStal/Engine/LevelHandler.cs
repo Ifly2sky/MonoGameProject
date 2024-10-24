@@ -1,6 +1,8 @@
 ﻿using CryStal.Engine.Models;
+using CryStal.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using nkast.Aether.Physics2D.Dynamics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,9 +19,9 @@ namespace CryStal.Engine
         static string currentLevelPath;
         static string currentEntityPath;
 
-        public static void InitializeLevel(IServiceProvider services)
+        public static void InitializeLevel(World world, Player player, IServiceProvider services)
         {
-            level = new Level(services);
+            level = new Level(world, player, services);
         }
 
         public static void LoadLevel(string levelName)
