@@ -17,18 +17,17 @@ namespace CryStal.StateMachines.PlayerStateMachine
         }
         internal override void EnterState(Player player)
         {
-            player.ResetVelocityY();
-            player.Accelerate(new Vector2(0, -player.jumpForce * 10));
+            player.ApplyImpulse(new Vector2(0, -player.jumpForce));
         }
         internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.Accelerate(new Vector2(-player.speed, 0));
+                player.ApplyForce(new Vector2(-player.speed, 0));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.Accelerate(new Vector2(player.speed, 0));
+                player.ApplyForce(new Vector2(-player.speed, 0));
             }
             if (player.Velocity.Y > 0)
             {

@@ -130,10 +130,6 @@ namespace CryStal.Engine.Models
                 int x = Game1.TILESIZE * int.Parse(data[i * 5 + 1]) + int.Parse(data[i * 5 + 3]);
                 int y = Game1.TILESIZE * int.Parse(data[i * 5 + 2]) + int.Parse(data[i * 5 + 4]);
                 entity.Position = new Vector2(x, y);
-                if(entity is PhysicsObject)
-                {
-                    PhysicsObject physicsObject = (PhysicsObject)entity;
-                }
             }
         }
         private GameObject GetEntity(string entityId)
@@ -147,10 +143,10 @@ namespace CryStal.Engine.Models
                     newEntity.texture = textures[1];
                     levelEntities.Add(newEntity);
                     return newEntity;
-                case "T":
+                /*case "T":
                     Tile tile = new(textures[4]);
                     levelEntities.Add(tile);
-                    return tile;
+                    return tile;*/
                 default:
                     return null;
             }
@@ -159,16 +155,16 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => new Tile(textures[0]),
-                '#' => new Tile(_world, textures[1]),
-                'S' => new Tile(_world, textures[2]),
-                'C' => new Tile(_world, textures[3]),
-                'L' => new Tile(_world, textures[4]),
-                '/' => new Tile(_world, textures[5], Game1.TILESIZE, Game1.TILESIZE * 0.5f),
-                '^' => new Tile(_world, textures[6], specularMaps[1]),
-                '\\' => new Tile(_world, textures[7], Game1.TILESIZE, Game1.TILESIZE * 0.5f),
-                'P' => new Tile(_world, textures[8], Game1.TILESIZE, Game1.TILESIZE * 0.1f),
-                _ => new Tile(textures[0])
+                ' ' => new Tile(_world, false, textures[0]),
+                '#' => new Tile(_world, true, textures[1]),
+                'S' => new Tile(_world, true, textures[2]),
+                'C' => new Tile(_world, true, textures[3]),
+                'L' => new Tile(_world, true, textures[4]),
+                '/' => new Tile(_world, true, textures[5], width: Game1.TILESIZE, height: Game1.TILESIZE * 0.5f),
+                '^' => new Tile(_world, true, textures[6], specularMaps[1]),
+                '\\' => new Tile(_world, true, textures[7], width: Game1.TILESIZE, height: Game1.TILESIZE * 0.5f),
+                'P' => new Tile(_world, true, textures[8], width: Game1.TILESIZE, height: Game1.TILESIZE * 0.1f),
+                _ => new Tile(_world, false, textures[0])
             };
         }
 

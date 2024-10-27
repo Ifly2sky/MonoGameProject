@@ -16,20 +16,26 @@ namespace CryStal.Entities
         public Texture2D Texture;
         public Texture2D Palette;
         KeyboardState _keyboardState;
-        //StateMachine _state = new StateMachine();
+        StateMachine _state = new StateMachine();
 
         public float speed;
         public float jumpForce;
         Vector2 _direction;
         public bool isGrounded;
         public bool isCrouching;
-        //public string stateName => _state.Name;
+        public string stateName => _state.Name;
+
+        Queue<float> velQueue = new Queue<float>();
         public Vector2 Direction
         {
             get { return _direction; }
             set { _direction = value; }
         }
-
+        public Vector2 Velocity
+        {
+            get { return _body.LinearVelocity; }
+            set { _body.LinearVelocity = value; }
+        }
         public Player(World world, Vector2 position, float speed, float jumpForce = 100, string id = "P") : base(world, position, id: id)
         {
             Position = position;
@@ -43,7 +49,7 @@ namespace CryStal.Entities
         {
             _keyboardState = Keyboard.GetState();
             isGrounded = IsGrounded();
-            //_state.UpdateState(isGrounded, _keyboardState, this);
+            _state.UpdateState(_keyboardState, this);
 
             base.Update(deltaTime);
         }
@@ -64,12 +70,24 @@ namespace CryStal.Entities
         public void DrawDebug(SpriteBatch spriteBatch)
         {
             //draw debug
-            spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke);
-            spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
-            //spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 80), Microsoft.Xna.Framework.Color.WhiteSmoke);
+            spriteBatch.DrawString(Game1.Arial, $"On ground: {isGrounded}, {_body.LinearVelocity.Y}", new Vector2(4, 48), Microsoft.Xna.Framework.Color.WhiteSmoke);
+            //spriteBatch.DrawString(Game1.Arial, $"Grid Pos: {Grid.GetGridCoordinates(Position)}", new Vector2(4, 64), Microsoft.Xna.Framework.Color.WhiteSmoke);
+            spriteBatch.DrawString(Game1.Arial, $"Current state: {_state.Name}", new Vector2(4, 80), Microsoft.Xna.Framework.Color.WhiteSmoke);
         }
         private bool IsGrounded()
         {
+            velQueue.Enqueue(_body.LinearVelocity.Y);
+            if (velQueue.Count > 3 )
+            {
+                velQueue.Dequeue();
+            }
+            foreach (float val in velQueue)
+            {
+                if (val > 0.00003 || val < -0.00003)
+                {
+                    return false;
+                }
+            }
             return true;
         }
         public override void Unload(World world)
@@ -79,7 +97,7 @@ namespace CryStal.Entities
         }
         public override void Load(World world)
         {
-            //_state.SetState("StoppedState");
+            _state.SetState("StoppedState");
             Game1.OnPaletteDraw += Draw;
             base.Load(world);
         }

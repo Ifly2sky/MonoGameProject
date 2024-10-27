@@ -38,7 +38,7 @@ namespace CryStal
         public Camera camera;
         public PointLight light1 = new PointLight(new Vector2(0,0), 1.0f, 0.0014f, 0.000007f, new Vector3(0.05f), new Vector3(0.8f), new Vector3(1f));
 
-        List<GameObject> tempObj = new();
+        //List<GameObject> tempObj = new();
 
         //debug stuff
         Stopwatch simulationTimer = new();
@@ -74,6 +74,8 @@ namespace CryStal
         protected override void Initialize()
         {
             _graphics.ApplyChanges();
+
+            _world = new World(new Vector2(0f, 50f));
 
             player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 460);
             camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));

@@ -1,5 +1,4 @@
-﻿using CryStal.StateMachines.CollitionStateMachine;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using nkast.Aether.Physics2D.Dynamics;
 
@@ -25,8 +24,14 @@ namespace CryStal.Engine.Models
             get { return _body.Position; }
             set { _body.Position = value; }
         }
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public float Width { 
+            get { return _width; } 
+            set { _width = value; } 
+        }
+        public float Height {
+            get { return _height; }
+            set { _height = value; }
+        }
         public bool IsAlive
         {
             get
@@ -39,19 +44,21 @@ namespace CryStal.Engine.Models
             }
         }
         public GameObject() { }
-        public GameObject(World world)
+        public GameObject(World world, bool isStatic, bool collides, float width = Game1.TILESIZE, float height = Game1.TILESIZE)
         {
-            _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
-            _fixture = _body.CreateRectangle(Game1.TILESIZE, Game1.TILESIZE, 1, Vector2.Zero);
+            if (isStatic)
+                _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
+            else
+                _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Dynamic);
+            if (collides)
+                _fixture = _body.CreateRectangle(width, height, 1, Vector2.Zero);
         }
-        public GameObject(World world, float width, float height)
+        public GameObject(World world, bool isStatic, Vector2 position, float width, float height, string id)
         {
-            _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
-            _fixture = _body.CreateRectangle(Game1.TILESIZE, Game1.TILESIZE, 1, Vector2.Zero);
-        }
-        public GameObject(World world, Vector2 position, float width, float height, string id)
-        {
-            _body = world.CreateBody(Position, 0, BodyType.Static);
+            if (isStatic)
+                _body = world.CreateBody(position, 0, BodyType.Static);
+            else
+                _body = world.CreateBody(position, 0, BodyType.Dynamic);
             _fixture = _body.CreateRectangle(width, height, 1, Vector2.Zero);
             this.Width = width;
             this.Height = height;

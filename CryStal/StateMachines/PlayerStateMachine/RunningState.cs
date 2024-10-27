@@ -15,20 +15,18 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (player.isCrouching)
             {
-                player.Position -= new Vector2(0, player.Hitbox.Size.Y * 0.5f);
-                player.ResetVelocityY();
-                player.Hitbox.Size.Y = Game1.TILESIZE;
+                //TODO: implement crouch logistics
             }
         }
         internal override void UpdateState(KeyboardState keyboardState, Player player, out PlayerState state)
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.Accelerate(new Vector2(-player.speed, 0));
+                player.ApplyForce(new Vector2(-player.speed, 0));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.Accelerate(new Vector2(player.speed, 0));
+                player.ApplyForce(new Vector2(-player.speed, 0));
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {

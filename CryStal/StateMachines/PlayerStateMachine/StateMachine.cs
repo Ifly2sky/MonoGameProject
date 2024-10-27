@@ -30,7 +30,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             _currentState = StoppedState;
         }
-        public void UpdateState(bool isGrounded, KeyboardState keyboardState, Player player)
+        public void UpdateState(KeyboardState keyboardState, Player player)
         {
             _currentState.UpdateState(keyboardState, player, out _currentState);
         }

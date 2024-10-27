@@ -16,7 +16,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
 
         internal override void EnterState(Player player)
         {
-            player.Hitbox.Size.Y = Game1.TILESIZE * 0.5f;
+            //TODO: implement crouch logistics
             player.isCrouching = true;
         }
 
@@ -24,11 +24,11 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.Accelerate(new Vector2(-player.speed * 0.5f, 0));
+                player.ApplyForce(new Vector2(-player.speed * 0.5f, 0));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.Accelerate(new Vector2(player.speed * 0.5f, 0));
+                player.ApplyForce(new Vector2(-player.speed * 0.5f, 0));
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {
@@ -49,9 +49,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
 
         internal override void ExitState(PlayerState newState, Player player)
         {
-            player.Position -= new Vector2(0, player.Hitbox.Size.Y);
-            player.ResetVelocityY();
-            player.Hitbox.Size.Y = Game1.TILESIZE;
+            //TODO: implement crouch logistics
             player.isCrouching = false;
         }
     }

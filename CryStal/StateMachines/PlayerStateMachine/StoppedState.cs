@@ -18,13 +18,13 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.Accelerate(new Vector2(-player.speed, 0));
+                player.ApplyForce(new Vector2(-player.speed, 0));
                 state = StateMachine.RunningState;
                 return;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.Accelerate(new Vector2(player.speed, 0));
+                player.ApplyForce(new Vector2(player.speed, 0));
                 state = StateMachine.RunningState;
                 return;
             }
