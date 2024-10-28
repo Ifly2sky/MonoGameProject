@@ -38,6 +38,7 @@ namespace CryStal.Entities
         }
         public Player(World world, Vector2 position, float speed, float jumpForce = 100, string id = "P") : base(world, position, id: id)
         {
+            _body.FixtureList[0].Friction = 0.1f;
             Position = position;
             this.speed = speed;
             this.jumpForce = jumpForce;
@@ -83,7 +84,7 @@ namespace CryStal.Entities
             }
             foreach (float val in velQueue)
             {
-                if (val > 0.00003 || val < -0.00003)
+                if (val > 0.0003 || val < -0.0003)
                 {
                     return false;
                 }

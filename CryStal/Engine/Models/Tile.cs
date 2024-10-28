@@ -6,6 +6,7 @@ namespace CryStal.Engine.Models
 {
     public class Tile : GameObject
     {
+        public Tile() { }
         public Tile(World world, Texture2D texture, Vector2 position, float width, float height, string id) : base(world, true, position, width, height, id)
         {
             this.texture = texture;

@@ -155,7 +155,7 @@ namespace CryStal.Engine.Models
         {
             return tiletype switch
             {
-                ' ' => new Tile(_world, false, textures[0]),
+                ' ' => new Tile(),
                 '#' => new Tile(_world, true, textures[1]),
                 'S' => new Tile(_world, true, textures[2]),
                 'C' => new Tile(_world, true, textures[3]),
@@ -164,7 +164,7 @@ namespace CryStal.Engine.Models
                 '^' => new Tile(_world, true, textures[6], specularMaps[1]),
                 '\\' => new Tile(_world, true, textures[7], width: Game1.TILESIZE, height: Game1.TILESIZE * 0.5f),
                 'P' => new Tile(_world, true, textures[8], width: Game1.TILESIZE, height: Game1.TILESIZE * 0.1f),
-                _ => new Tile(_world, false, textures[0])
+                _ => new Tile()
             };
         }
 

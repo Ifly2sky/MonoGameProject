@@ -25,7 +25,6 @@ namespace CryStal
 
         //Aether2d
         const float _timeStep = 1.0f / 60.0f;
-        const int _subStepCount = 4;
         SolverIterations _solverIterations;
         World _world;
 
@@ -77,7 +76,7 @@ namespace CryStal
 
             _world = new World(new Vector2(0f, 50f));
 
-            player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 460);
+            player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 46, 20);
             camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));
 
             LevelHandler.InitializeLevel(_world, player, Services);
@@ -109,11 +108,12 @@ namespace CryStal
         {
             checkGlobalKeys(Keyboard.GetState(), gameTime);
 
-            simulationTimer.Restart();
-            //Physics.Update(gameTime, _graphics.GraphicsDevice);
-            _world.Step(_timeStep);
             simulationTime = simulationTimer.ElapsedMilliseconds;
-            simulationTimer.Stop();
+            simulationTimer.Restart();
+
+            _world.Step(_timeStep, ref _solverIterations);
+            player.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            //Physics.Update(gameTime, _graphics.GraphicsDevice);
 
             base.Update(gameTime);
         }

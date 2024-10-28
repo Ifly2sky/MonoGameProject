@@ -27,7 +27,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.ApplyForce(new Vector2(-player.speed, 0));
+                player.ApplyForce(new Vector2(player.speed, 0));
             }
             if (player.isGrounded)
             {
