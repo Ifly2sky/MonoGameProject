@@ -24,11 +24,11 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.ApplyForce(new Vector2(-player.speed * 0.5f, 0));
+                player.ApplyImpulse(new Vector2(-player.speed * 0.5f, player.Velocity.Y));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.ApplyForce(new Vector2(-player.speed * 0.5f, 0));
+                player.ApplyImpulse(new Vector2(player.speed * 0.5f, player.Velocity.Y));
             }
             if (keyboardState.IsKeyDown(Keys.Space))
             {

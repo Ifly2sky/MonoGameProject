@@ -6,17 +6,46 @@ namespace CryStal.Engine.Models
 {
     public class Tile : GameObject
     {
+        private bool collides = false;
+        public override Vector2 Position
+        {
+            get
+            {
+                if (collides)
+                {
+                    return _body.Position * Game1.TILESIZE;
+                }
+                else { return _position; }
+            }
+            set
+            {
+                if (collides)
+                {
+                    _body.Position = value * 0.02083333333333333333f;
+                }
+                else
+                {
+                    _position = value;
+                }
+            }
+        }
         public Tile() { }
-        public Tile(World world, Texture2D texture, Vector2 position, float width, float height, string id) : base(world, true, position, width, height, id)
+        // if no specular map exists
+        /*public Tile(Texture2D texture, Vector2 position, float width, float height, string id, World world = null) : base(position, width, height, id)
         {
             this.texture = texture;
-        }
-        public Tile(World world, bool collides, Texture2D texture, Texture2D specular = null, float width = Game1.TILESIZE, float height = Game1.TILESIZE) : base(world, true, collides, width, height)
+            _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
+            _fixture = _body.CreateRectangle(width * 0.02083333333333333333f, height * 0.02083333333333333333f, 1, Vector2.Zero);
+        }*/
+        public Tile(Texture2D texture, World world, Texture2D specular = null, float width = Game1.TILESIZE, float height = Game1.TILESIZE)
         {
             this.texture = texture;
             this.specularMap = specular;
+            collides = true;
+            _body = world.CreateBody();
+            _fixture = _body.CreateRectangle(width * 0.02083333333333333333f, height * 0.02083333333333333333f, 1, Vector2.Zero);
         }
-        public Tile(World world, Texture2D texture, Texture2D specular, Vector2 position, float width, float height, string id) : base(world, true, position, width, height, id)
+        public Tile(Texture2D texture, Texture2D specular = null, float width = Game1.TILESIZE, float height = Game1.TILESIZE)
         {
             this.texture = texture;
             this.specularMap = specular;

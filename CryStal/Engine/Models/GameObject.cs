@@ -7,9 +7,8 @@ namespace CryStal.Engine.Models
     public class GameObject
     {
         protected Body _body;
+        protected Vector2 _position;
         protected Fixture _fixture;
-
-        bool collides;
 
         float _width;
         float _height;
@@ -21,18 +20,7 @@ namespace CryStal.Engine.Models
         public bool isKillable = false;
         private bool _isAlive = true;
 
-        public virtual Vector2 Position 
-        {
-            get 
-            { 
-                return collides ? _body.Position * Game1.TILESIZE : Vector2.Zero; 
-            }
-            set 
-            {
-                if (collides)
-                    _body.Position = value * 0.02083333333333333333f;
-            }
-        }
+        public virtual Vector2 Position { get; set; }
         public float Width { 
             get { return _width; } 
             set { _width = value; } 
@@ -53,24 +41,8 @@ namespace CryStal.Engine.Models
             }
         }
         public GameObject() { }
-        public GameObject(World world, bool isStatic, bool collides, float width = Game1.TILESIZE, float height = Game1.TILESIZE)
+        public GameObject(float width, float height, string id)
         {
-            this.collides = collides;
-            if (isStatic)
-                _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Static);
-            else
-                _body = world.CreateBody(new Vector2(0f, 0f), 0, BodyType.Dynamic);
-            if (collides)
-                _fixture = _body.CreateRectangle(width * 0.02083333333333333333f, height * 0.02083333333333333333f, 1, Vector2.Zero);
-        }
-        public GameObject(World world, bool isStatic, Vector2 position, float width, float height, string id)
-        {
-            if (isStatic)
-                _body = world.CreateBody(position, 0, BodyType.Static);
-            else
-                _body = world.CreateBody(position, 0, BodyType.Dynamic);
-            _fixture = _body.CreateRectangle(width * 0.02083333333333333333f, height * 0.02083333333333333333f, 1, Vector2.Zero);
-            this.collides = true;
             this.Width = width;
             this.Height = height;
             ID = id;

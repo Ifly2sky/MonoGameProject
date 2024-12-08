@@ -3,8 +3,6 @@ using CryStal.Engine.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Linq;
-using System.Drawing;
 using System.Collections.Generic;
 using CryStal.StateMachines.PlayerStateMachine;
 using nkast.Aether.Physics2D.Dynamics;
@@ -36,7 +34,7 @@ namespace CryStal.Entities
             get { return _body.LinearVelocity; }
             set { _body.LinearVelocity = value; }
         }
-        public Player(World world, Vector2 position, float speed, float jumpForce = 100, string id = "P") : base(world, position, id: id)
+        public Player(World world, Vector2 position, float speed, float jumpForce = 100, string id = "P") : base(world, id: id)
         {
             _body.FixtureList[0].Friction = 0.1f;
             Position = position;
@@ -84,7 +82,7 @@ namespace CryStal.Entities
             }
             foreach (float val in velQueue)
             {
-                if (val > 0.0003 || val < -0.0003)
+                if (val > 0.03 || val < -0.03)
                 {
                     return false;
                 }

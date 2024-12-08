@@ -8,9 +8,28 @@ namespace CryStal.Engine.Models
 {
     public class PhysicsObject : GameObject
     {
-        public PhysicsObject(World world, Vector2 Position, float width = Game1.TILESIZE, float height = Game1.TILESIZE, string id = "B") : 
-            base(world, false, Position, width, height, id) { }
-        public PhysicsObject(World world) : base(world, false, true) { }
+        public override Vector2 Position
+        {
+            get
+            {
+                return _body.Position * Game1.TILESIZE;
+            }
+            set
+            {
+                _body.Position = value * 0.02083333333333333333f;
+            }
+        }
+        public PhysicsObject(World world, float width = Game1.TILESIZE, float height = Game1.TILESIZE, string id = "B") : 
+            base(width, height, id)
+        {
+            _body = world.CreateBody(bodyType: BodyType.Dynamic);
+            _fixture = _body.CreateRectangle(width * 0.02083333333333333333f, height * 0.02083333333333333333f, 1, Vector2.Zero);
+        }
+        public PhysicsObject(World world) : base()
+        {
+            _body = world.CreateBody(bodyType: BodyType.Dynamic);
+            _fixture = _body.CreateRectangle(48 * 0.02083333333333333333f, 48 * 0.02083333333333333333f, 1, Vector2.Zero);
+        }
         public virtual void Update(float deltaTime) { }
         public void Clamp(GraphicsDevice graphics)
         {
@@ -26,6 +45,13 @@ namespace CryStal.Engine.Models
         public void ApplyImpulse(Vector2 force)
         {
             _body.ApplyLinearImpulse(force);
+        }
+        public void ChangeVelocity(Vector2 desiredVel)
+        {
+            Vector2 vel = _body.LinearVelocity;
+            Vector2 change = desiredVel - vel;
+            Vector2 impulse = _body.Mass * change;
+            _body.ApplyLinearImpulse(impulse);
         }
     }
 }

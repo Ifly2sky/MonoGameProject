@@ -23,11 +23,19 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.ApplyForce(new Vector2(-player.speed, 0));
+                player.ChangeVelocity(new Vector2(-player.speed, player.Velocity.Y));
+            }
+            else if (keyboardState.IsKeyUp(Keys.A))
+            {
+                player.ChangeVelocity(new Vector2(0, player.Velocity.Y));
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.ApplyForce(new Vector2(player.speed, 0));
+                player.ChangeVelocity(new Vector2(player.speed, player.Velocity.Y));
+            }
+            else if (keyboardState.IsKeyUp(Keys.D))
+            {
+                player.ChangeVelocity(new Vector2(0, player.Velocity.Y));
             }
             if (player.isGrounded)
             {

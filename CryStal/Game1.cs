@@ -76,7 +76,7 @@ namespace CryStal
 
             _world = new World(new Vector2(0f, 50f));
 
-            player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 46, 20);
+            player = new Player(_world, new Vector2(TILESIZE, TILESIZE), 10, 20);
             camera = new Camera(new Vector2(0, 0), new Vector2(SCREENWIDTH, SCREENHEIGHT));
 
             LevelHandler.InitializeLevel(_world, player, Services);

@@ -18,13 +18,13 @@ namespace CryStal.StateMachines.PlayerStateMachine
         {
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                player.ApplyForce(new Vector2(-player.speed, 0));
+                player.ChangeVelocity(new Vector2(-player.speed, 0));
                 state = StateMachine.RunningState;
                 return;
             }
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                player.ApplyForce(new Vector2(player.speed, 0));
+                player.ChangeVelocity(new Vector2(player.speed, 0));
                 state = StateMachine.RunningState;
                 return;
             }
@@ -42,7 +42,7 @@ namespace CryStal.StateMachines.PlayerStateMachine
                 state = StateMachine.CrouchingState;
                 return;
             }
-            if (player.Velocity.Y > 0)
+            if (!player.isGrounded)
             {
                 ExitState(StateMachine.FallingState, player);
                 StateMachine.FallingState.EnterState(player);
