@@ -7,6 +7,8 @@ namespace CryStal.Engine.Models
     public class Tile : GameObject
     {
         private bool collides = false;
+        private Body _body;
+        private Fixture _fixture;
         public override Vector2 Position
         {
             get
@@ -49,6 +51,14 @@ namespace CryStal.Engine.Models
         {
             this.texture = texture;
             this.specularMap = specular;
+        }
+        public override void Unload(World world)
+        {
+            world.Remove(_body);
+        }
+        public override void Load(World world)
+        {
+            world.Add(_body);
         }
     }
 }

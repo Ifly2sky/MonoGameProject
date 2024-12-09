@@ -8,6 +8,8 @@ namespace CryStal.Engine.Models
 {
     public class PhysicsObject : GameObject
     {
+        private Body _body;
+        private Fixture _fixture;
         public override Vector2 Position
         {
             get
@@ -52,6 +54,14 @@ namespace CryStal.Engine.Models
             Vector2 change = desiredVel - vel;
             Vector2 impulse = _body.Mass * change;
             _body.ApplyLinearImpulse(impulse);
+        }
+        public override void Unload(World world)
+        {
+            world.Remove(_body);
+        }
+        public override void Load(World world)
+        {
+            world.Add(_body);
         }
     }
 }

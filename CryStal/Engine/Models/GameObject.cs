@@ -6,9 +6,7 @@ namespace CryStal.Engine.Models
 {
     public class GameObject
     {
-        protected Body _body;
         protected Vector2 _position;
-        protected Fixture _fixture;
 
         float _width;
         float _height;
@@ -60,14 +58,6 @@ namespace CryStal.Engine.Models
                 spriteBatch.Draw(texture, drawPos, null, Color.White, 0f, Vector2.Zero, Game1.SCALE, SpriteEffects.None, 0f);
             }
         }
-        public virtual void Unload(World world)
-        {
-            world.Remove(_body);
-        }
-        public virtual void Load(World world)
-        {
-            world.Add(_body);
-        }
         public void SetDead()
         {
             _isAlive = false;
@@ -76,5 +66,7 @@ namespace CryStal.Engine.Models
         {
             _isAlive = true;
         }
+        public virtual void Unload(World world) { }
+        public virtual void Load(World world) { }
     }
 }
